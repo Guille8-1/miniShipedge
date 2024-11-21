@@ -1,0 +1,20 @@
+{
+  "name": "shipedgefilter",
+  "version": "1.0.0",
+  "description": "filter",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo",
+    "run": "npm start",
+    "ci": "start-server http://localhost:8080"
+  },
+  "author": "me",
+  "license": "ISC",
+  "devDependencies": {
+    "start-server-and-test": "^2.0.8"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "server": "^1.0.41"
+  }
+}

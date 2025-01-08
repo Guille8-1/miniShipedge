@@ -1,4 +1,139 @@
-a {
-    color: #0c7ac9;
-    text-decoration: none;
+.answer {
+    opacity: 0;
+    height: 0;
+    visibility: hidden;
+    overflow: hidden;
+    background-color: #e0e0e0;
+    transition: height 0.5s ease, visibility 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
+.answer.visible {
+    opacity: 1;
+    visibility: visible;
+    height: 80px;
+    display: block;    
+}
+
+.question.answer{
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+.center-answer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.answer-body {
+    color: rgb(43, 43, 43);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px;
+}
+
+.anser-alternate {
+    color: seashell;
+}
+.alternate {
+    background-color: #f5f5f500;
+}
+
+/* .button-11 {
+    color: white;
+    padding: 15px;
+} */
+/* .button-11:hover {
+    background-color: #FF8300;
+    transition: ease-in-out 0.3s;
+} */
+
+
+/* a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.input-query {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;    
+}
+
+.results-holder {
+    background-color: #fefefe;
+    top: 0;
+    margin: 0;
+    text-align: start;
+    padding: 15px;
+
+    box-shadow: 7px 3px 20px 8px #dfdfdf;
+} */
+/* .suggestions {
+    margin-bottom: 20px;
+    width: 100%;
+}
+.text-block-14 {
+    margin-top: 20px;
+}
+.text-block-13 {
+    
+} */
+
+/* Styles (same as before) */
+/* .code-embed-3.suggestion-list {
+    
+}
+.suggestion-input {
+    width: auto;
+    padding: 10px;
+    
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.suggestion-list {
+    position: absolute;
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+}
+
+.suggestion-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-list li:hover {
+    background-color: #f0f0f0;
+} */
+
+/* Anchor button */
+/* .view-link {
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+    display: none;
+}
+.tagsBlog {
+    margin-top: 60px;
+    margin-bottom: 20px;
+    font-family: Open Sans, sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+} */

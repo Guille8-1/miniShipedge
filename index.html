@@ -5,18 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test Shipedge</title>
     <script src="./app.js"></script>
+    <link rel="stylesheet" href="">
 </head>
 <body>
 
     <h3>Select your hobbies:</h3>
-
+    <dialog class="dialog-form">
+        <div class="dialog-header">
+            <img src="" alt="">
+            <p></p>
+        </div>
+        <form action="">
+            <input type="text" placeholder="First Name" required>
+            <input type="text" placeholder="Last Name" required>
+            <input type="email" placeholder="Company Email" required>
+            <input type="tel" placeholder="Phone Number" required>
+            <button type="submit"> SUBMIT </button>
+        </form>
+    </dialog>
     <input type="checkbox" name="hobby" value="reading" id="reading"> Reading <br>
     <input type="checkbox" name="hobby" value="traveling" id="traveling"> Traveling <br>
     <input type="checkbox" name="hobby" value="sports" id="sports"> Sports <br>
     <input type="checkbox" name="hobby" value="music" id="music"> Music <br>
 
     <button onclick="getSelectedCheckboxes()">Get Selected Values</button>
-    
 <style>
     .shown {
         display: block;

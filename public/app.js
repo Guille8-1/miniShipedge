@@ -1,3 +1,22 @@
+const breadContainer = document.getElementById('bread');
+const title = document.title.toLowerCase()
+
+const breadAnchor = document.createElement('a')
+const urlBreadStyle = breadAnchor.setAttribute('class', 'bread-crumb_base')
+breadAnchor.innerHTML = `${title}`
+
+breadContainer.appendChild(breadAnchor);
+const baseURL= 'https://shipedge.com/blog/company/';
+const url = new URL(baseURL, baseURL);
+
+console.log(url);
+// const date = new Date()
+// const date1 = new Date().toISOString()
+
+
+// console.log(date)
+// console.log(date1)
+
 // const navButtons = document.querySelectorAll('#nav-bar a');
 // const navHeight = document.querySelector('.w-nav').clientHeight;
 // const homeButton = document.querySelector('.navbar-brand');
@@ -54,15 +73,15 @@
 //     answer.classList.toggle("visible");
 //   });
 // });
-const dateHeader = new Date().getMonth();
+// const dateHeader = new Date().getMonth();
 
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+// const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-const headerMonth = document.getElementById("month")
-headerMonth.innerHTML = `${months[dateHeader]}`
+// const headerMonth = document.getElementById("month")
+// headerMonth.innerHTML = `${months[dateHeader]}`
 
-const headerYear = document.getElementById('year')
-headerYear.innerHTML = `${new Date().getFullYear()}`
+// const headerYear = document.getElementById('year')
+// headerYear.innerHTML = `${new Date().getFullYear()}`
 
 // const closerSection = document.getElementById('banner');
 // const createCloser = document.createElement('button');

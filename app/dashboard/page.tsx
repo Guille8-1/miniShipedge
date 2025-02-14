@@ -1,4 +1,4 @@
-export default async function DashboardMain() {
+export default function DashboardMain() {
   return (
     <>
       <div className="flex flex-col md:flex-row md:justify-between items-left">

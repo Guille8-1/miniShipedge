@@ -10,8 +10,6 @@ export default function CreateUserForm() {
   })
 
   useEffect(() => {
-    console.log(state.errors)
-    console.log(state.success)
     if(state.errors){
       state.errors.forEach(error => {
         toast.error(error)

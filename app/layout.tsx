@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 
-const raleway = Nunito_Sans({subsets: ['latin']})
+const raleway = Nunito_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,10 +16,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={raleway.className}
-      >
-        {children}
+      <body className={raleway.className}>
+        <main>{children}</main>
       </body>
     </html>
   );

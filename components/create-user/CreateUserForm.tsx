@@ -1,4 +1,5 @@
 "use client"
+
 import { createUser } from "@/actions/create-user-action"
 import { useActionState, useEffect } from "react"
 import { toast } from "react-toastify"

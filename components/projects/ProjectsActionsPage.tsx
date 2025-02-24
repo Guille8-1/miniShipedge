@@ -1,4 +1,5 @@
 "use client";
+
 import { TiPlus } from "react-icons/ti";
 import { useState, useRef, useEffect, Fragment } from "react";
 import {
@@ -7,8 +8,12 @@ import {
   TransitionChild,
   DialogPanel,
 } from "@headlessui/react";
+import ProjectForm from "./CreateProjectForm";
+import ToastNotification from "../ui/ToastNotification";
+import { User } from "@/src/schemas";
 
-export default function ProjectsActionsPage() {
+export function ProjectsActionsPage({user}: {user:User}) {
+  //abrir y cerrar dialogo
   const [open, setOpen] = useState(false);
   const dialogRef = useRef(null);
 
@@ -29,11 +34,13 @@ export default function ProjectsActionsPage() {
       window.removeEventListener("click", handleClick);
     };
   }, [open]);
+  
+  
 
   return (
     <>
       <section className="h-auto w-full">
-        <button
+        {user.admin && <button
           onClick={isOpen}
           className="flex flex-row align-items-center justify-items-center gap-2 bg-sky-800 p-3 text-gray-200 rounded"
         >
@@ -41,7 +48,7 @@ export default function ProjectsActionsPage() {
           <h2 className="font-semibold text-lg leading-tight">
             Crear Proyecto
           </h2>
-        </button>
+        </button>}
         {open && (
           <Transition appear show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={isClosed}>
@@ -69,92 +76,19 @@ export default function ProjectsActionsPage() {
                     leaveTo="opacity-0 scale-95"
                   >
                     <DialogPanel className="w-full max-w-5xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
-                      <p>desde Modal</p>
-                      <>
-                        <form
-                          className="mt-14 space-y-3"
-                          noValidate
-                          action={() => {}}
+                      <h1 className="font-bold text-xl">Nuevo Proyecto</h1>
+                      <section>
+                        <ProjectForm />
+                      </section>
+                      <div className="mx-auto my-0 mt-5 flex justify-end">
+                        <button
+                          className="bg-cyan-800 hover:bg-cyan-700 p-3 rounded-lg text-white"
+                          onClick={() => setOpen(false)}
                         >
-                          <div className="flex flex-col gap-2">
-                            <label
-                              className="font-bold text-2xl"
-                              htmlFor="email"
-                            >
-                              Nombre
-                            </label>
-                            <input
-                              id="nombre"
-                              type="text"
-                              placeholder="Nombre"
-                              className="w-full border border-gray-300 p-3 rounded-lg"
-                              name="nombre"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-2">
-                            <label
-                              className="font-bold text-2xl"
-                              htmlFor="email"
-                            >
-                              Email
-                            </label>
-                            <input
-                              id="email"
-                              type="email"
-                              placeholder="Email"
-                              className="w-full border border-gray-300 p-3 rounded-lg"
-                              name="email"
-                            />
-                          </div>
-                          <div className="flex flex-col gap-2">
-                            <label
-                              className="font-bold text-2xl"
-                              htmlFor="password"
-                            >
-                              Password (Se recomienda usar numero de carnet)
-                            </label>
-                            <input
-                              id="password"
-                              type="text"
-                              placeholder="Password"
-                              className="w-full border border-gray-300 p-3 rounded-lg"
-                              name="password"
-                            />
-                          </div>
-                          <div className="flex flex-row gap-2">
-                            <label
-                              className="font-semibold text-xl"
-                              htmlFor="email"
-                            >
-                              Admin
-                            </label>
-                            <input
-                              id="admin"
-                              type="radio"
-                              name="user-group"
-                              value="true"
-                            />
-                            <label
-                              className="font-semibold text-xl ml-5"
-                              htmlFor="email"
-                            >
-                              Usuario Standard
-                            </label>
-                            <input
-                              id="admin"
-                              type="radio"
-                              name="user-group"
-                              value="false"
-                            />
-                          </div>
-                          <input
-                            className="bg-cyan-800 hover:bg-cyan-700 w-full p-3 rounded-lg text-white text-xl font-bold cursor-pointer block"
-                            type="submit"
-                            value="Registrar"
-                          />
-                        </form>
-                      </>
-                      <button onClick={() => setOpen(false)}>Cerrar</button>
+                          Cerrar
+                        </button>
+                        <ToastNotification />
+                      </div>
                     </DialogPanel>
                   </TransitionChild>
                 </div>
@@ -163,6 +97,8 @@ export default function ProjectsActionsPage() {
           </Transition>
         )}
       </section>
+
+
     </>
   );
 }

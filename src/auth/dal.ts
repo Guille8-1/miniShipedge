@@ -2,8 +2,8 @@ import 'server-only'
 import { cache } from "react"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
-import 'dotenv/config'
 import { UserSchema } from "../schemas"
+import 'dotenv/config'
 
 export const verifySession = cache(async () => {
     const token = (await cookies()).get('SERVICES_TOKEN')?.value

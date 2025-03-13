@@ -8,39 +8,49 @@ type ActionState = {
 }
 
 export async function createProject(prevState: ActionState, formData: FormData) {
-    const user = await verifySession();
-    const asignado = formData.get('asignado')
-    const formatAsignado = `[\"${asignado}\"]`
+    const {user} = await verifySession();
+    
     const newProject = {
         titulo: formData.get('titulo'),
-        facultad: formData.get('facultad'),
+        tipoDocumento: formData.get('tipoDocumento'),
+        asignados: formData.getAll('asignados'),
         estado: formData.get('estado'),
-        asignado: formatAsignado,
         tipo: formData.get('tipo'),
-        prioridad: formData.get('prioridad')
+        prioridad: formData.get('prioridad'),
+        citeNumero: formData.get('citeNumero'),
+        rutaCv: formData.get('rutaCv'),
+        oficinaOrigen: formData.get('oficinaOrigen')
     }
     const projectValidation = CreateProjectSchema.safeParse(newProject)
+    
+    console.log(newProject)
 
     if(!projectValidation.success) {
         const errors = projectValidation.error.errors.map(error => error.message)
+
         return {
             errors,
             success:''
         }
     }
     const bodyRequest = {
-            user: user.user.id,
+            user: user.id,
             titulo: projectValidation.data.titulo,
-            facultad: projectValidation.data.facultad,
+            tipoDocumento: projectValidation.data.tipoDocumento,
+            asignados: projectValidation.data.asignados,
+            gestor: user.name,
             estado: projectValidation.data.estado,
-            asignado: projectValidation.data.asignado,
-            etiquetas:'nuevo',
             tipo: projectValidation.data.tipo,
             prioridad: projectValidation.data.prioridad,
+            citeNumero: projectValidation.data.citeNumero,
+            rutaCv: projectValidation.data.rutaCv,
+            avance: '10',
+            oficinaOrigen: projectValidation.data.oficinaOrigen
     }
+    console.log(bodyRequest)
 
     const url = `${process.env.BACK_URL}/projects/create`
-
+    
     const request = await fetch(url, {
         method: 'POST',
         headers:{
@@ -50,6 +60,7 @@ export async function createProject(prevState: ActionState, formData: FormData) 
     })
     
     const json = await request.json()
+    console.log(request)
     
     if(!request.ok) {
         const error = ErrorResponseSchema.parse(json)

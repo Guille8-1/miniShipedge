@@ -10,8 +10,9 @@ export async function createUser(prevState: ActionState, formData: FormData ) {
         name: formData.get('nombre'),
         email: formData.get('email'),
         password: formData.get('password'),
-        admin: formData.get('user-group')
+        nivel: formData.get('nivelUsuario')
     }
+
     const userValidation = CreateUserSchema.safeParse(newUser)
     
     if(!userValidation.success) {
@@ -33,7 +34,7 @@ export async function createUser(prevState: ActionState, formData: FormData ) {
             name: userValidation.data.name,
             email: userValidation.data.email,
             password: userValidation.data.password,
-            admin:userValidation.data.admin
+            nivel: userValidation.data.nivel
         })
     })
 

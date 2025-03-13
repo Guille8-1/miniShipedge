@@ -65,25 +65,23 @@ export default function CreateUserForm() {
                     name="password"
                 />
             </div>
-            <div className="flex flex-row gap-2">
-                <label 
-                    className="font-semibold text-xl"
-                    htmlFor="email">Admin</label>
-                <input 
-                    id="admin"
-                    type="radio"
-                    name="user-group"
-                    value='true'
-                />
-                <label 
-                    className="font-semibold text-xl ml-5"
-                    htmlFor="email">Usuario Standard</label>
-                <input 
-                    id="admin"
-                    type="radio"
-                    name="user-group"
-                    value='false'
-                />
+            <div className="flex flex-col gap-2">
+              <label className="font-bold text-lg mt-3" htmlFor="estado">
+                Nivel Usuario
+              </label>
+              <select
+                name="nivelUsuario"
+                id="nivelUsuario"
+                className="w-full border border-gray-300 p-3 rounded-lg"
+              >
+                <option value="" defaultChecked>
+                  Seleccionar
+                </option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
             </div>
             <input 
                 className="bg-cyan-800 hover:bg-cyan-700 w-full p-3 rounded-lg text-white text-xl font-bold cursor-pointer block"

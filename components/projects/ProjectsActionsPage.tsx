@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { TiPlus } from "react-icons/ti";
 import { useState, useRef, useEffect, Fragment } from "react";
@@ -8,11 +8,11 @@ import {
   TransitionChild,
   DialogPanel,
 } from "@headlessui/react";
-import ProjectForm from "./CreateProjectForm";
-import ToastNotification from "../ui/ToastNotification";
 import { User } from "@/src/schemas";
+import ToastNotification from "../ui/ToastNotification";
+import ProjectForm from "./CreateProjectForm";
 
-export function ProjectsActionsPage({user}: {user:User}) {
+export function ProjectsActionsPage({user}: {user:User} ) {
   //abrir y cerrar dialogo
   const [open, setOpen] = useState(false);
   const dialogRef = useRef(null);
@@ -78,15 +78,9 @@ export function ProjectsActionsPage({user}: {user:User}) {
                     <DialogPanel className="w-full max-w-5xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
                       <h1 className="font-bold text-xl">Nuevo Proyecto</h1>
                       <section>
-                        <ProjectForm />
+                          <ProjectForm />
                       </section>
                       <div className="mx-auto my-0 mt-5 flex justify-end">
-                        <button
-                          className="bg-cyan-800 hover:bg-cyan-700 p-3 rounded-lg text-white"
-                          onClick={() => setOpen(false)}
-                        >
-                          Cerrar
-                        </button>
                         <ToastNotification />
                       </div>
                     </DialogPanel>

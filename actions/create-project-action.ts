@@ -2,18 +2,22 @@
 
 import { ErrorResponseSchema, SuccessSchema, CreateProjectSchema} from '@/src/schemas'
 import { verifySession } from '@/src/auth/dal'
+import { getUsersById } from "@/src/API/client-fetching-action";
+
 type ActionState = {
     errors: string[],
     success: string
 }
-
+type userIds = {
+    id:number
+}
 export async function createProject(prevState: ActionState, formData: FormData) {
     const {user} = await verifySession();
-    
+
     const newProject = {
         titulo: formData.get('titulo'),
         tipoDocumento: formData.get('tipoDocumento'),
-        asignados: formData.getAll('asignados'),
+        asignadosId: formData.getAll('asignados'),
         estado: formData.get('estado'),
         tipo: formData.get('tipo'),
         prioridad: formData.get('prioridad'),
@@ -22,8 +26,14 @@ export async function createProject(prevState: ActionState, formData: FormData) 
         oficinaOrigen: formData.get('oficinaOrigen')
     }
     const projectValidation = CreateProjectSchema.safeParse(newProject)
-    
-    console.log(newProject)
+
+    const userIds:FormDataEntryValue[] = newProject.asignadosId
+    const callingForIds: userIds[] = await getUsersById(userIds)
+    const gettingUserIds =  callingForIds.map(forid => {
+        const {id} = forid
+        return id
+    })
+
 
     if(!projectValidation.success) {
         const errors = projectValidation.error.errors.map(error => error.message)
@@ -37,7 +47,7 @@ export async function createProject(prevState: ActionState, formData: FormData) 
             user: user.id,
             titulo: projectValidation.data.titulo,
             tipoDocumento: projectValidation.data.tipoDocumento,
-            asignados: projectValidation.data.asignados,
+            asignadosId: gettingUserIds,
             gestor: user.name,
             estado: projectValidation.data.estado,
             tipo: projectValidation.data.tipo,

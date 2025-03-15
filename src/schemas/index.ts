@@ -34,7 +34,7 @@ export const CreateProjectSchema = z.object({
     .min(5, {message:'Titulo No Valido'}),
     tipoDocumento: z.string()
     .min(1, {message:'Tipo de Documento Obligatorio'}),
-    asignados: z.array(z.string()
+    asignadosId: z.array(z.string()
     .min(1,{message:'Al menos 1 Asignado es Obligatorio'})),
     estado: z.string()
     .min(1, {message:'Estado no Valido'}),

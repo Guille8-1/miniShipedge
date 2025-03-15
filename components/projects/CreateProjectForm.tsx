@@ -24,8 +24,6 @@ export default function ProjectForm() {
 
   const userOptions: userOptions[] = []
   
-  
-
   const addingUsers = ( userAdded:MultiValue<userOptions>) => {
     setSelectedUsers([...userAdded])
   }

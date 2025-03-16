@@ -34,3 +34,10 @@ export async function getUsersById(userIds: FormDataEntryValue[]) {
 
     return await request.json();
 }
+
+export async function getProjectsUsers(userId: number){
+    const url = `${process.env.BACK_URL}/projects/assigned/${userId}`;
+    const request = await fetch(url)
+    const json = await request.json();
+    return ProjectsFullArray.parse(json);
+}

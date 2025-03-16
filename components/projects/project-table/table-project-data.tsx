@@ -3,6 +3,7 @@
 import { PiHandPointingThin } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { getProjects } from "@/src/API/client-fetching-action";
+import { getProjectsUsers } from "@/src/API/client-fetching-action";
 import { ProjectTypes } from "@/src/schemas";
 import { User } from "@/src/schemas";
 
@@ -11,12 +12,12 @@ export default function TableProject({ user }: { user: User }) {
 
   useEffect(() => {
     async function projectResources(userId: number) {
-      const id = userId;
-      const projectsOk = await getProjects(id);
+      const projectsOk = await getProjects(userId);
+      const projectsAssigned = await getProjectsUsers(userId);
       setProjects(projectsOk);
+      setProjects(projectsAssigned);
     }
-
-    projectResources(user.id);
+    projectResources(user.id).then();
   }, [user.id]);
 
   //tabla de proyectos

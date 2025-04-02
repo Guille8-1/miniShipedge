@@ -90,7 +90,6 @@ export const ProjectsFullArray = z.array(ProjectSchemaResponse)
 
 export type ProjectTypes = z.infer<typeof ProjectSchemaResponse>
 
-
 export const GetUsersSchema = z.array(z.object({
     nombre: z.string(),
     apellido: z.string(),

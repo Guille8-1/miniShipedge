@@ -3,19 +3,29 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { type ProjectTypes as ProjectRow} from '@/src/schemas'
 
-export const columns: ColumnDef<ProjectRow>[] = [
+
+
+export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): ColumnDef<ProjectRow>[] => [
     {
         accessorKey: 'id',
         header: "Id"
     },
     {
-        accessorKey: 'titulo',
-        header: "Titulo"
-    },
-    {
         accessorKey: 'asignados',
         header: 'Asignados',
         cell: ({ row }) => row.original.asignados?.map((asignado)=> asignado.charAt(0).toUpperCase() + asignado.slice(1)).join(", ") || "N/A"
+    },
+    {
+        accessorKey: 'titulo',
+        header: "Titulo",
+        cell: ({ row }) => (
+            <button
+                className="text-blue-600 md: text-left"
+                onClick={ () => setSelectedIndex(row.original) }
+            >
+                {row.original.titulo}
+            </button>
+        )
     },
     {
         accessorKey: 'estado',

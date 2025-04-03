@@ -1,6 +1,3 @@
-"use client"
-
-import {Skeleton} from '@/components/ui/skeleton'
 import {
     ColumnDef,
     flexRender,
@@ -16,6 +13,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import Loader from '@/components/loader/Spinner'
 
 
 interface ProjectTableProps<TData, TValue> {
@@ -71,20 +69,11 @@ export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TDat
                                 </TableRow>
                             ))
                         ) : (
-                            <div className="w-full border border-gray-200 rounded-lg overflow-hidden">
-                                <div className="flex bg-gray-100 p-3">
-                                    {Array(4).fill(0).map((_, i) => (
-                                        <Skeleton key={i} className="flex-1 h-4 mx-2" />
-                                    ))}
-                                </div>
-                                {Array(4).fill(0).map((_, rowIndex) => (
-                                    <div key={rowIndex} className="flex p-3 border-b border-gray-200">
-                                        {Array(4).fill(0).map((_, colIndex) => (
-                                            <Skeleton key={colIndex} className="flex-1 h-4 mx-2" />
-                                        ))}
-                                    </div>
-                                ))}
-                            </div>
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    <Loader />
+                                </TableCell>
+                            </TableRow>
                         )}
                     </TableBody>
                 </Table>

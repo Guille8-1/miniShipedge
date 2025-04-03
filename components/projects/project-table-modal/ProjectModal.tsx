@@ -22,6 +22,9 @@ export function ProjectModal ({data, onClose}:UserProjectModalProps){
         minute: '2-digit',
     })
 
+    const comment = data?.comentarios
+    console.log(comment)
+
     return (
         <>
             {
@@ -74,69 +77,20 @@ export function ProjectModal ({data, onClose}:UserProjectModalProps){
                                     <p className="mt-2">{formattedDate}</p>
                                 </section>
                             </div>
-                            <div
-                                className="mt-5 flex flex-row gap-3 p-4 bg-gray-200 rounded-2xl">
-                                <section>comments holder</section>
+                            <div className="mt-5 flex flex-row gap-3 p-4 bg-gray-200 rounded-2xl">
+                                {
+                                    .length < 0 ?
+                                        <p>test</p>
+                                    :
+
+                                        <p>Aun No existen Comentarios en Este Proyecto</p>
+                                }
                             </div>
                         </section>
                     ): null}
 
                 </motion.aside>
             </section>
-            {/*{data && (<div*/}
-            {/*    className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"*/}
-            {/*    onClick={ onClose }*/}
-            {/*/>*/}
-            {/*)}*/}
-            {/*<motion.aside*/}
-            {/*    initial={{ x: "100%" }}*/}
-            {/*    animate={{ x: data ? 0 : "100%" }}*/}
-            {/*    exit={{ x: "100%" }}*/}
-            {/*    transition={{ type: "spring", stiffness: 100, damping: 15 }}*/}
-            {/*    className="fixed right-0 top-0 h-full w-80 bg-white shadow-lg z-50 flex flex-col"*/}
-            {/*>*/}
-            {/*    <section className="p-4 justify-between items-center border-b">*/}
-            {/*        <h2 className="text-lg font-semibold">{data?.titulo}</h2>*/}
-            {/*        <button onClick={onClose}>x</button>*/}
-            {/*    </section>*/}
-
-            {/*    {data ? (*/}
-            {/*        <section*/}
-            {/*            className="p-4 flex flex-col flex-grow justify-between"*/}
-            {/*        >*/}
-            {/*            <div>*/}
-            {/*                <p> <strong>ID:</strong>{data.id} </p>*/}
-            {/*                <p> <strong>Titulo:</strong>{data.titulo}</p>*/}
-            {/*            </div>*/}
-            {/*            /!* Navigation Buttons *!/*/}
-            {/*            <div className="flex justify-between mt-4">*/}
-            {/*                <button*/}
-            {/*                    onClick={goPrevious}*/}
-            {/*                    disabled={disablePrevious}*/}
-            {/*                    className={`px-4 py-2 rounded bg-gray-200 ${*/}
-            {/*                        disablePrevious ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-300"*/}
-            {/*                    }`}*/}
-            {/*                >*/}
-            {/*                    ⬅ Previous*/}
-            {/*                </button>*/}
-
-            {/*                <button*/}
-            {/*                    onClick={goNext}*/}
-            {/*                    disabled={disableNext}*/}
-            {/*                    className={`px-4 py-2 rounded bg-gray-200 ${*/}
-            {/*                        disableNext ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-300"*/}
-            {/*                    }`}*/}
-            {/*                >*/}
-            {/*                    Next ➡*/}
-            {/*                </button>*/}
-            {/*            </div>*/}
-            {/*        </section>*/}
-            {/*    ):(*/}
-            {/*        <section>*/}
-            {/*            <div className="p-4">Select a user to see details.</div>*/}
-            {/*        </section>*/}
-            {/*    )}*/}
-            {/*</motion.aside>*/}
         </>
     )
 }

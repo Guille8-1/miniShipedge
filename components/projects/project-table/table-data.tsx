@@ -1,5 +1,9 @@
 import {
     ColumnDef,
+    SortingState,
+    ColumnFilter,
+    VisibilityState,
+    getSortedRowModel,
     flexRender,
     getCoreRowModel,
     useReactTable
@@ -14,6 +18,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import Loader from '@/components/loader/Spinner'
+import {useState} from "react";
 
 
 interface ProjectTableProps<TData, TValue> {
@@ -22,11 +27,16 @@ interface ProjectTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TData, TValue>)  {
-
+        const [sorting, setSorting] = useState<SortingState>([])
         const table = useReactTable({
             data,
             columns,
-            getCoreRowModel: getCoreRowModel()
+            onSortingChange: setSorting,
+            getCoreRowModel: getCoreRowModel(),
+            getSortedRowModel: getSortedRowModel(),
+            state:{
+                sorting,
+            }
         })
 
     return (

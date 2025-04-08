@@ -71,7 +71,8 @@ export const ProjectSchemaResponse = z.object({
     isActive: z.nullable(z.boolean()),
     comentarios: z.nullable(z.array(z.object({
         id: z.nullable(z.number()),
-        comentarios: z.nullable(z.string()),
+        comentario: z.nullable(z.string()),
+        author: z.nullable(z.string()),
         createdDate: z.nullable(z.string()),
         updatedDate: z.nullable(z.string())
     }))),

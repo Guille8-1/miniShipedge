@@ -1,12 +1,26 @@
 import { ColumnDef } from '@tanstack/react-table'
+import { Button } from "@/components/ui/button"
+import { ArrowUpDown } from 'lucide-react'
 import { type ProjectTypes as ProjectRow} from '@/src/schemas'
-
 
 
 export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): ColumnDef<ProjectRow>[] => [
     {
         accessorKey: 'id',
-        header: "Id"
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Id
+                        <ArrowUpDown />
+                    </Button>
+                </>
+            )
+        }
     },
     {
         accessorKey: 'asignados',
@@ -15,35 +29,113 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
     },
     {
         accessorKey: 'titulo',
-        header: "Titulo",
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Titulo
+                        <ArrowUpDown />
+                    </Button>
+                </>
+            )
+        },
         cell: ({ row }) => (
-            <button
-                className="text-blue-600 md: text-left"
+            <div
+                className="text-blue-600 md: text-left cursor-pointer"
                 onClick={ () => setSelectedIndex(row.original) }
             >
-                {row.original.titulo}
-            </button>
+                {row.getValue("titulo")}
+            </div>
         )
     },
     {
         accessorKey: 'estado',
-        header: "Estado"
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Estado
+                        <ArrowUpDown />
+                    </Button>
+                </>
+            )
+        }
     },
     {
         accessorKey: 'avance',
-        header: "Avance"
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Avance
+                        <ArrowUpDown />
+                    </Button>
+                </>
+            )
+        }
     },
     {
         accessorKey: 'citeNumero',
-        header: "Cite Numero"
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Cite Numero
+                        <ArrowUpDown />
+                    </Button>
+                </>
+            )
+        }
     },
     {
         accessorKey: 'rutaCv',
-        header: "Ruta Cv"
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Ruta Cv
+                        <ArrowUpDown />
+                    </Button>
+                </>
+            )
+        }
     },
     {
         accessorKey: 'tipoDocumento',
-        header: "Tipo Documento"
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Tipo Doc.
+                        <ArrowUpDown />
+                    </Button>
+                </>
+            )
+        }
     },
     {
         accessorKey: 'gestor',
@@ -52,15 +144,54 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
     },
     {
         accessorKey: 'prioridad',
-        header: "Prioridad"
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Prioridad
+                        <ArrowUpDown />
+                    </Button>
+                </>
+            )
+        }
     },
     {
         accessorKey: 'diasActivo',
-        header: "Dias Activo"
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Dias Act
+                        <ArrowUpDown />
+                    </Button>
+                </>
+            )
+        }
     },
     {
         accessorKey: 'oficinaOrigen',
-        header: "Oficina De Origen"
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Origen
+                        <ArrowUpDown />
+                    </Button>
+                </>
+            )
+        }
     },
     {
         accessorKey: 'isActive',

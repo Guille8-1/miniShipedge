@@ -55,6 +55,7 @@ export async function createProject(prevState: ActionState, formData: FormData) 
             citeNumero: projectValidation.data.citeNumero,
             rutaCv: projectValidation.data.rutaCv,
             avance: '10',
+            diasActivo: '0',
             oficinaOrigen: projectValidation.data.oficinaOrigen
     }
     console.log(bodyRequest)

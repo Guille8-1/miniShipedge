@@ -2,7 +2,6 @@ import { z } from 'zod'
 
 export const SuccessSchema = z.string()
 export const ErrorResponseSchema = z.string()
-
 export const CreateUserSchema = z.object({
     name: z.string()
                 .min(3,{message:'El Nombre no Valido'}),
@@ -13,22 +12,18 @@ export const CreateUserSchema = z.object({
                 .min(5,{message:'Email Debe Tener almenos 5 caracteres'}),
     nivel:z.string()
 })
-
 export const LoginSchema = z.object({
     email: z.string()
         .min(1, {message:'E-mail Vacio'})
         .email({message:'E-mail No Valido'}),
     password: z.string().min(5, {message:'Password No Valido'})
 })
-
 export const UserSchema = z.object({
     id: z.number(),
     name: z.string(),
+    lastName: z.string(),
     admin: z.boolean(),
 })
-
-export type User = z.infer<typeof UserSchema>
-
 export const CreateProjectSchema = z.object({
     titulo: z.string()
     .min(5, {message:'Titulo No Valido'}),
@@ -50,11 +45,10 @@ export const CreateProjectSchema = z.object({
         .min(6,{message:'Oficina de Origen Obligatorio'})
 })
 
-
 export const ProjectSchemaResponse = z.object({
     id: z.number(),
     titulo: z.string(),
-    asignados: z.nullable(z.array(z.string())),
+    asignados: (z.array(z.string())),
     asignadosId: z.nullable(z.array(z.number())),
     tipoDocumento: z.nullable(z.string()),
     prioridad: z.nullable(z.string()),
@@ -70,7 +64,7 @@ export const ProjectSchemaResponse = z.object({
     gestor: z.nullable(z.string()),
     isActive: z.nullable(z.boolean()),
     comentarios: z.nullable(z.array(z.object({
-        id: z.nullable(z.number()),
+        id: (z.number()),
         comentario: z.nullable(z.string()),
         author: z.nullable(z.string()),
         createdDate: z.nullable(z.string()),
@@ -89,12 +83,21 @@ export const ProjectSchemaResponse = z.object({
 
 export const ProjectsFullArray = z.array(ProjectSchemaResponse)
 
-export type ProjectTypes = z.infer<typeof ProjectSchemaResponse>
-
 export const GetUsersSchema = z.array(z.object({
     nombre: z.string(),
     apellido: z.string(),
     nivel: z.number()
-})) 
+}))
+
+export const CreateComment = z.object({
+    comentario: z.string().max(700, {message: 'Comentario Demasiado Largo'}),
+    projectId: z.string(),
+})
+
+export type ProjectArrayType = z.infer<typeof ProjectsFullArray>
+
+export type ProjectTypes = z.infer<typeof ProjectSchemaResponse>
 
 export type GetUserType = z.infer<typeof GetUsersSchema>
+
+export type User = z.infer<typeof UserSchema>

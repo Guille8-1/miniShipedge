@@ -27,8 +27,9 @@ export async function createProject(prevState: ActionState, formData: FormData) 
     }
     const projectValidation = CreateProjectSchema.safeParse(newProject)
 
-    const userIds:FormDataEntryValue[] = newProject.asignadosId
-    const callingForIds: userIds[] = await getUsersById(userIds)
+    const userIds:FormDataEntryValue[] = newProject.asignadosId;
+    const callingForIds: userIds[] = await getUsersById(userIds);
+
     const gettingUserIds =  callingForIds.map(forid => {
         const {id} = forid
         return id
@@ -58,7 +59,7 @@ export async function createProject(prevState: ActionState, formData: FormData) 
             diasActivo: '0',
             oficinaOrigen: projectValidation.data.oficinaOrigen
     }
-    console.log(bodyRequest)
+
 
     const url = `${process.env.BACK_URL}/projects/create`
     
@@ -69,10 +70,10 @@ export async function createProject(prevState: ActionState, formData: FormData) 
         },
         body: JSON.stringify(bodyRequest)
     })
-    
+
+
     const json = await request.json()
-    console.log(request)
-    
+
     if(!request.ok) {
         const error = ErrorResponseSchema.parse(json)
         return {

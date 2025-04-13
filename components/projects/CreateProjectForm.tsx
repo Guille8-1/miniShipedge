@@ -3,9 +3,12 @@
 import { useActionState, useEffect, useState } from "react";
 import { createProject } from "@/actions/create-project-action";
 import { toast } from "react-toastify";
-import { GetUserType } from "@/src/schemas";
 import { getDataUser } from "@/src/API/client-fetching-action";
+import { GetUserType } from "@/src/schemas";
 import Select, { MultiValue } from 'react-select'
+//redux
+import { useDispatch } from 'react-redux'
+import { setValue } from "@/src/Store";
 
 type userOptions = {
   label: string,
@@ -21,20 +24,23 @@ export default function ProjectForm() {
   
   const [users, setUsers] = useState<GetUserType>([])
   const [selectedUsers, setSelectedUsers] = useState<userOptions[] | null>([])
-
+  const fetchDispatch = useDispatch();
+  const dispatchFunction = () => {
+    fetchDispatch(setValue('changed'));
+  }
   const userOptions: userOptions[] = []
   
   const addingUsers = ( userAdded:MultiValue<userOptions>) => {
     setSelectedUsers([...userAdded])
   }
   
-  useEffect(()=>{
+  useEffect(() => {
     async function fetchUsers() {
       const userdata = await getDataUser()
       setUsers(userdata)
     }
-    fetchUsers()
-  },[])
+    fetchUsers().then()
+  }, [])
 
   useEffect(() => {
     if (state.errors) {
@@ -58,7 +64,7 @@ export default function ProjectForm() {
 
     userOptions.push({label, value})
   }
-  
+
   return (
     <>
       <form
@@ -200,9 +206,10 @@ export default function ProjectForm() {
           </div>
         </div>
         <input
-          className="bg-cyan-800 hover:bg-cyan-700 w-full p-3 rounded-lg text-white text-xl font-bold cursor-pointer block mt-4"
-          type="submit"
-          value="Crear Proyecto"
+            onClick={dispatchFunction}
+            className="bg-cyan-800 hover:bg-cyan-700 w-full p-3 rounded-lg text-white text-xl font-bold cursor-pointer block mt-4"
+            type="submit"
+            value="Crear Proyecto"
         />
       </form>
     </>

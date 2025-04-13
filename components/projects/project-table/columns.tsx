@@ -1,12 +1,40 @@
-import { ColumnDef } from '@tanstack/react-table'
+import { ColumnDef, Row } from '@tanstack/react-table'
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown } from 'lucide-react'
 import { type ProjectTypes as ProjectRow} from '@/src/schemas'
 
+export function filterAssigneesNames <TData> (
+    row: Row<TData>,
+    columnId: string,
+    filterName: string[]
+) {
+    const rowValue: string = row.getValue(columnId)
+
+    if(columnId === 'asignados') {
+        return filterName.some((name)=> rowValue.toLowerCase().includes(name.toLowerCase()))
+    }
+    return true;
+}
 
 export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): ColumnDef<ProjectRow>[] => [
     {
         accessorKey: 'id',
+        header: ({column})=> {
+            return (
+
+                <Button
+                    variant="ghost"
+                    className="px-0"
+                    onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Id
+                    <ArrowUpDown />
+                </Button>
+            )
+        }
+    },
+    {
+        accessorKey: 'asignados',
         header: ({column})=> {
             return (
                 <>
@@ -15,17 +43,14 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                         className="px-0"
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Id
-                        <ArrowUpDown />
+                        Asignados
+                        <ArrowUpDown/>
                     </Button>
                 </>
             )
-        }
-    },
-    {
-        accessorKey: 'asignados',
-        header: 'Asignados',
-        cell: ({ row }) => row.original.asignados?.map((asignado)=> asignado.charAt(0).toUpperCase() + asignado.slice(1)).join(", ") || "N/A"
+        },
+        cell: ({ row }) => row.original.asignados?.map((asignado)=> asignado.charAt(0).toUpperCase() + asignado.slice(1)).join(", ") || "N/A",
+        filterFn: filterAssigneesNames
     },
     {
         accessorKey: 'titulo',
@@ -139,7 +164,20 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
     },
     {
         accessorKey: 'gestor',
-        header: "Gestor",
+        header: ({column})=> {
+            return (
+                <>
+                    <Button
+                        variant="ghost"
+                        className="px-0"
+                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Gestor
+                        <ArrowUpDown/>
+                    </Button>
+                </>
+            )
+        },
         cell: ({row}) => row.original.gestor ? row.original.gestor.charAt(0).toUpperCase() + row.original.gestor.slice(1) : "N/A",
     },
     {

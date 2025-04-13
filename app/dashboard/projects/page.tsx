@@ -11,8 +11,10 @@ export default async function ProjectsPage() {
 
   return (
     <>
-      <ProjectsActionsPage user={user}/>
-      <TableProject user={user}/>
+        <section className="h-auto">
+            <ProjectsActionsPage user={user}/>
+            <TableProject user={user}/>
+        </section>
     </>
   );
 }

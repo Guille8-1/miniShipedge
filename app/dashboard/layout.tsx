@@ -55,10 +55,10 @@ export default async function DashboardLayout({
                 <MdOutlineMiscellaneousServices size="1.2em" />
                 <li>Servicios</li>
               </Link>
+              <footer className="py-5 text-xs">
+                <p className="text-black ml-5">v1.0.0</p>
+              </footer>
             </ul>
-            <footer className="py-5 text-xs">
-              <p className="text-black ml-5">v1.0.0</p>
-            </footer>
           </div>
         </nav>
         <section className="w-full py-2 ml-10 bg-white mt-4 mb-4 rounded-2xl shadow-lg">

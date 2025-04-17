@@ -1,18 +1,181 @@
-const breadContainer = document.getElementById('bread');
-const title = document.title.toLowerCase()
+const noFound = document.getElementById("no-results");
 
-const breadAnchor = document.createElement('a')
-const urlBreadStyle = breadAnchor.setAttribute('class', 'bread-crumb_base')
-breadAnchor.innerHTML = `${title}`
+noFound.addEventListener("click", () => {
+  const navHeight = document.querySelector(".w-nav").clientHeight;
+  const target = document.getElementById("email-form");
+  const email = document.getElementById("name-2");
+  setTimeout(() => {
+    email.focus();
+  }, 500);
 
-breadContainer.appendChild(breadAnchor);
-const baseURL= 'https://shipedge.com/blog/company/';
-const url = new URL(baseURL, baseURL);
+  if (target) {
+    const targetPos = target.getBoundingClientRect().top + window.scrollY;
+    const offset = targetPos - navHeight;
+    window.scroll({
+      top: offset,
+      behavior: "smooth",
+    });
+  }
+});
 
-console.log(url);
+// const searchHolder = document.querySelector('.inte-search_icon');
+// const createSearch = document.createElement('input');
+
+// createSearch.setAttribute('class','search-input');
+// createSearch.setAttribute('placeholder','Serach Integrations');
+// createSearch.setAttribute('type','text');
+// createSearch.setAttribute('id','search-value');
+
+// searchHolder.append(createSearch)
+
+// const integrationList = document.querySelectorAll('.collection-item-7')
+// const searchValue = document.getElementById('search-value');
+
+// const integrationData = Array.from(integrationList).map((integration)=> ({
+//      element: integration,
+//      text: integration.textContent.toLowerCase()
+// }))
+// let noResultsMessage = document.getElementById("no-results");
+
+// if (!noResultsMessage) {
+//   noResultsMessage = document.createElement("div");
+//   noResultsMessage.id = "no-results";
+//   noResultsMessage.textContent = "No integrations found";
+//   noResultsMessage.style.display = "none";
+//   noResultsMessage.style.textAlign = "center";
+//   noResultsMessage.style.marginTop = "10px";
+//   noResultsMessage.style.width = "250px";
+//   integrationData[0]?.parentElement.appendChild(noResultsMessage);
+// }
+
+// searchValue.addEventListener('input',(e)=> {
+//     const value = e.target.value.toLowerCase().trim()
+//     let integrationsFound = 0
+//     integrationData.forEach(({element, text})=>{
+//         if(value === '' || text.includes(value)){
+//             element.style.display = '';
+//             integrationsFound++
+//         } else {
+//             element.style.display = 'none';
+//         }
+//     })
+//     noResultsMessage.style.display = integrationsFound === 0 ? 'block' : 'none';
+// })
+
+// const search = document.getElementById('search');
+// const createSearch = document.createElement('input');
+
+// search.appendChild(createSearch);
+
+// const integrationsElements = document.querySelectorAll('.collection-item');
+
+// let url
+// const urlSend = document.getElementById("login-form")
+// const inputElement = document.getElementById("warehouse");
+// const urlClient = () => {
+//     inputElement.addEventListener('input',(e)=>{
+//     const urlShipedge = e.target.value;
+//     url = `https://${urlShipedge}.shipedge.com`;
+//     });
+//     window.location.href = url
+// }
+
+// const video = document.querySelector(".embedly-embed");
+// video.setAttribute('loading', 'lazy')
+// console.log(video);
+// console.log('made for webflow')
+
+// const sendUrl = document.getElementById('send-url')
+// const warehouse = document.getElementById('warehouse')
+// let shipedgeUrl;
+// const valid = /^[A-Za-z\s]+$/;
+// warehouse.addEventListener('input', (e) => {
+//     shipedgeUrl = e.target.value;
+// })
+// sendUrl.addEventListener('click',(event)=>{
+//     event.preventDefault();
+
+//     if(!valid.test(shipedgeUrl) || shipedgeUrl.length < 3) {
+//         alert("Please enter a valid Url")
+//         return
+//     }
+
+//     window.location.href = `https://${shipedgeUrl}.shipedge.com`
+// })
+// const form = document.getElementById('login-form')
+// form.addEventListener('submit', (event)=> {
+//     event.preventDefault();
+
+//     if(!valid.test(shipedgeUrl) || shipedgeUrl.length < 3) {
+//         alert("Please enter a valid Url")
+//         return
+//     }
+
+//     window.location.href = `https://${shipedgeUrl}.shipedge.com`
+// })
+
+// const redirectUrl = (e) => {
+//     e.preventDefault();
+//     const input = document.getElementById('warehouse').value
+//     if(input) {
+//         window.location.href = input.startsWith('/') ? input : `https://${urlShipedge}.shipedge.com`
+//     } else {
+//         alert('Please enter a Valid Url')
+//     }
+// }
+// const year = document.getElementById('year');
+// console.log(year)
+
+// const bannerShow = () => {
+//     const banner = document.getElementById("banner");
+//     banner.style.display = 'block'
+// }
+
+// setTimeout(()=>{
+//     console.log('delayed')
+//     bannerShow()
+// },7000)
+
+// const smoothFunction = () => {
+//     const navHeight = document.querySelector('.w-nav').clientHeight;
+//     const target = document.getElementById('email-form');
+
+//     if(target) {
+//         const targetPos = target.getBoundingClientRect().top + window.scrollY;
+//                 const offset = targetPos - navHeight;
+//                 window.scroll({
+//                     top: offset,
+//                     behavior: 'smooth'
+//                 });
+//     }
+// }
+// setTimeout(()=>{
+//     smoothFunction()
+// }, 600)
+
+// const url = document.URL
+// const pageName = url.split("/")[3]
+
+// const pageBread = document.getElementById('ecombread')
+// const urlParent = url.split('/').slice(0,3)[2]
+// pageBread.setAttribute('href',`https://${urlParent}/blogs/${pageName}`)
+// pageBread.setAttribute('target','_blank')
+// pageBread.innerHTML = pageName
+
+// const breadContainer = document.getElementById('bread');
+// const title = document.title.toLowerCase()
+
+// const breadAnchor = document.createElement('a')
+// const urlBreadStyle = breadAnchor.setAttribute('class', 'bread-crumb_base')
+// breadAnchor.innerHTML = `${title}`
+
+// breadContainer.appendChild(breadAnchor);
+// const baseURL= 'https://shipedge.com/blog/company/';
+// const url = new URL(baseURL, baseURL);
+
+// console.log(url);
 // const date = new Date()
 // const date1 = new Date().toISOString()
-
 
 // console.log(date)
 // console.log(date1)

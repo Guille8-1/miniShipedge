@@ -1,6 +1,6 @@
 "use server"
 
-import { GetUsersSchema, ProjectsFullArray } from "@/src/schemas"
+import {GetUsersSchema, ProjectsFullArray} from "@/src/schemas"
 import 'dotenv/config'
 
 export async function getDataUser () {
@@ -27,6 +27,7 @@ export async function getUsersById(userIds: FormDataEntryValue[]) {
 
     return await request.json();
 }
+
 export async function getProjects(id: number) {
     const url = `${process.env.BACK_URL}/projects/user/${id}`;
     const request = await fetch(url);
@@ -39,4 +40,10 @@ export async function getProjectsUsers(userId: number){
     const request = await fetch(url)
     const json = await request.json();
     return ProjectsFullArray.parse(json);
+}
+
+export async function getCommentById(id: number) {
+    const url = `${process.env.BACK_URL}/projects/comment/project/${id}`;
+    const request = await fetch(url);
+    return await request.json();
 }

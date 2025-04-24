@@ -50,35 +50,35 @@ export const ProjectSchemaResponse = z.object({
     titulo: z.string(),
     asignados: (z.array(z.string())),
     asignadosId: z.nullable(z.array(z.number())),
-    tipoDocumento: z.nullable(z.string()),
-    prioridad: z.nullable(z.string()),
+    tipoDocumento: (z.string()),
+    prioridad: (z.string()),
     tipoActividad: z.nullable(z.string()),
-    citeNumero: z.nullable(z.string()),
-    rutaCv: z.nullable(z.string()),
-    avance: z.nullable(z.number()),
-    diasActivo: z.nullable(z.number()),
-    estado: z.nullable(z.string()),
-    oficinaOrigen: z.nullable(z.string()),
+    citeNumero: (z.string()),
+    rutaCv: (z.string()),
+    avance: (z.number()),
+    diasActivo: (z.number()),
+    estado: (z.string()),
+    oficinaOrigen: (z.string()),
     fechaAtencion: z.nullable(z.string()),
     actualUsuario: z.nullable(z.string()),
-    gestor: z.nullable(z.string()),
-    isActive: z.nullable(z.boolean()),
-    comentarios: z.nullable(z.array(z.object({
+    gestor: (z.string()),
+    isActive: (z.boolean()),
+    comentarios: (z.array(z.object({
         id: (z.number()),
-        comentario: z.nullable(z.string()),
-        author: z.nullable(z.string()),
-        createdDate: z.nullable(z.string()),
-        updatedDate: z.nullable(z.string())
+        comentario: (z.string()),
+        author: (z.string()),
+        createdDate: (z.string()),
+        updatedDate: (z.string())
     }))),
-    user: z.nullable(z.object({
-        id: z.nullable(z.number()),
-        nombre: z.nullable(z.string()),
-        apellido: z.nullable(z.string()),
-        email: z.nullable(z.string()),
-        nivel: z.nullable(z.number()),
+    user: (z.object({
+        id: (z.number()),
+        nombre: (z.string()),
+        apellido: (z.string()),
+        email: (z.string()),
+        nivel: (z.number()),
     })),
-    createdDate: z.nullable(z.string()),
-    updatedDate: z.nullable(z.string())
+    createdDate: (z.string()),
+    updatedDate: (z.string())
 })
 
 export const ProjectsFullArray = z.array(ProjectSchemaResponse)
@@ -90,9 +90,20 @@ export const GetUsersSchema = z.array(z.object({
 }))
 
 export const CreateComment = z.object({
-    comentario: z.string().max(700, {message: 'Comentario Demasiado Largo'}),
+    comentario: z.string()
+        .max(700, {message: 'Comentario Demasiado Largo'})
+        .min(10,{message: 'Comentario Demasiado Corto'}),
     projectId: z.string(),
 })
+
+export const Comments =
+    (z.array(z.object({
+        id: (z.number()),
+        comentario: (z.string()),
+        author: (z.string()),
+        createdDate: (z.string()),
+        updatedDate: (z.string())
+    })))
 
 export type ProjectArrayType = z.infer<typeof ProjectsFullArray>
 
@@ -101,3 +112,8 @@ export type ProjectTypes = z.infer<typeof ProjectSchemaResponse>
 export type GetUserType = z.infer<typeof GetUsersSchema>
 
 export type User = z.infer<typeof UserSchema>
+
+export type Comments = z.infer<typeof Comments>
+
+
+

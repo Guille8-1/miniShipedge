@@ -1,13 +1,14 @@
-import {motion} from 'framer-motion'
-import {ProjectTypes} from "@/src/schemas";
-import {useActionState, useEffect} from "react";
-import {createComment} from "@/actions/create-comment-action";
-import {toast} from "react-toastify";
-import {setValue} from "@/src/Store";
-import {useDispatch} from "react-redux";
+import { motion } from 'framer-motion'
+import { ProjectTypes, Comments } from "@/src/schemas";
+import { useActionState, useEffect } from "react";
+import { createComment } from "@/actions/create-comment-action";
+import { toast } from "react-toastify";
+import { setValue } from "@/src/Store";
+import { useDispatch } from "react-redux";
 
 interface UserProjectModalProps {
     data: ProjectTypes | null,
+    comments: Comments | null,
     onClose: () => void,
 //     goPrevious: () => void,
 //     goNext: () => void,
@@ -15,7 +16,7 @@ interface UserProjectModalProps {
 //     disableNext: boolean
 }
 
-export function ProjectModal({data, onClose}: UserProjectModalProps) {
+export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
     const createdDate: string | null | undefined = data?.createdDate
 
     const created = new Date(createdDate ?? new Date())
@@ -27,9 +28,8 @@ export function ProjectModal({data, onClose}: UserProjectModalProps) {
         minute: '2-digit',
     })
 
-    const comment = data?.comentarios
-    const comments = comment ?? [];
-    const newCommnets = comments.map((comment) => ({
+    const newComment = comments ?? [];
+    const newCommnets = newComment.map((comment) => ({
         id: comment.id,
         comentario: comment.comentario ?? 'Sin Comentarios',
         autor: comment.author ?? 'Sin Autor ',
@@ -126,12 +126,14 @@ export function ProjectModal({data, onClose}: UserProjectModalProps) {
                                     <p className="mt-2">{lastUpdated?.fechaCreacion ?? formattedDate}</p>
                                 </section>
                             </div>
-                            <div className="mt-5 flex flex-col gap-3 p-4 bg-gray-200 rounded-2xl">
+                            <div
+                                key={state.success}
+                                className="mt-5 flex flex-col gap-3 p-4 bg-gray-200 rounded-2xl">
                                 <div className="flex flex-col">
                                     <h2><strong>Seguimiento: </strong></h2>
                                 </div>
                                 {
-                                    comments.length > 0 ?
+                                    newComment.length > 0 ?
                                         (
                                             sortedComments.map((comment, index) => (
                                                 <div key={comment.id ?? index} className="w-full">

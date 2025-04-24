@@ -30,37 +30,37 @@ interface ProjectTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TData, TValue>)  {
-        const [sorting, setSorting] = useState<SortingState>([])
-        const [globalFilter, setGlobalFilter] = useState<string>('')
-        const [pageIndex, setPageIndex] = useState(0)
-        const [pageSize, setPageSize] = useState(10)
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [globalFilter, setGlobalFilter] = useState<string>('')
+    const [pageIndex, setPageIndex] = useState(0)
+    const [pageSize, setPageSize] = useState(10)
 
-        const table = useReactTable({
-            data,
-            columns,
-            pageCount: Math.ceil(data.length / pageSize),
-            onGlobalFilterChange: setGlobalFilter,
-            globalFilterFn: 'includesString',
-            onSortingChange: setSorting,
-            manualPagination: false,
-            getCoreRowModel: getCoreRowModel(),
-            getSortedRowModel: getSortedRowModel(),
-            getFilteredRowModel: getFilteredRowModel(),
-            getPaginationRowModel: getPaginationRowModel(),
-            onPaginationChange: (updater) => {
-                const newState = typeof updater === 'function' ? updater({ pageIndex,pageSize }) : updater
-                setPageIndex(newState.pageIndex)
-                setPageSize(newState.pageSize)
+    const table = useReactTable({
+        data,
+        columns,
+        pageCount: Math.ceil(data.length / pageSize),
+        onGlobalFilterChange: setGlobalFilter,
+        globalFilterFn: 'includesString',
+        onSortingChange: setSorting,
+        manualPagination: false,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        onPaginationChange: (updater) => {
+            const newState = typeof updater === 'function' ? updater({ pageIndex,pageSize }) : updater
+            setPageIndex(newState.pageIndex)
+            setPageSize(newState.pageSize)
+        },
+        state:{
+            sorting,
+            globalFilter,
+            pagination:{
+                pageIndex,
+                pageSize
             },
-            state:{
-                sorting,
-                globalFilter,
-                pagination:{
-                    pageIndex,
-                    pageSize
-                },
-            },
-        })
+        },
+    })
 
     return (
         <>
@@ -139,4 +139,3 @@ export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TDat
         </>
     )
 }
-

@@ -9,8 +9,11 @@ const valueSlice = createSlice({
         setValue: (state, action) => {
             state.value = action.payload;
         },
+        resetStatus: (state) => {
+            state.value = 'idle';
+        }
     },
 });
 
-export const { setValue } = valueSlice.actions;
+export const { setValue, resetStatus } = valueSlice.actions;
 export const valueReducer = valueSlice.reducer;

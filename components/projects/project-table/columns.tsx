@@ -73,7 +73,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 className="text-blue-600 md: text-left cursor-pointer"
                 onClick={ () => setSelectedIndex(row.original) }
             >
-                {row.getValue("titulo")}
+                { row.getValue("titulo") }
             </div>
         )
     },

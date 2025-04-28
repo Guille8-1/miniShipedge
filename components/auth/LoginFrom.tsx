@@ -40,7 +40,10 @@ export default function LoginFrom() {
             <div className="flex flex-col gap-2">
                 <label 
                     className="font-bold text-2xl"
-                    htmlFor="password">Password</label>
+                    htmlFor="password"
+                >
+                        Contraseña
+                </label>
                 <input 
                     id="password"
                     type="password"
@@ -53,7 +56,7 @@ export default function LoginFrom() {
                 className="bg-cyan-800 hover:bg-cyan-700 w-full p-3 rounded-lg text-white text-xl font-bold cursor-pointer block"
                 type="submit" 
                 value="LogIn"
-                />
+            />
         </form>
     </>
   )

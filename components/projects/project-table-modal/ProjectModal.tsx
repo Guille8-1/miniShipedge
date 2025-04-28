@@ -111,17 +111,19 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                                     <p className="mt-2"> <strong>Ruta CV: </strong></p>
                                     <p className="mt-2"> <strong>Numero CITE: </strong></p>
                                     <p className="mt-2"> <strong>Documento o Actividad: </strong></p>
+                                    <p className="mt-2"> <strong>Prioridad: </strong></p>
                                     <p className="mt-2"> <strong>Oficina de Origen: </strong></p>
                                     <p className="mt-2"> <strong>Ultima Actualizacion: </strong></p>
                                 </section>
                                 <section className="text-base">
                                     <p className="mt-2">{data.gestor}</p>
                                     <p className="mt-2">{data.estado}</p>
-                                    <p className="mt-2">{data.avance}</p>
+                                    <p className="mt-2">{data.avance} %</p>
                                     <p className="mt-2">{data.diasActivo}</p>
                                     <p className="mt-2">{data.rutaCv}</p>
                                     <p className="mt-2">{data.citeNumero}</p>
                                     <p className="mt-2">{data.tipoDocumento}</p>
+                                    <p className="mt-2">{data.prioridad}</p>
                                     <p className="mt-2">{data.oficinaOrigen}</p>
                                     <p className="mt-2">{lastUpdated?.fechaCreacion ?? formattedDate}</p>
                                 </section>
@@ -161,8 +163,6 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                                     className="w-full  mt-4 p-4 border rounded-xl shadow bg-white flex flex-col items-end"
                                     action={dispatch}
                                 >
-
-
                                     <textarea
                                         className="border-2 border-solid p-2 w-full"
                                         name="comentario"
@@ -172,7 +172,8 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                                     </textarea>
                                     <div className='hidden'>
                                         <label htmlFor="comentario"></label>
-                                        <input type="numero" id="comentario" name="projectId" value={data.id} readOnly={true}/>
+                                        <input type="numero" id="comentario" name="projectId" value={data.id} readOnly={true}
+                                        />
                                     </div>
                                     <button
                                         type="submit"

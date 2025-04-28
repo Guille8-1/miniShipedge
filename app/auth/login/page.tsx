@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <>
-        <h1 className="font-bold text-4xl text-cyan-600">LogIn Servicios UMSA</h1>
-        <p className="text-3xl font-bold">Seguimiento Administrativo</p>
+        <h1 className="font-bold text-4xl text-cyan-600">Sistema de Información y</h1>
+        <p className="text-4xl font-bold text-cyan-600">Gestión de Infraestructura</p>
 
         <LoginFrom />
     </>

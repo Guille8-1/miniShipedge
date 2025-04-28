@@ -24,7 +24,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
 
                 <Button
                     variant="ghost"
-                    className="px-0"
+                    className="px-0 text-white hover:text-white hover:bg-sky-800 "
                     onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Id
@@ -40,7 +40,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Asignados
@@ -59,7 +59,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Titulo
@@ -84,7 +84,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Estado
@@ -101,7 +101,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Avance
@@ -118,7 +118,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Cite Numero
@@ -135,7 +135,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Ruta Cv
@@ -152,7 +152,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Tipo Doc.
@@ -169,7 +169,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Gestor
@@ -187,7 +187,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Prioridad
@@ -204,7 +204,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Dias Act
@@ -221,7 +221,7 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
                 <>
                     <Button
                         variant="ghost"
-                        className="px-0"
+                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
                     >
                         Origen
@@ -233,6 +233,12 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
     },
     {
         accessorKey: 'isActive',
-        header: "Activo"
+        header: () => {
+            return (
+                <>
+                    <h1 className="text-white hover:text-white hover:bg-sky-800 text-center">Activo</h1>
+                </>
+            )
+        }
     },
 ]

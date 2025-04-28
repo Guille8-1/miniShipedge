@@ -6,7 +6,7 @@ import {
     getPaginationRowModel,
     flexRender,
     getCoreRowModel,
-    useReactTable
+    useReactTable, RowSelectionState
 } from "@tanstack/react-table"
 
 import {
@@ -34,6 +34,8 @@ export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TDat
     const [globalFilter, setGlobalFilter] = useState<string>('')
     const [pageIndex, setPageIndex] = useState(0)
     const [pageSize, setPageSize] = useState(10)
+    const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
 
     const table = useReactTable({
         data,
@@ -43,6 +45,7 @@ export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TDat
         globalFilterFn: 'includesString',
         onSortingChange: setSorting,
         manualPagination: false,
+        enableRowSelection: true,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
@@ -54,12 +57,14 @@ export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TDat
         },
         state:{
             sorting,
+            rowSelection,
             globalFilter,
             pagination:{
                 pageIndex,
                 pageSize
             },
         },
+        onRowSelectionChange: setRowSelection
     })
 
     return (
@@ -71,11 +76,14 @@ export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TDat
                     onChange={(e) => setGlobalFilter(e.target.value)}
                 />
             </section>
-            <section className="rounded-md border">
+            <section className="rounded-2xl border">
                 <Table>
-                    <TableHeader>
+                    <TableHeader className="">
                         {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
+                            <TableRow
+                                className="hover:bg-sky-800 bg-sky-800"
+                                key={headerGroup.id}
+                            >
                                 {headerGroup.headers.map((header) => {
                                     return (
                                         <>
@@ -96,18 +104,26 @@ export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TDat
                     </TableHeader>
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "Seleccionado"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
+                            table.getRowModel().rows.map((row) => {
+                                const isSelected = row.getIsSelected()
+                                return (
+                                    <TableRow
+                                        onClick={()=> {
+                                            table.resetRowSelection()
+                                            row.toggleSelected(true)
+                                        }}
+                                        className={`hover:bg-yellow-100 ${isSelected ? 'bg-yellow-100' :''}`}
+                                        key={row.id}
+                                        data-state={row.getIsSelected() && "Seleccionado"}
+                                    >
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell key={cell.id}>
+                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                )
+                            })
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">

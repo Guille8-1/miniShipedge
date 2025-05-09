@@ -1,57 +1,63 @@
-"use server"
+"use server";
 
-import { CreateUserSchema, ErrorResponseSchema, SuccessSchema } from "@/src/schemas"
-type ActionState = { 
-    errors: string[],
-    success: string
-}
-export async function createUser(prevState: ActionState, formData: FormData ) {
-    const newUser = {
-        name: formData.get('nombre'),
-        email: formData.get('email'),
-        password: formData.get('password'),
-        nivel: formData.get('nivelUsuario')
-    }
+import {
+  CreateUserSchema,
+  ErrorResponseSchema,
+  SuccessSchema,
+} from "@/src/schemas";
+type ActionState = {
+  errors: string[];
+  success: string;
+};
+export async function createUser(prevState: ActionState, formData: FormData) {
+  const newUser = {
+    nombre: formData.get("nombre"),
+    apellido: formData.get("apellido"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    nivel: formData.get("nivelUsuario"),
+  };
 
-    const userValidation = CreateUserSchema.safeParse(newUser)
-    
-    if(!userValidation.success) {
-        const errors = userValidation.error.errors.map(error => error.message)
-        return {
-            errors,
-            success: ''
-        }
-    }
+  const userValidation = CreateUserSchema.safeParse(newUser);
+  console.log("test");
+  if (!userValidation.success) {
+    const errors = userValidation.error.errors.map((error) => error.message);
+    return {
+      errors,
+      success: "",
+    };
+  }
+  console.log("test1");
+  const url = `${process.env.BACK_URL}/auth/create-user`;
 
-    const url = `${process.env.BACK_URL}/auth/create-user`
+  const request = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      nombre: userValidation.data.nombre,
+      apellido: userValidation.data.apellido,
+      email: userValidation.data.email,
+      password: userValidation.data.password,
+      nviel: userValidation.data.nivel,
+    }),
+  });
+  console.log("test2");
+  const json = await request.json();
 
-    const request = await fetch(url, {
-        method:'POST',
-        headers:{
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: userValidation.data.name,
-            email: userValidation.data.email,
-            password: userValidation.data.password,
-            nivel: userValidation.data.nivel
-        })
-    })
-
-    const json = await request.json()
-
-    if(!request.ok){
-        const error = ErrorResponseSchema.parse(json)
-        return {
-            errors:[error],
-            success:''
-        }
-    } else {
-        const success = SuccessSchema.parse(json)
-        return {
-            errors:[],
-            success
-        }
-    }
-
+  if (!request.ok) {
+    const error = ErrorResponseSchema.parse(json);
+    console.log("test3");
+    return {
+      errors: [error],
+      success: "",
+    };
+  } else {
+    const success = SuccessSchema.parse(json);
+    return {
+      errors: [],
+      success,
+    };
+  }
 }

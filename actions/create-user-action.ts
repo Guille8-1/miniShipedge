@@ -17,9 +17,9 @@ export async function createUser(prevState: ActionState, formData: FormData) {
     password: formData.get("password"),
     nivel: formData.get("nivelUsuario"),
   };
+  
 
   const userValidation = CreateUserSchema.safeParse(newUser);
-  console.log("test");
   if (!userValidation.success) {
     const errors = userValidation.error.errors.map((error) => error.message);
     return {
@@ -27,7 +27,6 @@ export async function createUser(prevState: ActionState, formData: FormData) {
       success: "",
     };
   }
-  console.log("test1");
   const url = `${process.env.BACK_URL}/auth/create-user`;
 
   const request = await fetch(url, {
@@ -40,15 +39,14 @@ export async function createUser(prevState: ActionState, formData: FormData) {
       apellido: userValidation.data.apellido,
       email: userValidation.data.email,
       password: userValidation.data.password,
-      nviel: userValidation.data.nivel,
+      nivel: userValidation.data.nivel,
     }),
   });
-  console.log("test2");
   const json = await request.json();
 
   if (!request.ok) {
     const error = ErrorResponseSchema.parse(json);
-    console.log("test3");
+
     return {
       errors: [error],
       success: "",

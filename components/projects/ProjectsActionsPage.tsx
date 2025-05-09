@@ -91,8 +91,6 @@ export function ProjectsActionsPage({user}: {user:User} ) {
           </Transition>
         )}
       </section>
-
-
     </>
   );
 }

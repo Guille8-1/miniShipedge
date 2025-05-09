@@ -4,6 +4,7 @@ import { FaChartLine } from "react-icons/fa";
 import { FaUserFriends } from "react-icons/fa";
 import { MdOutlineMiscellaneousServices } from "react-icons/md";
 import { AiOutlineFundProjectionScreen } from "react-icons/ai";
+import { TbActivity } from "react-icons/tb";
 import DashboardMenu from "@/components/dashboard/DashboardMenu";
 import ToastNotification from "@/components/ui/ToastNotification";
 import { verifySession } from "@/src/auth/dal";
@@ -47,6 +48,13 @@ export default async function DashboardLayout({
               >
                 <AiOutlineFundProjectionScreen size="1.2em" />
                 <li>Proyectos</li>
+              </Link>
+              <Link
+                href={"/dashboard/actividades"}
+                className="text-gray-600 font-semibold py-2 hover:text-gray-900 transition duration-300 flex flex-row gap-3"
+              >
+                <TbActivity size="1.2em" />
+                <li>Actividades</li>
               </Link>
               <Link
                 href={"/servicios"}

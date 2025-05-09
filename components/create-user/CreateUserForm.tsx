@@ -26,27 +26,31 @@ export default function CreateUserForm() {
     <>
       <form className="mt-14 space-y-3" noValidate action={dispatch}>
         <div className="flex flex-col gap-2">
-          <div className="flex flex-col gap-2">
-            <label className="font-bold text-2xl" htmlFor="email">
-              Nombre
-            </label>
-            <input
-              id="nombre"
-              type="text"
-              placeholder="Nombre"
-              className="w-full border border-gray-300 p-3 rounded-lg"
-              name="nombre"
-            />
-            <label className="font-bold text-2xl" htmlFor="email">
-              Apellido
-            </label>
-            <input
-              id="nombre"
-              type="text"
-              placeholder="Apellido"
-              className="w-full border border-gray-300 p-3 rounded-lg"
-              name="apellido"
-            />
+          <div className="flex flex-row gap-2 w-full">
+            <div className="flex flex-col w-full">
+              <label className="font-bold text-2xl" htmlFor="email">
+                Nombre
+              </label>
+              <input
+                id="nombre"
+                type="text"
+                placeholder="Nombre"
+                className="w-full border border-gray-300 p-3 rounded-lg"
+                name="nombre"
+              />
+            </div>
+            <div className="flex flex-col w-full">
+              <label className="font-bold text-2xl" htmlFor="email">
+                Apellido
+              </label>
+              <input
+                id="nombre"
+                type="text"
+                placeholder="Apellido"
+                className="w-full border border-gray-300 p-3 rounded-lg"
+                name="apellido"
+              />
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-2">

@@ -110,13 +110,74 @@ export const Comments = z.array(
     updatedDate: z.string(),
   }),
 );
+export const CommentsActivity = z.array(
+  z.object({
+    id: z.number(),
+    comentario: z.string(),
+    author: z.string(),
+    createdDate: z.string(),
+    updatedDate: z.string(),
+  }),
+);
+export const CreateActivitySchema = z.object({
+  tituloActividad: z.string()
+    .min(5, { message:'titulo demsadio corto' }),
+  asignadosActividadId: z.array(
+    z.string().min(1,{ message:'Al menos 1 asignado es Obligatorio' })
+  ),
+  estadoActividad: z.string().min(1, { message:'Estado No Valido' }),
+  tipoActividad: z.string().min(1,{ message:'Tipo de Actividad No Valida' }),
+  oficinaOrigenActividad: z.string().min(1,{ message:'Oficina No Valida' }),
+  prioridadActividad: z.string().min(1, { message:'Prioridad No Valida' })
+})
+
+export const ActivitySchemaResponse = z.object({
+  id: z.number(),
+  tituloActividad: z.string(),
+  asignadosActividad: z.array(z.string()),
+  asignadosActividadId: z.nullable(z.array(z.number())),
+  gestorActividad: z.string(),
+  estadoActividad: z.string(),
+  diasActivoActividad: z.number(),
+  avanceActividad: z.number(),
+  oficinaOrigenActividad: z.string(),
+  prioridadActividad: z.string(),
+  isActive: z.boolean(),
+  createdDate: z.string(),
+  updatedDate: z.string(),
+  user: z.object({
+    id: z.number(),
+    nombre: z.string(),
+    apellido: z.string(),
+    email: z.string(),
+    nivel: z.number()
+  }),
+  comentariosActivity: z.array(z.object({
+    id:z.number(),
+    comentario: z.nullable(z.string()),
+    author: z.nullable(z.string()),
+    createdDate: z.string(),
+    updatedDate: z.string(),
+  }))
+});
+
+export const ActivityArray = z.array(ActivitySchemaResponse)
+
+//exported types
+
+export type ActivityArrayType = z.infer<typeof ActivityArray>
 
 export type ProjectArrayType = z.infer<typeof ProjectsFullArray>;
 
+//project type response
 export type ProjectTypes = z.infer<typeof ProjectSchemaResponse>;
+export type ActivityTypes = z.infer<typeof ActivitySchemaResponse>
 
 export type GetUserType = z.infer<typeof GetUsersSchema>;
 
 export type User = z.infer<typeof UserSchema>;
 
 export type Comments = z.infer<typeof Comments>;
+
+export type CommentsActivity = z.infer<typeof CommentsActivity>
+

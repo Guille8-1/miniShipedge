@@ -2,9 +2,10 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { createProject } from "@/actions/create-project-action";
-import { toast } from "react-toastify";
 import { getDataUser } from "@/src/API/client-fetching-action";
 import { GetUserType } from "@/src/schemas";
+import { toast } from "react-toastify";
+//react select
 import Select, { MultiValue } from 'react-select'
 //redux
 import { useDispatch } from 'react-redux'
@@ -57,8 +58,7 @@ export default function ProjectForm() {
   }, [state]);
 
   for(const user of users) {
-    const {nombre} = user
-    const {apellido} = user
+    const {nombre, apellido} = user
     const label = `${nombre} ${apellido}`
     const value = `${nombre} ${apellido}`.toLowerCase()
 
@@ -88,7 +88,7 @@ export default function ProjectForm() {
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-bold text-lg mt-3" htmlFor="facultad">
-                  Tipo de Documento o Actividad
+                  Tipo de Documento
                 </label>
                 <input
                     id='tipoDocumento'
@@ -127,7 +127,7 @@ export default function ProjectForm() {
                   </option>
                   <option value="activo">Activo</option>
                   <option value="pendiente">Pendiente</option>
-                  <option value="mora">En Mora</option>
+                  <option value="en_mora">En Mora</option>
                 </select>
               </div>
               <div className="flex flex-col gap-2">

@@ -12,7 +12,9 @@ type userIds = {
     id:number
 }
 export async function createProject(prevState: ActionState, formData: FormData) {
-    const {user} = await verifySession();
+    const { user } = await verifySession();
+
+    const userFullName: string = `${user.name} ${user.lastName}`
 
     const newProject = {
         titulo: formData.get('titulo'),
@@ -49,7 +51,7 @@ export async function createProject(prevState: ActionState, formData: FormData) 
             titulo: projectValidation.data.titulo,
             tipoDocumento: projectValidation.data.tipoDocumento,
             asignadosId: gettingUserIds,
-            gestor: user.name,
+            gestor: userFullName,
             estado: projectValidation.data.estado,
             tipo: projectValidation.data.tipo,
             prioridad: projectValidation.data.prioridad,

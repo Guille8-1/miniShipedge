@@ -41,7 +41,6 @@ export default function TableProject({ user }: { user: User }) {
                 const uniqueProjects = noRepeatId(jointProjects)
                 setProjects(uniqueProjects);
                 const projectId = selectedIndex?.id ?? 0
-
                 const prjComents = await getCommentById(projectId);
                 setProjectComment(prjComents);
             }

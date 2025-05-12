@@ -46,7 +46,7 @@ export function ProjectsActionsPage({user}: {user:User} ) {
         >
           <TiPlus size="1.1em" className="mt-0.5" />
           <h2 className="font-semibold text-lg leading-tight">
-            Crear Proyecto
+            Crear Nuevo Proyecto
           </h2>
         </button>}
         {open && (

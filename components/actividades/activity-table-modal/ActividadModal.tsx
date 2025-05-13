@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { CommentsActivity, ActivityTypes } from "@/src/schemas";
 import { useActionState, useEffect } from "react";
-import { createComment } from "@/actions/create-comment-action";
+import { createCommentActivity } from '@/actions/create-comment-activity-action';
 import { toast } from "react-toastify";
 import { setValue } from "@/src/Store";
 import { useDispatch } from "react-redux";
@@ -17,16 +17,17 @@ interface UserProjectModalProps {
 }
 
 export function ActividadModal({data, comments, onClose}: UserProjectModalProps) {
-    const createdDate: string | null | undefined = data?.createdDate
+    
+    const createdDate: string | null | undefined = data?.createdDate;
+    const created = new Date(createdDate ?? new Date());
 
-    const created = new Date(createdDate ?? new Date())
     const formattedDate = created.toLocaleString('en-GB', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
-    })
+    });
 
     const newComment = comments ?? [];
     
@@ -54,10 +55,11 @@ export function ActividadModal({data, comments, onClose}: UserProjectModalProps)
     const lastUpdated = [...newCommnets].reduce((maxId, objId) =>
         (objId.id > maxId.id ? objId : maxId), newCommnets[0])
 
-    const [state, dispatch] = useActionState(createComment, {
+    const [state, dispatch] = useActionState(createCommentActivity, {
         errors:[],
         success:""
     })
+    
     useEffect(() => {
         if(state.errors) {
             state.errors.forEach((error:string)=> {
@@ -109,9 +111,6 @@ export function ActividadModal({data, comments, onClose}: UserProjectModalProps)
                                     <p className="mt-2"> <strong>Estado: </strong>  </p>
                                     <p className="mt-2"> <strong>Avance: </strong></p>
                                     <p className="mt-2"> <strong>Dias Activo: </strong></p>
-                                    <p className="mt-2"> <strong>Ruta CV: </strong></p>
-                                    <p className="mt-2"> <strong>Numero CITE: </strong></p>
-                                    <p className="mt-2"> <strong>Documento o Actividad: </strong></p>
                                     <p className="mt-2"> <strong>Prioridad: </strong></p>
                                     <p className="mt-2"> <strong>Oficina de Origen: </strong></p>
                                     <p className="mt-2"> <strong>Ultima Actualizacion: </strong></p>

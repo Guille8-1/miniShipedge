@@ -1,9 +1,8 @@
+import UsersComponent from "@/components/usuarios/UsuariosComponent"
 export default function Users() {
     return (
         <>
-            <h1>
-                Hello from compoenent Users
-            </h1>
+            <UsersComponent />
         </>
     )
 }

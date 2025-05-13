@@ -8,13 +8,13 @@ import { User } from '@/src/schemas'
 import { logout } from '@/actions/logout-user-action'
 
 
-export default function DashboardMenu({user}: {user:User}) {
+export default function DashboardMenu({ user }: { user: User }) {
 
   return (
     <>
       <Popover className="relative">
         <PopoverButton className="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 p-1 rounded-lg bg-sky-900 my-5 lg:m-auto">
-            <Bars3Icon className='w-8 h-8 text-white ' />
+          <Bars3Icon className='w-8 h-8 text-white ' />
         </PopoverButton>
 
         <Transition
@@ -28,23 +28,29 @@ export default function DashboardMenu({user}: {user:User}) {
         >
           <PopoverPanel className="absolute left-1/2 z-10 mt-5 flex w-screen lg:max-w-min -translate-x-1/2 lg:-translate-x-48">
             <div className="w-full lg:w-56 shrink rounded-xl bg-white p-4 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5">
-              
+
               <Link
-                  href='/dashboard/'
-                  className='block p-2 hover:text-sky-600'
-              >Mi Perfil</Link>
-              {user.admin && <Link
+                href='/dashboard/'
+                className='block p-2 hover:text-sky-600'
+              >
+                Mi Perfil
+              </Link>
+              {
+                user.admin && <Link
                   href='/create-user'
                   className='block p-2 hover:text-sky-600'
-              >Crear Usuarios</Link>}
+                >
+                  Crear Usuarios
+                </Link>
+              }
               <button
-                  className='block p-2 hover:text-sky-600'
-                  type='button'
-                  onClick={ async () => {
-                      await logout()
-                  }}
+                className='block p-2 hover:text-sky-600'
+                type='button'
+                onClick={async () => {
+                  await logout()
+                }}
               >
-                  Cerrar Sesión
+                Cerrar Sesión
               </button>
             </div>
           </PopoverPanel>

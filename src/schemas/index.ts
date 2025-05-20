@@ -25,8 +25,16 @@ export const UserSchema = z.object({
   id: z.number(),
   name: z.string(),
   lastName: z.string(),
-  admin: z.boolean(),
+  nivel: z.number(),
+  admin: z.boolean()
 });
+export const UserSchemaTable = z.object({
+  id: z.number(),
+  name: z.string(),
+  lastName: z.string(),
+  admin: z.string(),
+  nivel: z.number(),
+})
 export const CreateProjectSchema = z.object({
   titulo: z.string().min(5, { message: "Titulo No Valido" }),
   tipoDocumento: z
@@ -85,8 +93,11 @@ export const ProjectSchemaResponse = z.object({
 
 export const ProjectsFullArray = z.array(ProjectSchemaResponse);
 
+export const UserArray = z.array(UserSchemaTable)
+
 export const GetUsersSchema = z.array(
   z.object({
+    id: z.number(),
     nombre: z.string(),
     apellido: z.string(),
     nivel: z.number(),
@@ -176,6 +187,8 @@ export type ActivityTypes = z.infer<typeof ActivitySchemaResponse>
 export type GetUserType = z.infer<typeof GetUsersSchema>;
 
 export type User = z.infer<typeof UserSchema>;
+
+export type UserTable = z.infer<typeof  UserSchemaTable>
 
 export type Comments = z.infer<typeof Comments>;
 

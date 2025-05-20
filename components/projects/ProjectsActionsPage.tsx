@@ -23,7 +23,6 @@ export function ProjectsActionsPage({user}: {user:User} ) {
   useEffect(() => {
     const handleClick = () => {
       if (dialogRef.current) {
-        console.log(open);
         isClosed();
       }
     };

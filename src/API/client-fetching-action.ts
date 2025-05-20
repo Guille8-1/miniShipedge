@@ -1,6 +1,6 @@
 "use server"
 
-import {GetUsersSchema, ProjectsFullArray, ActivityArray} from "@/src/schemas"
+import {GetUsersSchema, UserArray ,ProjectsFullArray, ActivityArray} from "@/src/schemas"
 import 'dotenv/config'
 
 export async function getDataUser () {
@@ -8,6 +8,14 @@ export async function getDataUser () {
     const request = await fetch(url)
     const json = await request.json()
     return  GetUsersSchema.parse(json)
+}
+
+export async function getAllUsers () {
+    const url: string = `${process.env.BACK_URL}/auth/active/users`
+    const request = await fetch(url)
+    const json = await request.json()
+    console.log("json de respuesta",json)
+    return  UserArray.parse(json)
 }
 
 export async function getUsersById(userIds: FormDataEntryValue[]) {

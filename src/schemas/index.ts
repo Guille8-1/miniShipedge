@@ -101,6 +101,7 @@ export const GetUsersSchema = z.array(
     nombre: z.string(),
     apellido: z.string(),
     nivel: z.number(),
+    admin: z.boolean(),
   }),
 );
 

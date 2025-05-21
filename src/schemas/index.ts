@@ -26,7 +26,7 @@ export const UserSchema = z.object({
   name: z.string(),
   lastName: z.string(),
   nivel: z.number(),
-  admin: z.boolean()
+  admin: z.boolean(),
 });
 export const UserSchemaTable = z.object({
   id: z.number(),
@@ -34,7 +34,7 @@ export const UserSchemaTable = z.object({
   lastName: z.string(),
   admin: z.string(),
   nivel: z.number(),
-})
+});
 export const CreateProjectSchema = z.object({
   titulo: z.string().min(5, { message: "Titulo No Valido" }),
   tipoDocumento: z
@@ -93,7 +93,7 @@ export const ProjectSchemaResponse = z.object({
 
 export const ProjectsFullArray = z.array(ProjectSchemaResponse);
 
-export const UserArray = z.array(UserSchemaTable)
+export const UserArray = z.array(UserSchemaTable);
 
 export const GetUsersSchema = z.array(
   z.object({
@@ -132,16 +132,16 @@ export const CommentsActivity = z.array(
   }),
 );
 export const CreateActivitySchema = z.object({
-  tituloActividad: z.string()
-    .min(5, { message:'titulo demsadio corto' }),
+  tituloActividad: z.string().min(5, { message: "titulo demsadio corto" }),
+  categoriaActividad: z.string(),
   asignadosActividadId: z.array(
-    z.string().min(1,{ message:'Al menos 1 asignado es Obligatorio' })
+    z.string().min(1, { message: "Al menos 1 asignado es Obligatorio" }),
   ),
-  estadoActividad: z.string().min(1, { message:'Estado No Valido' }),
-  tipoActividad: z.string().min(1,{ message:'Tipo de Actividad No Valida' }),
-  oficinaOrigenActividad: z.string().min(1,{ message:'Oficina No Valida' }),
-  prioridadActividad: z.string().min(1, { message:'Prioridad No Valida' })
-})
+  estadoActividad: z.string().min(1, { message: "Estado No Valido" }),
+  tipoActividad: z.string().min(1, { message: "Tipo de Actividad No Valida" }),
+  oficinaOrigenActividad: z.string().min(1, { message: "Oficina No Valida" }),
+  prioridadActividad: z.string().min(1, { message: "Prioridad No Valida" }),
+});
 
 export const ActivitySchemaResponse = z.object({
   id: z.number(),
@@ -162,36 +162,37 @@ export const ActivitySchemaResponse = z.object({
     nombre: z.string(),
     apellido: z.string(),
     email: z.string(),
-    nivel: z.number()
+    nivel: z.number(),
   }),
-  comentariosActivity: z.array(z.object({
-    id:z.number(),
-    comentario: z.nullable(z.string()),
-    author: z.nullable(z.string()),
-    createdDate: z.string(),
-    updatedDate: z.string(),
-  }))
+  comentariosActivity: z.array(
+    z.object({
+      id: z.number(),
+      comentario: z.nullable(z.string()),
+      author: z.nullable(z.string()),
+      createdDate: z.string(),
+      updatedDate: z.string(),
+    }),
+  ),
 });
 
-export const ActivityArray = z.array(ActivitySchemaResponse)
+export const ActivityArray = z.array(ActivitySchemaResponse);
 
 //exported types
 
-export type ActivityArrayType = z.infer<typeof ActivityArray>
+export type ActivityArrayType = z.infer<typeof ActivityArray>;
 
 export type ProjectArrayType = z.infer<typeof ProjectsFullArray>;
 
 //project type response
 export type ProjectTypes = z.infer<typeof ProjectSchemaResponse>;
-export type ActivityTypes = z.infer<typeof ActivitySchemaResponse>
+export type ActivityTypes = z.infer<typeof ActivitySchemaResponse>;
 
 export type GetUserType = z.infer<typeof GetUsersSchema>;
 
 export type User = z.infer<typeof UserSchema>;
 
-export type UserTable = z.infer<typeof  UserSchemaTable>
+export type UserTable = z.infer<typeof UserSchemaTable>;
 
 export type Comments = z.infer<typeof Comments>;
 
-export type CommentsActivity = z.infer<typeof CommentsActivity>
-
+export type CommentsActivity = z.infer<typeof CommentsActivity>;

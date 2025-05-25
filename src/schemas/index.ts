@@ -147,6 +147,7 @@ export const ActivitySchemaResponse = z.object({
   id: z.number(),
   tituloActividad: z.string(),
   asignadosActividad: z.array(z.string()),
+  categoriaActividad: z.nullable(z.string()),
   asignadosActividadId: z.nullable(z.array(z.number())),
   gestorActividad: z.string(),
   estadoActividad: z.string(),

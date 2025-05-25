@@ -20,7 +20,7 @@ export async function createActivity(
   prevState: ActionState,
   formData: FormData,
 ) {
-  const { user } = await verifySession();
+  const { user, token } = await verifySession();
   const userFullName: string = `${user.name} ${user.lastName}`;
 
   const newActivity = {
@@ -32,7 +32,6 @@ export async function createActivity(
     oficinaOrigenActividad: formData.get("oficinaOrigenAct"),
     prioridadActividad: formData.get("proprodadActividad"),
   };
-  console.log(newActivity);
 
   const activityValidation = CreateActivitySchema.safeParse(newActivity);
 
@@ -73,6 +72,7 @@ export async function createActivity(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`,
     },
     body: JSON.stringify(bodyRequest),
   });

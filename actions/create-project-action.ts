@@ -12,7 +12,8 @@ type userIds = {
     id:number
 }
 export async function createProject(prevState: ActionState, formData: FormData) {
-    const { user } = await verifySession();
+    const { user, token } = await verifySession();
+
 
     const userFullName: string = `${user.name} ${user.lastName}`
 
@@ -31,7 +32,7 @@ export async function createProject(prevState: ActionState, formData: FormData) 
 
     const userIds:FormDataEntryValue[] = newProject.asignadosId;
     const callingForIds: userIds[] = await getUsersById(userIds);
-
+    console.log(callingForIds);
     const gettingUserIds =  callingForIds.map(forid => {
         const {id} = forid
         return id
@@ -68,7 +69,8 @@ export async function createProject(prevState: ActionState, formData: FormData) 
     const request = await fetch(url, {
         method: 'POST',
         headers:{
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(bodyRequest)
     })

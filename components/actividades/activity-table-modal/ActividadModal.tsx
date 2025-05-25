@@ -5,6 +5,7 @@ import { createCommentActivity } from '@/actions/create-comment-activity-action'
 import { toast } from "react-toastify";
 import { setValue } from "@/src/Store";
 import { useDispatch } from "react-redux";
+import { Separator } from "../../ui/separator"
 
 interface UserProjectModalProps {
     data: ActivityTypes | null,
@@ -92,14 +93,16 @@ export function ActividadModal({data, comments, onClose}: UserProjectModalProps)
                     animate={{x: data ? "0%" : "100%"}}
                     exit={{x: "100%"}}
                     transition={{type: "spring", stiffness: 100, damping: 20}}
-                    className="fixed right-0 top-0 h-full w-1/3 bg-white shadow-xl shadow-outline z-50 p-4 border-gray-500 border-solid border-accent-foreground overflow-auto"
+                    className="fixed right-0 top-0 h-full w-1/3  shadow-outline shadow-2xl z-50 p-4 border-gray-500 bg-gray-100 border-solid border-accent-foreground overflow-auto"
                 >
-                    <div className="bg-sky-800 w-12 rounded-2xl">
+                    <div className=" w-fit bg-sky-800 rounded-2xl mr-0 mx-auto ">
                         <button
-                            className="font-bold text-xl text-white px-4"
-                            onClick={onClose}>X
+                            className="text-xl text-white px-4 font-light"
+                            onClick={onClose}> Cerrar
                         </button>
                     </div>
+                    <Separator className='mt-3 bg-gray-300 w-100'/>
+
                     {data ? (
                         <section className="">
                             <div className="mx-auto bg-sky-800 rounded-2xl py-2 felx align-middle p-5 mt-4 w-fit">
@@ -113,6 +116,7 @@ export function ActividadModal({data, comments, onClose}: UserProjectModalProps)
                                     <p className="mt-2"> <strong>Dias Activo: </strong></p>
                                     <p className="mt-2"> <strong>Prioridad: </strong></p>
                                     <p className="mt-2"> <strong>Oficina de Origen: </strong></p>
+                                    <p className="mt-2"> <strong>Categoria Actividad: </strong></p>
                                     <p className="mt-2"> <strong>Ultima Actualizacion: </strong></p>
                                 </section>
                                 <section className="text-base">
@@ -122,6 +126,7 @@ export function ActividadModal({data, comments, onClose}: UserProjectModalProps)
                                     <p className="mt-2">{data.diasActivoActividad}</p>
                                     <p className="mt-2">{data.prioridadActividad}</p>
                                     <p className="mt-2">{data.oficinaOrigenActividad}</p>
+                                    <p className="mt-2">{data.categoriaActividad ?? 'Sin Categoria'}</p>
                                     <p className="mt-2">{lastUpdated?.fechaCreacion ?? formattedDate}</p>
                                 </section>
                             </div>

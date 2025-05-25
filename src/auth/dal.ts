@@ -28,6 +28,7 @@ export const verifySession = cache(async () => {
 
     return {
         user: result.data,
-        isAuth: true
+        isAuth: true,
+        token: token
     }
 })

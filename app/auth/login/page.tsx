@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <>
-        <div className='flex flex-row items-center gap-10'>
-            <div className='flex flex-col'>
+        <div className='flex flex-col items-center gap-10 md:flex-row'>
+            <div className='flex flex-col text-center sm:justify-start'>
                 <h1 className="font-bold text-4xl text-cyan-600">Sistema de Información y</h1>
                 <p className="text-4xl font-bold text-cyan-600">Gestión de Infraestructura</p>
             </div>

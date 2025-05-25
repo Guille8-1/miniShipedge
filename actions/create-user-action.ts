@@ -5,11 +5,14 @@ import {
   ErrorResponseSchema,
   SuccessSchema,
 } from "@/src/schemas";
+import { verifySession } from "@/src/auth/dal";
+
 type ActionState = {
   errors: string[];
   success: string;
 };
 export async function createUser(prevState: ActionState, formData: FormData) {
+  const {token} = await verifySession();
   const newUser = {
     nombre: formData.get("nombre"),
     apellido: formData.get("apellido"),
@@ -33,6 +36,7 @@ export async function createUser(prevState: ActionState, formData: FormData) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`,
     },
     body: JSON.stringify({
       nombre: userValidation.data.nombre,

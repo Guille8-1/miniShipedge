@@ -20,6 +20,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import {useState} from "react";
+import {Button} from "@/components/ui/button";
 
 interface ProjectTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -129,6 +130,24 @@ export function DataUsersTable<TData, TValue>({columns, data}: ProjectTableProps
                         )}
                     </TableBody>
                 </Table>
+                <div className=" flex gap-3 fkespace-x-2 py-4 mx-4">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => table.previousPage()}
+                        disabled={!table.getCanPreviousPage()}
+                    >
+                        Pag. Anterior
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => table.nextPage()}
+                        disabled={!table.getCanNextPage()}
+                    >
+                        Pag. Siguiente
+                    </Button>
+                </div>
             </section>
         </>
     )

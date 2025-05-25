@@ -5,6 +5,7 @@ import { createComment } from "@/actions/create-comment-action";
 import { toast } from "react-toastify";
 import { setValue } from "@/src/Store";
 import { useDispatch } from "react-redux";
+import { Separator } from '../../ui/separator'
 
 interface UserProjectModalProps {
     data: ProjectTypes | null,
@@ -89,14 +90,15 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                     animate={{x: data ? "0%" : "100%"}}
                     exit={{x: "100%"}}
                     transition={{type: "spring", stiffness: 100, damping: 20}}
-                    className="fixed right-0 top-0 h-full w-1/3 bg-white shadow-xl shadow-outline z-50 p-4 border-gray-500 border-solid border-accent-foreground overflow-auto"
+                    className="fixed right-0 top-0 h-full w-1/3 bg-gray-100 shadow-xl shadow-outline z-50 p-4 border-gray-500 border-solid border-accent-foreground overflow-auto"
                 >
-                    <div className="bg-sky-800 w-12 rounded-2xl">
+                    <div className="bg-sky-800 w-fit p-1 rounded-2xl mr-0 mx-auto">
                         <button
-                            className="font-bold text-xl text-white px-4"
-                            onClick={onClose}>X
+                            className="text-xl text-white px-4 font-light"
+                            onClick={onClose}> Cerrar
                         </button>
                     </div>
+                    <Separator className='mt-3 bg-gray-300 w-100'/>
                     {data ? (
                         <section className="">
                             <div className="mx-auto bg-sky-800 rounded-2xl py-2 felx align-middle p-5 mt-4 w-fit">
@@ -172,8 +174,7 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                                     </textarea>
                                     <div className='hidden'>
                                         <label htmlFor="comentario"></label>
-                                        <input type="numero" id="comentario" name="projectId" value={data.id} readOnly={true}
-                                        />
+                                        <input type="numero" id="comentario" name="projectId" value={data.id} readOnly={true} />
                                     </div>
                                     <button
                                         type="submit"

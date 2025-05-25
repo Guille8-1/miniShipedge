@@ -9,8 +9,6 @@ type ActionState = {
     success: string
 }
 
-
-
 export async function login(prevState: ActionState, formData: FormData) {
     const loginData = {
         email: formData.get('email'),

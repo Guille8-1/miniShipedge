@@ -205,12 +205,14 @@ export default function ProjectForm() {
               </div>
             </div>
           </div>
-          <input
-              onClick={dispatchFunction}
-              className="bg-cyan-800 hover:bg-cyan-700 w-full p-3 rounded-lg text-white text-xl font-bold cursor-pointer block mt-4"
-              type="submit"
-              value="Crear Proyecto"
-          />
+          <div className="flex flex-row align-middle justify-center gap-5">
+            <input
+                onClick={dispatchFunction}
+                className="bg-cyan-800 hover:bg-cyan-700 w-auto p-3 rounded-lg text-white text-xl font-bold cursor-pointer block mt-4"
+                type="submit"
+                value="Crear Proyecto"
+            />
+          </div>
         </form>
       </>
   );

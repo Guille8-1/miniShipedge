@@ -44,8 +44,6 @@ export async function createCommentActivity (prevState: ActionState, formData: F
         body: JSON.stringify(bodyRequest)
     })
     const json = await request.json()
-    
-    console.log(json)
 
     if(!request.ok) {
         const error = ErrorResponseSchema.parse(json)

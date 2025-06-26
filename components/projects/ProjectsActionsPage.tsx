@@ -12,6 +12,7 @@ import { User } from "@/src/schemas";
 import ToastNotification from "../ui/ToastNotification";
 import ProjectForm from "./CreateProjectForm";
 
+
 export function ProjectsActionsPage({user}: {user:User} ) {
   //abrir y cerrar dialogo
   const [open, setOpen] = useState(false);
@@ -38,7 +39,6 @@ export function ProjectsActionsPage({user}: {user:User} ) {
 
   return (
     <>
-      <section className="h-auto w-full">
         {user.admin && <button
           onClick={isOpen}
           className="flex flex-row align-items-center justify-items-center gap-2 bg-sky-800 p-3 text-gray-200 rounded"
@@ -89,7 +89,6 @@ export function ProjectsActionsPage({user}: {user:User} ) {
             </Dialog>
           </Transition>
         )}
-      </section>
     </>
   );
 }

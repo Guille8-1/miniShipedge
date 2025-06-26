@@ -5,20 +5,22 @@ import { createCommentActivity } from '@/actions/create-comment-activity-action'
 import { toast } from "react-toastify";
 import { setValue } from "@/src/Store";
 import { useDispatch } from "react-redux";
-import { Separator } from "../../ui/separator"
+import { IoClose } from "react-icons/io5";
+import sanitizeHtml from 'sanitize-html'
+
 
 interface UserProjectModalProps {
     data: ActivityTypes | null,
     comments: CommentsActivity | null,
     onClose: () => void,
-//     goPrevious: () => void,
-//     goNext: () => void,
-//     disablePrevious: boolean,
-//     disableNext: boolean
+    //     goPrevious: () => void,
+    //     goNext: () => void,
+    //     disablePrevious: boolean,
+    //     disableNext: boolean
 }
 
-export function ActividadModal({data, comments, onClose}: UserProjectModalProps) {
-    
+export function ActividadModal({ data, comments, onClose }: UserProjectModalProps) {
+
     const createdDate: string | null | undefined = data?.createdDate;
     const created = new Date(createdDate ?? new Date());
 
@@ -31,7 +33,7 @@ export function ActividadModal({data, comments, onClose}: UserProjectModalProps)
     });
 
     const newComment = comments ?? [];
-    
+
     const newCommnets = newComment.map((comment) => ({
         id: comment.id,
         comentario: comment.comentario ?? 'Sin Comentarios',
@@ -50,20 +52,41 @@ export function ActividadModal({data, comments, onClose}: UserProjectModalProps)
             hour: '2-digit',
             minute: '2-digit',
         }),
-    }))
+    }));
+
+    const linkfy = (comment: string): string => {
+        const urlRegex = /((https?:\/\/)?(www\.)?[\w-]+\.[a-z]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?)/gi;
+        return comment.replace(urlRegex, (url) => {
+        const href = url.startsWith('http') ? url : `https://${url}`;
+          return `<a href="${href}" target="_blank" class="text-blue-500 underline">${url}</a>`;
+        });
+    }
+
+    const links = (textComment: string): string => {
+        const raw =  linkfy(textComment)
+        return sanitizeHtml(raw,{
+            allowedTags: ['a'],
+            allowedAttributes: {
+                a: ['href', 'target', 'class']
+            },
+        });
+    }
+
+
+
     const sortedComments = [...newCommnets].sort((a, b) => b.id - a.id);
 
     const lastUpdated = [...newCommnets].reduce((maxId, objId) =>
         (objId.id > maxId.id ? objId : maxId), newCommnets[0])
 
     const [state, dispatch] = useActionState(createCommentActivity, {
-        errors:[],
-        success:""
+        errors: [],
+        success: ""
     })
-    
+
     useEffect(() => {
-        if(state.errors) {
-            state.errors.forEach((error:string)=> {
+        if (state.errors) {
+            state.errors.forEach((error: string) => {
                 toast.error(error)
             })
         }
@@ -89,24 +112,20 @@ export function ActividadModal({data, comments, onClose}: UserProjectModalProps)
             }
             <section className="w-auto">
                 <motion.aside
-                    initial={{x: "100%"}}
-                    animate={{x: data ? "0%" : "100%"}}
-                    exit={{x: "100%"}}
-                    transition={{type: "spring", stiffness: 100, damping: 20}}
+                    initial={{ x: "100%" }}
+                    animate={{ x: data ? "0%" : "100%" }}
+                    exit={{ x: "100%" }}
+                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
                     className="fixed right-0 top-0 h-full w-1/3  shadow-outline shadow-2xl z-50 p-4 border-gray-500 bg-gray-100 border-solid border-accent-foreground overflow-auto"
                 >
-                    <div className=" w-fit bg-sky-800 rounded-2xl mr-0 mx-auto ">
-                        <button
-                            className="text-xl text-white px-4 font-light"
-                            onClick={onClose}> Cerrar
-                        </button>
-                    </div>
-                    <Separator className='mt-3 bg-gray-300 w-100'/>
-
                     {data ? (
                         <section className="">
-                            <div className="mx-auto bg-sky-800 rounded-2xl py-2 felx align-middle p-5 mt-4 w-fit">
-                                <h1 className="text-center text-xl text-white">{data.tituloActividad}</h1>
+                            <div className="mx-auto  py-2 felx align-middle p-5 mt-4 w-fit flex flex-row gap-5">
+                                <h1 className="bg-sky-800 px-2 py-3 text-center text-xl text-white rounded-2xl">{data.tituloActividad}</h1>
+                                <button
+                                    className="text-xl text-white px-2 py-3 font-light flex align-middle rounded-2xl bg-red-400"
+                                    onClick={onClose}> <IoClose size='25px' />
+                                </button>
                             </div>
                             <div className="mt-5 flex flex-row gap-10 w-auto p-4 bg-gray-200 rounded-2xl">
                                 <section className="text-base">
@@ -132,7 +151,7 @@ export function ActividadModal({data, comments, onClose}: UserProjectModalProps)
                             </div>
                             <div
                                 key={state.success}
-                                className="mt-5 flex flex-col gap-3 p-4 bg-gray-200 rounded-2xl">
+                                className="mt-5 flex flex-col gap-3 p-4 bg-gray-100 rounded-2xl">
                                 <div className="flex flex-col">
                                     <h2><strong>Seguimiento: </strong></h2>
                                 </div>
@@ -140,22 +159,31 @@ export function ActividadModal({data, comments, onClose}: UserProjectModalProps)
                                     newComment.length > 0 ?
                                         (
                                             sortedComments.map((comment, index) => (
-                                                <div key={comment.id ?? index} className="w-full">
-                                                    <div className="border-4 rounded-2xl shadow-lg bg-gray-100 p-3">
-                                                        <p>{comment.comentario}</p>
-                                                        <div className="flex place-content-between mt-3 font-thin">
+                                                <div 
+                                                    key={comment.id ?? index} 
+                                                    className="w-full break-all"
+                                                >
+                                                    <section 
+                                                        className="border-4 rounded-2xl shadow-lg bg-gray-100 p-3 break-all"
+                                                    >
+                                                        <section 
+                                                            className='break-all'
+                                                        >
+                                                            <div dangerouslySetInnerHTML={{__html: links(comment.comentario)}}/>
+                                                        </section>
+                                                        <section className="flex place-content-between mt-3">
                                                             <p className="text-sm font-medium">
                                                                 <strong>{comment.autor}</strong>
                                                             </p>
                                                             <p className="text-sm font-medium"><strong>{comment.fechaCreacion}</strong></p>
-                                                        </div>
-                                                    </div>
+                                                        </section>
+                                                    </section>
                                                 </div>
                                             ))
                                         )
                                         :
                                         (
-                                            <p>Aun No existen Comentarios en Este Proyecto</p>
+                                            <p>Aun No existen Comentarios en Esta Actividad</p>
                                         )
                                 }
                             </div>

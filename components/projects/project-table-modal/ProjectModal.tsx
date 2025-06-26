@@ -5,7 +5,9 @@ import { createComment } from "@/actions/create-comment-action";
 import { toast } from "react-toastify";
 import { setValue } from "@/src/Store";
 import { useDispatch } from "react-redux";
-import { Separator } from '../../ui/separator'
+import { Separator } from '../../ui/separator';
+import sanitizeHtml from 'sanitize-html';
+import { IoClose } from 'react-icons/io5';
 
 interface UserProjectModalProps {
     data: ProjectTypes | null,
@@ -32,8 +34,8 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
     const newComment = comments ?? [];
     const newCommnets = newComment.map((comment) => ({
         id: comment.id,
-        comentario: comment.comentario ?? 'Sin Comentarios',
         autor: comment.author ?? 'Sin Autor ',
+        comments: comment.comentario ?? 'Sin Comentarios',
         fechaCreacion: new Date(comment.createdDate ?? new Date()).toLocaleString('en-GB', {
             day: '2-digit',
             month: '2-digit',
@@ -48,7 +50,28 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
             hour: '2-digit',
             minute: '2-digit',
         }),
-    }))
+    }));
+
+    const linkfy = (comment: string): string => {
+        const urlRegex = /((https?:\/\/)?(www\.)?[\w-]+\.[a-z]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?)/gi;
+        return comment.replace(urlRegex, (url) => {
+        const href = url.startsWith('http') ? url : `https://${url}`;
+          return `<a href="${href}" target="_blank" class="text-blue-500 underline">${url}</a>`;
+        });
+    }
+
+    const links = (textComment: string): string => {
+        const raw =  linkfy(textComment)
+        return sanitizeHtml(raw,{
+            allowedTags: ['a'],
+            allowedAttributes: {
+                a: ['href', 'target', 'class']
+            },
+        });
+    }
+
+    
+
     const sortedComments = [...newCommnets].sort((a, b) => b.id - a.id)
 
     const lastUpdated = [...newCommnets].reduce((maxId, objId) =>
@@ -86,23 +109,23 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
             }
             <section className="w-auto">
                 <motion.aside
-                    initial={{x: "100%"}}
-                    animate={{x: data ? "0%" : "100%"}}
-                    exit={{x: "100%"}}
-                    transition={{type: "spring", stiffness: 100, damping: 20}}
-                    className="fixed right-0 top-0 h-full w-1/3 bg-gray-100 shadow-xl shadow-outline z-50 p-4 border-gray-500 border-solid border-accent-foreground overflow-auto"
+                    initial = {{x: "100%"}}
+                    animate = {{x: data ? "0%" : "100%"}}
+                    exit = {{x: "100%"}}
+                    transition = {{type: "spring", stiffness: 100, damping: 20}}
+                    className = "fixed right-0 top-0 h-full w-1/3 bg-gray-100 shadow-xl shadow-outline z-50 p-4 border-gray-500 border-solid border-accent-foreground overflow-auto"
                 >
-                    <div className="bg-sky-800 w-fit p-1 rounded-2xl mr-0 mx-auto">
-                        <button
-                            className="text-xl text-white px-4 font-light"
-                            onClick={onClose}> Cerrar
-                        </button>
-                    </div>
-                    <Separator className='mt-3 bg-gray-300 w-100'/>
                     {data ? (
                         <section className="">
-                            <div className="mx-auto bg-sky-800 rounded-2xl py-2 felx align-middle p-5 mt-4 w-fit">
-                                <h1 className="text-center text-xl text-white">{data.titulo}</h1>
+                            
+                            <div className="mx-auto rounded-2xl flex align-middle p-5 w-fit">
+                                <div className="mx-auto felx align-middle w-fit flex flex-row gap-5">
+                                <h1 className="bg-sky-800 px-2 py-3 text-center text-xl text-white rounded-2xl">{data.titulo}</h1>
+                                <button
+                                    className="text-xl text-white px-2 py-3 font-light flex align-middle rounded-2xl bg-red-400"
+                                    onClick={onClose}> <IoClose size='25px' />
+                                </button>
+                            </div>
                             </div>
                             <div className="mt-5 flex flex-row gap-10 w-auto p-4 bg-gray-200 rounded-2xl">
                                 <section className="text-base">
@@ -132,7 +155,7 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                             </div>
                             <div
                                 key={state.success}
-                                className="mt-5 flex flex-col gap-3 p-4 bg-gray-200 rounded-2xl">
+                                className="mt-5 flex flex-col gap-3 p-4 bg-gray-100 rounded-2xl">
                                 <div className="flex flex-col">
                                     <h2><strong>Seguimiento: </strong></h2>
                                 </div>
@@ -140,16 +163,24 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                                     newComment.length > 0 ?
                                         (
                                             sortedComments.map((comment, index) => (
-                                                <div key={comment.id ?? index} className="w-full">
-                                                    <div className="border-4 rounded-2xl shadow-lg bg-gray-100 p-3">
-                                                        <p>{comment.comentario}</p>
-                                                        <div className="flex place-content-between mt-3 font-thin">
+                                                
+                                                <div 
+                                                    key={comment.id ?? index} 
+                                                    className="w-full"
+                                                >
+                                                    <section 
+                                                        className="border-4 rounded-2xl shadow-lg bg-gray-100 p-3 break-all"
+                                                    >
+                                                        <section>
+                                                            <div dangerouslySetInnerHTML={{__html: links(comment.comments)}} />
+                                                        </section>
+                                                        <section className="flex place-content-between mt-3 font-thin">
                                                             <p className="text-sm font-medium">
                                                                 <strong>{comment.autor}</strong>
                                                             </p>
                                                             <p className="text-sm font-medium"><strong>{comment.fechaCreacion}</strong></p>
-                                                        </div>
-                                                    </div>
+                                                        </section>
+                                                    </section>
                                                 </div>
                                             ))
                                         )

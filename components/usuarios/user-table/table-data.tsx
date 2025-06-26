@@ -22,16 +22,16 @@ import { Input } from "@/components/ui/input";
 import {useState} from "react";
 import {Button} from "@/components/ui/button";
 
-interface ProjectTableProps<TData, TValue> {
+interface UserTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
 }
 
-export function DataUsersTable<TData, TValue>({columns, data}: ProjectTableProps<TData, TValue>)
+export function DataUsersTable<TData, TValue>({columns, data}: UserTableProps<TData, TValue>)
 {
     const [sorting, setSorting] = useState<SortingState>([])
     const [globalFilter, setGlobalFilter] = useState<string>('')
-    const [pageIndex, setPageIndex] = useState(0)
+    const [pageIndex, setPageIndex] = useState<number>(0)
     const [pageSize, setPageSize] = useState<number>(10)
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
@@ -151,6 +151,4 @@ export function DataUsersTable<TData, TValue>({columns, data}: ProjectTableProps
             </section>
         </>
     )
-
-
 }

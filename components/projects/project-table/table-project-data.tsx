@@ -8,7 +8,7 @@ import { DataTable } from "@/components/projects/project-table/table-data";
 import { ProjectModal } from "@/components/projects/project-table-modal/ProjectModal";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/src/Store/valueSlice";
-import {resetStatus} from "@/src/Store";
+import { resetStatus } from "@/src/Store";
 
 export default function TableProject({ user }: { user: User }) {
     const dispatch = useDispatch();
@@ -46,7 +46,6 @@ export default function TableProject({ user }: { user: User }) {
     }, [user.id, reFetch, selectedIndex, dispatch, projectid]);
 
     const columns = getColumns(setSelectedIndex)
-
 
     return (
         <>

@@ -231,14 +231,4 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
             )
         }
     },
-    {
-        accessorKey: 'isActive',
-        header: () => {
-            return (
-                <>
-                    <h1 className="text-white hover:text-white hover:bg-sky-800 text-center">Activo</h1>
-                </>
-            )
-        }
-    },
 ]

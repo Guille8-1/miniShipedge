@@ -123,7 +123,7 @@ export function DataTable<TData, TValue>({columns, data}: ActivityTableProps<TDa
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    <h1 className="font-bold">Proyectos No Encontrados</h1>
+                                    <h1 className="font-bold">Actividades No Encontradas</h1>
                                 </TableCell>
                             </TableRow>
                         )}

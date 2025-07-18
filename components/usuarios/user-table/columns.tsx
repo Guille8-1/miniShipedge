@@ -37,14 +37,18 @@ export const getUserColumns = (setSelectedIndex: (user: UserRow) => void): Colum
             accessorKey: 'id',
             header: ({column}) => {
                 return (
-                    <Button
-                        variant="ghost"
-                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
-                        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    >
-                        id
-                        <ArrowUpDown/>
-                    </Button>
+                    <>
+                        <section className='text-center'>
+                            <Button
+                                variant="ghost"
+                                className="px-0 text-white hover:text-white hover:bg-sky-800 "
+                                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                            >
+                                id
+                                <ArrowUpDown/>
+                            </Button>
+                        </section>
+                    </>
                 )
             }
         },
@@ -52,14 +56,18 @@ export const getUserColumns = (setSelectedIndex: (user: UserRow) => void): Colum
             accessorKey: 'name',
             header: ({column}) => {
                 return (
-                    <Button
-                        variant="ghost"
-                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
-                        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    >
-                        Nombre
-                        <ArrowUpDown/>
-                    </Button>
+                    <>
+                        <section className='text-center'>
+                            <Button
+                                variant="ghost"
+                                className="px-0 text-white hover:text-white hover:bg-sky-800 "
+                                onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                            >
+                                Nombre
+                                <ArrowUpDown/>
+                            </Button>
+                        </section>
+                    </>
                 )
             },
             cell: ({row}) => row.original.name.charAt(0).toUpperCase() + row.original.name.slice(1),
@@ -69,14 +77,19 @@ export const getUserColumns = (setSelectedIndex: (user: UserRow) => void): Colum
             accessorKey: 'lastName',
             header: ({column}) => {
                 return (
-                    <Button
-                        variant="ghost"
-                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
-                        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    >
-                        Apellido
-                        <ArrowUpDown/>
-                    </Button>
+                    <>
+                    <section className='text-center'>
+                        <Button
+                            variant="ghost"
+                            className="px-0 text-white hover:text-white hover:bg-sky-800 "
+                            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                        >
+                            Apellido
+                            <ArrowUpDown/>
+                        </Button>
+                    </section>
+                    </>
+                    
                 )
             }
         },
@@ -84,6 +97,8 @@ export const getUserColumns = (setSelectedIndex: (user: UserRow) => void): Colum
             accessorKey: 'admin',
             header: ({column}) => {
                 return (
+                <>
+                <section className='text-center'>
                     <Button
                         variant="ghost"
                         className="px-0 text-white hover:text-white hover:bg-sky-800 "
@@ -92,6 +107,8 @@ export const getUserColumns = (setSelectedIndex: (user: UserRow) => void): Colum
                         Administrador
                         <ArrowUpDown/>
                     </Button>
+                </section>
+                </>
                 )
             }
         },
@@ -99,14 +116,18 @@ export const getUserColumns = (setSelectedIndex: (user: UserRow) => void): Colum
             accessorKey: 'nivel',
             header: ({column}) => {
                 return (
-                    <Button
-                        variant="ghost"
-                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
-                        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-                    >
-                        Nivel
-                        <ArrowUpDown/>
-                    </Button>
+                    <>
+                    <section className='text-center'>
+                        <Button
+                            variant="ghost"
+                            className="px-0 text-white hover:text-white hover:bg-sky-800 "
+                            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+                        >
+                            Nivel
+                            <ArrowUpDown/>
+                        </Button>
+                    </section>
+                    </>
                 )
             }
         },
@@ -116,30 +137,34 @@ export const getUserColumns = (setSelectedIndex: (user: UserRow) => void): Colum
             header: ({}) => {
                 return (
                     <>
+                    <section className='text-center'>
                         <Button
                             variant="ghost"
                             className="px-0 text-white hover:text-white hover:bg-sky-800 "
                         >
                             Eliminar
                         </Button>
+                    </section>
                     </>
                 )
             },
             cell: ({row}) => {
                 const [value, setValue] = useState<boolean>(false);
-
+                const settingDialog = () => {
+                    if(value){
+                        setValue(false)
+                    } else {
+                        setValue(true);
+                    }
+                }
+                
                 return (
                     <>
                         <section
-                            className="w-full ml-5"
+                            className="w-full"
                         >
                             <button
-                                onClick={() => {
-                                    setValue(true);
-                                    if(value){
-                                        setValue(false);
-                                    }
-                                }}
+                                onClick={settingDialog}
                             >
                                 <FaRegTrashCan
                                     size='15'
@@ -147,12 +172,14 @@ export const getUserColumns = (setSelectedIndex: (user: UserRow) => void): Colum
                                     className=""
                                 >
                                 </FaRegTrashCan>
-                                <UserDialogDeletion
-                                    user={row.original}
-                                    isOpen={value}
-                                />
                             </button>
                         </section>
+                        {value && (
+                            <UserDialogDeletion
+                            user={row.original}
+                            isOpen={value}
+                            />
+                        )}
                     </>
                 )
             },

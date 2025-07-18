@@ -5,7 +5,6 @@ import { createComment } from "@/actions/create-comment-action";
 import { toast } from "react-toastify";
 import { setValue } from "@/src/Store";
 import { useDispatch } from "react-redux";
-import { Separator } from '../../ui/separator';
 import sanitizeHtml from 'sanitize-html';
 import { IoClose } from 'react-icons/io5';
 
@@ -120,10 +119,10 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                             
                             <div className="mx-auto rounded-2xl flex align-middle p-5 w-fit">
                                 <div className="mx-auto felx align-middle w-fit flex flex-row gap-5">
-                                <h1 className="bg-sky-800 px-2 py-3 text-center text-xl text-white rounded-2xl">{data.titulo}</h1>
+                                <h1 className="bg-sky-800 p-3 text-center text-xl text-white rounded-2xl">{data.titulo}</h1>
                                 <button
-                                    className="text-xl text-white px-2 py-3 font-light flex align-middle rounded-2xl bg-red-400"
-                                    onClick={onClose}> <IoClose size='25px' />
+                                    className="text-xl text-white p-3 font-light flex align-middle rounded-2xl bg-red-500"
+                                    onClick={onClose}> <IoClose size='1.5em' />
                                 </button>
                             </div>
                             </div>
@@ -217,8 +216,7 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                                 </form>
                             </section>
                         </section>
-                    ) : null}
-
+                    ) : null }
                 </motion.aside>
             </section>
         </>

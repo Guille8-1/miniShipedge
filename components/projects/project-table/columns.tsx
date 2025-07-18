@@ -99,14 +99,16 @@ export const getColumns = (setSelectedIndex: (project: ProjectRow) => void): Col
         header: ({column})=> {
             return (
                 <>
-                    <Button
-                        variant="ghost"
-                        className="px-0 text-white hover:text-white hover:bg-sky-800 "
-                        onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Avance
-                        <ArrowUpDown />
-                    </Button>
+                    <section className="text-center">
+                            <Button
+                            variant="ghost"
+                            className="px-0 text-white hover:text-white hover:bg-sky-800 text-center"
+                            onClick={()=>column.toggleSorting(column.getIsSorted() === "asc")}
+                        >
+                            Avance
+                            <ArrowUpDown />
+                        </Button>
+                    </section>
                 </>
             )
         }

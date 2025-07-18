@@ -32,7 +32,6 @@ export default function UsersComponent() {
         <>
             <h1 className="text-xl font-semibold mt-6">Usuarios Activos</h1>
             <DataUsersTable columns={columns} data={users} />
-
         </>
     )
 }

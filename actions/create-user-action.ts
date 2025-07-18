@@ -30,7 +30,7 @@ export async function createUser(prevState: ActionState, formData: FormData) {
       success: "",
     };
   }
-  const url = `${process.env.BACK_URL}/auth/create-user`;
+  const url = `${process.env.BACK_URL}/users/create-user`;
 
   const request = await fetch(url, {
     method: "POST",

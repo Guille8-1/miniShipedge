@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useEffect, useState } from "react";
 import { getProjects, getCommentById, getProjectsUsers } from "@/src/API/client-fetching-action";

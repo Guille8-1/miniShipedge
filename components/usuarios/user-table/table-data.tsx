@@ -114,7 +114,7 @@ export function DataUsersTable<TData, TValue>({columns, data}: UserTableProps<TD
                                         data-state={row.getIsSelected() && "Seleccionado"}
                                     >
                                         {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id}>
+                                            <TableCell key={cell.id} className="text-center">
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                             </TableCell>
                                         ))}

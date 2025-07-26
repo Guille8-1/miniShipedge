@@ -18,7 +18,6 @@ export function ReportAction({user}: {user: User}) {
 
     const isOpen = () => {
         setOpen(true)
-        console.log('running the dialog to submit report dates!')
     };
     const isClosed = () => setOpen(false);
 

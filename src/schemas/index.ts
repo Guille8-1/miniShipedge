@@ -178,6 +178,12 @@ export const ActivitySchemaResponse = z.object({
 
 export const ActivityArray = z.array(ActivitySchemaResponse);
 
+export const ReportsSchema = z.object({
+  start: z.string(),
+  end: z.string(),
+  userId: z.string()
+})
+
 //exported types
 
 export type ActivityArrayType = z.infer<typeof ActivityArray>;

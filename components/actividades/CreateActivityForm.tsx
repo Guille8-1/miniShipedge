@@ -43,7 +43,7 @@ export default function ActivityForm() {
       setUsers(userdata);
     }
     fetchUsers().then();
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (state.errors) {

@@ -90,7 +90,7 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
                 toast.error(error)
             })
         }
-    }, [state]);
+    }, [state])
 
     useEffect(() => {
         if (state.success) {

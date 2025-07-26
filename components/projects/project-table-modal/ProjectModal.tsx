@@ -86,7 +86,7 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                 toast.error(error)
             })
         }
-    }, [state]);
+    }, [state])
 
     useEffect(() => {
         if (state.success) {

@@ -27,6 +27,8 @@ export const UserSchema = z.object({
   lastName: z.string(),
   nivel: z.number(),
   admin: z.boolean(),
+  accountOwner: z.boolean(),
+  changedPw: z.boolean(),
 });
 export const UserSchemaTable = z.object({
   id: z.number(),
@@ -181,8 +183,18 @@ export const ActivityArray = z.array(ActivitySchemaResponse);
 export const ReportsSchema = z.object({
   start: z.string(),
   end: z.string(),
-  userId: z.string()
-})
+  userId: z.string(),
+});
+
+export const ChangedPwSchema = z
+  .object({
+    password: z.string().min(8, { message: "El password es demasiado corto" }),
+    repeat_password: z.string(),
+  })
+  .refine((data) => data.password === data.repeat_password, {
+    message: "Los passwords ingresados no coinciden",
+    path: ["repeat_password"],
+  });
 
 //exported types
 

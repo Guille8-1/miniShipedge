@@ -10,9 +10,9 @@ import {
 import {GrDocumentExcel} from "react-icons/gr";
 import ReportsProyectForm from "@/components/projects/ReportsProyectForm";
 import ToastNotification from "@/components/ui/ToastNotification";
-import {User} from "@/src/schemas";
+import { UserTokenType } from "@/src/schemas";
 
-export function ReportAction({user}: {user: User}) {
+export function ReportAction({user}: {user: UserTokenType}) {
     const [open, setOpen] = useState(false);
     const dialogRef = useRef(null);
 

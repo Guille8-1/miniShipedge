@@ -33,7 +33,7 @@ export default async function DashboardLayout({
                 <FaChartLine size="1.2em" />
                 <li>Dashboard</li>
               </Link>
-              {user.admin && (
+              {user.accountOwner && (
                 <Link
                   href={"/dashboard/users"}
                   className="text-gray-600 font-semibold py-2 hover:text-gray-900 transition duration-300 flex flex-row gap-3 items-center"

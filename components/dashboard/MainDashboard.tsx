@@ -39,6 +39,17 @@ export default function DashboardStart({ user }: { user: User }) {
           </section>
         </dialog>
       </section>
+
+      <div className="flex flex-col md:flex-row md:justify-between items-left">
+        <div className="w-full md:w-auto flex flex-row items-center gap-2">
+          <h2 className="font-bold text-xl text-sky-800 my-5">
+            Panel Principal
+          </h2>
+          <p className="text-xl font-semibold">
+            Gestion & Administracion {""} Proyectos - Actividades
+          </p>
+        </div>
+      </div>
     </>
   );
 }

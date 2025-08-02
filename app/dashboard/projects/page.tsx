@@ -7,7 +7,7 @@ import "dotenv";
 
 
 export default async function ProjectsPage() {
-  const { user } = await verifySession();
+  const { user, token } = await verifySession();
   
 
   return (

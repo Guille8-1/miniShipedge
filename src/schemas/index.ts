@@ -30,6 +30,19 @@ export const UserSchema = z.object({
   accountOwner: z.boolean(),
   changedPw: z.boolean(),
 });
+
+export const UserTokenSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    lastName: z.string(),
+    nivel: z.string(),
+    admin: z.string(),
+    accountOwner: z.string(),
+    changedPw: z.string(),
+    userToken: z.string(),
+})
+
+
 export const UserSchemaTable = z.object({
   id: z.number(),
   name: z.string(),
@@ -215,3 +228,5 @@ export type UserTable = z.infer<typeof UserSchemaTable>;
 export type Comments = z.infer<typeof Comments>;
 
 export type CommentsActivity = z.infer<typeof CommentsActivity>;
+
+export type UserTokenType = z.infer<typeof UserTokenSchema>;

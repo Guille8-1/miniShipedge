@@ -1,34 +1,38 @@
 "use client"
 
 import { get30DaysReport } from '@/src/API/download-resources';
-import { User } from '@/src/schemas';
+import { UserTokenType } from '@/src/schemas';
 import {useEffect, useState} from "react";
 import { format, subDays } from 'date-fns';
 
-export default function ReportsProyectForm({user}: {user: User}) {
+export default function ReportsProyectForm({user}: {user: UserTokenType}) {
     const { id } = user
     const reportPetition = {
         start: '',
         end: '',
         userId: id
     }
+    //const [call, setCall] = useState<boolean>(false)
+    const actualDate = new Date()
+    const year = actualDate.getFullYear()
+    const month = String(actualDate.getMonth()+1).padStart(2, '0');
+    const day = String(actualDate.getDate()).padStart(2, '0');
+    const past30Days = subDays(new Date(), 30)
+    reportPetition.start = format(past30Days, 'yyyy-MM-dd');
+    reportPetition.end = `${year}-${month}-${day}`;
+    // if(call){
+    //     setCall(true);
+    // }else {
+    //     setCall(false);
+    // }
 
-    function report30Days() {
-        const actualDate = new Date()
-        const year = actualDate.getFullYear()
-        const month = String(actualDate.getMonth()+1).padStart(2, '0');
-        const day = String(actualDate.getDate()).padStart(2, '0');
+    // useEffect(() => {
+    //     function callForTheReport () {
+    //         console.log('call for the report');
+    //     }
+    //     callForTheReport();
+    // }, [call]);
 
-        const past30Days = subDays(new Date(), 30)
-        reportPetition.start = format(past30Days, 'yyyy-MM-dd')
-
-        reportPetition.end = `${year}-${month}-${day}`;
-    }
-    report30Days();
-
-    const downloadReport30Days = () => {
-        get30DaysReport(reportPetition)
-    }
 
     return (
         <>
@@ -42,7 +46,7 @@ export default function ReportsProyectForm({user}: {user: User}) {
                             className="bg-sky-700 text-white p-2 rounded-md hover:bg-sky-600 cursor-pointer"
                             onClick={(e)=>{
                                 e.preventDefault();
-                                downloadReport30Days();
+                                setCall(true);
                             }}
                             type="submit"
                             value="30 Dias Anteriores"

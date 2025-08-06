@@ -2,7 +2,7 @@
 
 import { get30DaysReport } from '@/src/API/download-resources';
 import { UserTokenType } from '@/src/schemas';
-import {useEffect, useState} from "react";
+// import {useEffect, useState} from "react";
 import { format, subDays } from 'date-fns';
 
 export default function ReportsProyectForm({user}: {user: UserTokenType}) {
@@ -12,7 +12,6 @@ export default function ReportsProyectForm({user}: {user: UserTokenType}) {
         end: '',
         userId: id
     }
-    //const [call, setCall] = useState<boolean>(false)
     const actualDate = new Date()
     const year = actualDate.getFullYear()
     const month = String(actualDate.getMonth()+1).padStart(2, '0');
@@ -20,18 +19,6 @@ export default function ReportsProyectForm({user}: {user: UserTokenType}) {
     const past30Days = subDays(new Date(), 30)
     reportPetition.start = format(past30Days, 'yyyy-MM-dd');
     reportPetition.end = `${year}-${month}-${day}`;
-    // if(call){
-    //     setCall(true);
-    // }else {
-    //     setCall(false);
-    // }
-
-    // useEffect(() => {
-    //     function callForTheReport () {
-    //         console.log('call for the report');
-    //     }
-    //     callForTheReport();
-    // }, [call]);
 
 
     return (
@@ -46,7 +33,6 @@ export default function ReportsProyectForm({user}: {user: UserTokenType}) {
                             className="bg-sky-700 text-white p-2 rounded-md hover:bg-sky-600 cursor-pointer"
                             onClick={(e)=>{
                                 e.preventDefault();
-                                setCall(true);
                             }}
                             type="submit"
                             value="30 Dias Anteriores"

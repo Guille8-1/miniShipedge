@@ -8,6 +8,7 @@ import "dotenv";
 
 export default async function ProjectsPage() {
   const { user, token } = await verifySession();
+  const toGetReport = {...user, userToken: token}
   
 
   return (
@@ -15,7 +16,7 @@ export default async function ProjectsPage() {
         <section className="h-auto">
             <section className='flex flex-row gap-5'>
                 <ProjectsActionsPage user={user} />
-                <ReportAction user={user} />
+                <ReportAction user={toGetReport} />
             </section>
             <TableProject user={user} />
         </section>

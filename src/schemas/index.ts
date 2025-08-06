@@ -32,13 +32,13 @@ export const UserSchema = z.object({
 });
 
 export const UserTokenSchema = z.object({
-    id: z.string(),
+    id: z.number(),
     name: z.string(),
     lastName: z.string(),
-    nivel: z.string(),
-    admin: z.string(),
-    accountOwner: z.string(),
-    changedPw: z.string(),
+    nivel: z.number(),
+    admin: z.boolean(),
+    accountOwner: z.boolean(),
+    changedPw: z.boolean(),
     userToken: z.string(),
 })
 

@@ -1,34 +1,292 @@
-const noFound = document.getElementById("no-results");
+const style = document.createElement("style");
 
-noFound.addEventListener("click", () => {
-  const navHeight = document.querySelector(".w-nav").clientHeight;
-  const target = document.getElementById("email-form");
-  const email = document.getElementById("name-2");
-  setTimeout(() => {
-    email.focus();
-  }, 500);
-
-  if (target) {
-    const targetPos = target.getBoundingClientRect().top + window.scrollY;
-    const offset = targetPos - navHeight;
-    window.scroll({
-      top: offset,
-      behavior: "smooth",
-    });
+style.textContent = `
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
   }
-});
 
-// const searchHolder = document.querySelector('.inte-search_icon');
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+  }
+
+  .slider::before {
+    position: absolute;
+    content: "";
+    height: 26px; width: 26px;
+    left: 4px; bottom:4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+  }
+
+  .switch input:checked + .slider {
+      background-color: #4caf50;
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(26px);
+    }
+
+    .status {
+      margin-left: 15px;
+      font-family: sans-serif;
+      font-size: 1.2em;
+    }
+`;
+
+document.head.appendChild(style);
+
+const container = document.querySelectorAll('.toggle-container');
+
+container[0].style.visibility = 'hidden';
+
+container.forEach((container, index) => {
+  const label = document.createElement("label");
+  label.className = "switch";
+
+  const input = document.createElement('input');
+  input.type = "checkbox";
+  input.id = `toggle-${index}`;
+
+  const slider = document.createElement('span');
+  slider.className = "slider";
+  
+  label.appendChild(input);
+  label.appendChild(slider);
+  container.appendChild(label);
+  
+  const prices = document.getElementById(`price${index}`);
+
+  const setUpPrices = ['$199 <span class="heading-style-h5-6">/mo</span>', '$579 <span class="heading-style-h5-6">/mo</span>', 'Talk To Sales '];
+  const basedPrices = ['$59 <span class="heading-style-h5-6">/mo</span>', '$329 <span class="heading-style-h5-6">/mo</span>', '$899 <span class="heading-style-h5-6">/mo</span>'];
+
+  input.addEventListener("change", () => {
+      if(prices){
+        prices.innerHTML = input.checked ? setUpPrices[index-1] + ' ' : basedPrices[index-1] + ' ';
+      }
+  })
+})
+
+const detailsButton = document.querySelectorAll('.see-details_button').forEach((button)=>{
+  button.addEventListener('click', () => {
+
+      setTimeout(()=>{
+          const navHeight = document.querySelector('.w-nav').clientHeight;
+          const target = document.querySelector('.pricing22_top-row');
+
+          if(target){
+            const targetPos = target.getBoundingClientRect().top + window.scrollY;
+                  const offset = targetPos - navHeight;
+                  window.scroll({
+                    top: offset,
+                    behavior: 'smooth'
+                  });
+          }
+        }, 300)
+      })
+})
+
+// const detailsButton = document.querySelectorAll('.see-details_button').forEach(element => {
+//   element.addEventListener('click', () => {
+//     console.log('testing this fet')
+//
+//     const navHeight = document.querySelector('.w-nav').clientHeight;
+//     const target = document.getElementById('pricing22_top-row');
+//
+//      if(target) {
+//          const targetPos = target.getBoundingClientRect().top + window.scrollY;
+//                  const offset = targetPos - navHeight;
+//                  window.scroll({
+//                      top: offset,
+//                      behavior: 'smooth'
+//                  });
+//      }
+//  }
+// setTimeout(()=>{
+ //     smoothFunction()
+ // }, 600)
+
+
+
+
+// document.addEventLiastener('DOMContentLoaded', function () {
+//
+//   const menus = {
+//     tier_1: [
+//       { text: 'Active Products: 500',  onClick: () =>{console.log('tier_1')} },
+//       { text: 'Users Accounts: 2',  onClick: () =>{console.log('tier_1')} },
+//     ],
+//     tier_2: [
+//       { text: 'Active Products: 5000', onClick: () =>{console.log('tier_2')} },
+//       { text: 'Users Accounts: 10',  onClick: () =>{console.log('tier_2')} },
+//     ],
+//     tier_3: [
+//       { text: 'Active Products: Unlimited',  onClick: () =>{console.log('tier_3')} },
+//       { text: 'Users Accounts: 30',  onClick: () =>{console.log('tier_3')} },
+//     ]
+//
+//   };
+//
+//
+//   document.querySelectorAll('.dropdown').forEach(dropdown => {
+//     const type = dropdown.dataset.menu;
+//     const toggle = dropdown.querySelector('.dropdown-toggle');
+//     const links = menus[type] || [];
+//
+//
+//     const menu = document.createElement('div');
+//     menu.className = 'dropdown-menu';
+//
+//     links.forEach(link => {
+//       const a = document.createElement('a');
+//       a.textContent = link.text;
+//
+//       a.addEventListener('click', (e)=> {
+//         e.preventDefault(),
+//         link.onClick?.()
+//       })
+//       menu.appendChild(a);
+//     });
+//
+//     dropdown.appendChild(menu);
+//
+//
+//     toggle.addEventListener('click', (e) => {
+//       e.stopPropagation(); // prevent closing on same click
+//       dropdown.classList.toggle('open');
+//     });
+//   });
+//
+//
+//   document.addEventListener('click', (e) => {
+//     document.querySelectorAll('.dropdown').forEach(d => {
+//       if (!d.contains(e.target)) {
+//         d.classList.remove('open');
+//       }
+//     });
+//   });
+// });
+//
+
+
+  // Create and insert menu (same logic as before)
+  // const dropdownMenu = document.createElement('div');
+  // dropdownMenu.className = 'dropdown-menu';
+
+  // const links = [
+  //   { text: 'Active Unique Products: 500' },
+  //   { text: 'User accounts: 2' },
+  // ];
+
+  // links.forEach(link => {
+  //   const a = document.createElement('a');
+
+  //   a.textContent = link.text;
+  //   dropdownMenu.appendChild(a);
+  // });
+
+  // dropdown.appendChild(dropdownMenu);
+
+  // // Toggle dropdown
+  // toggle.addEventListener('click', () => {
+  //   dropdown.classList.toggle('open');
+  // });
+
+  // // Close when clicking outside
+  // document.addEventListener('click', (e) => {
+  //   if (!dropdown.contains(e.target)) {
+  //     dropdown.classList.remove('open');
+  //   }
+  // });
+//});
+
+// const getStarted = document.querySelectorAll('#client-form')
+// const clientForm = document.getElementById('client')
+// const firstElement = clientForm.children[0]
+
+
+// getStarted.forEach((button)=>{
+//   button.addEventListener('click', () => {
+//     firstElement.children[0].click()
+//   })
+//   button.addEventListener('click',()=>{
+//       const iframe = document.querySelector('.fillout-embed-iframe-container');
+//       iframe.style.width = '30vw';
+//   })
+// })
+
+// const getStarted = document.querySelectorAll('#client-form')
+// const clientForm = document.getElementById('client')
+// const firstElement = clientForm.children[0]
+
+// getStarted.forEach((button)=>{
+//   button.addEventListener('click', () => {
+//     firstElement.children[0].click()
+//   })
+//   button.addEventListener('click',()=>{
+//     const iframe = document.querySelector('.fillout-embed-iframe-container');
+//     iframe.style.width = '30vw';
+//   })
+// })
+
+// const getStartedButton = document.querySelectorAll(".button-shelfter-2");
+// const clientForm = document.getElementById("client");
+
+// getStartedButton.forEach((button) => {
+//   button.addEventListener("click", () => {
+//     clientForm.children[0].click()
+//   });
+// });
+
+// const noFound = document.getElementById("no-results");
+
+// noFound.addEventListener("click", () => {
+//   const navHeight = document.querySelector(".w-nav").clientHeight;
+//   const target = document.getElementById("email-form");
+//   const email = document.getElementById("name-2");
+//   setTimeout(() => {
+//     email.focus();
+//   }, 500);
+
+//   if (target) {
+//     const targetPos = target.getBoundingClientRect().top + window.scrollY;
+//     const offset = targetPos - navHeight;
+//     window.scroll({
+//       top: offset,
+//       behavior: "smooth",
+//     });
+//   }
+// });
+
+// const searchHolder = document.querySelector('.div-block-139');
 // const createSearch = document.createElement('input');
 
-// createSearch.setAttribute('class','search-input');
+// createSearch.setAttribute('class','filter_search-field');
 // createSearch.setAttribute('placeholder','Serach Integrations');
 // createSearch.setAttribute('type','text');
 // createSearch.setAttribute('id','search-value');
+// createSearch.classList.add('border-green');
 
 // searchHolder.append(createSearch)
 
-// const integrationList = document.querySelectorAll('.collection-item-7')
+// const integrationList = document.querySelectorAll('.collection-item-3')
 // const searchValue = document.getElementById('search-value');
 
 // const integrationData = Array.from(integrationList).map((integration)=> ({
@@ -37,16 +295,18 @@ noFound.addEventListener("click", () => {
 // }))
 // let noResultsMessage = document.getElementById("no-results");
 
-// if (!noResultsMessage) {
-//   noResultsMessage = document.createElement("div");
-//   noResultsMessage.id = "no-results";
-//   noResultsMessage.textContent = "No integrations found";
-//   noResultsMessage.style.display = "none";
-//   noResultsMessage.style.textAlign = "center";
-//   noResultsMessage.style.marginTop = "10px";
-//   noResultsMessage.style.width = "250px";
-//   integrationData[0]?.parentElement.appendChild(noResultsMessage);
-// }
+// const collectionList = document.querySelector('.content_collection-list ')
+
+//if (!noResultsMessage) {
+  //noResultsMessage = document.createElement("div");
+  //noResultsMessage.id = "no-results";
+  //noResultsMessage.textContent = "No integrations found";
+  //noResultsMessage.style.display = "none";
+  //noResultsMessage.style.textAlign = "center";
+  //noResultsMessage.style.marginTop = "10px";
+  //noResultsMessage.style.width = "250px";
+  //integrationData[0]?.parentElement.appendChild(noResultsMessage);
+//}
 
 // searchValue.addEventListener('input',(e)=> {
 //     const value = e.target.value.toLowerCase().trim()
@@ -60,6 +320,7 @@ noFound.addEventListener("click", () => {
 //         }
 //     })
 //     noResultsMessage.style.display = integrationsFound === 0 ? 'block' : 'none';
+//     noResultsMessage.style.position = 'absolute';
 // })
 
 // const search = document.getElementById('search');

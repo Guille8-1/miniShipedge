@@ -22,6 +22,11 @@
     width: 20px;
 }
 
+.border-green {
+    outline: none;
+    width: 500px;
+}
+
 /* .answer {
     opacity: 0;
     height: 0;

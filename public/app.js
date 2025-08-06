@@ -103,6 +103,10 @@ const detailsButton = document.querySelectorAll('.see-details_button').forEach((
       })
 })
 
+const getADemo = document.getElementById('basic');
+getADemo.href = 'https://edge01.shipedge.com/payment/request/BLGXCATALOG';
+getADemo.target = '_blank';
+
 // const detailsButton = document.querySelectorAll('.see-details_button').forEach(element => {
 //   element.addEventListener('click', () => {
 //     console.log('testing this fet')

@@ -56,6 +56,8 @@ document.head.appendChild(style);
 const container = document.querySelectorAll('.toggle-container');
 
 container[0].style.visibility = 'hidden';
+const lastElement = container[container.length - 1];
+lastElement.style.visibility = 'hidden';
 
 container.forEach((container, index) => {
   const label = document.createElement("label");
@@ -99,13 +101,25 @@ const detailsButton = document.querySelectorAll('.see-details_button').forEach((
                     behavior: 'smooth'
                   });
           }
-        }, 300)
+        }, 200)
       })
 })
 
-const getADemo = document.getElementById('basic');
-getADemo.href = 'https://edge01.shipedge.com/payment/request/BLGXCATALOG';
-getADemo.target = '_blank';
+
+const starter = document.getElementById('starter');
+starter.href = 'http://edge01f.shipedge.com/payment/request/A1'
+starter.target = '_blank';
+
+const standard = document.getElementById('standard');
+
+standard.href = 'http://edge01f.shipedge.com/payment/request/B1';
+standard.target = '_blank';
+
+const professional = document.getElementById('profesional');
+
+profesional.href = 'http://edge01f.shipedge.com/payment/request/C1';
+profesional.target = '_blank';
+
 
 // const detailsButton = document.querySelectorAll('.see-details_button').forEach(element => {
 //   element.addEventListener('click', () => {

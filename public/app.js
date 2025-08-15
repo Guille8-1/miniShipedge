@@ -1,11 +1,20 @@
 const style = document.createElement("style");
 
 style.textContent = `
+  .toggle-container {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
   .switch {
     position: relative;
-    display: inline-flex;
-    aling-items: center;
+    display: flex;
     cursor: pointer;
+    width:auto;
+    height:auto;
+    border: solid 0.8px;
+    border-radius: 20px;
+    border-color: #0060Aa;
   }
 
   .switch input {
@@ -21,13 +30,22 @@ style.textContent = `
     border-radius: 999px;
     font-size: 14px;
     font-weight: bold;
-    color: white;
-    background-color: gray;
+    background-color: #EAF0F6;
     transition: background-color 0.3s ease;
     user-select: none; 
     font-size: 15px;
   }
-  
+
+  .slider::before {
+      position: absolute;
+      content: "";
+      height: 26px; width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
 
   .switch input:checked + .slider {
       background-color: #0060a8;
@@ -41,6 +59,12 @@ style.textContent = `
       margin-left: 15px;
       font-family: sans-serif;
       font-size: 1.2em;
+    }
+
+    .options-container {
+      display: flex;
+      flex-direction: row;
+      justify-items: space-between;
     }
 `;
 
@@ -60,7 +84,6 @@ container.forEach((container, index) => {
 
   const slider = document.createElement('span');
   slider.className = "slider";
-  slider.textContent = 'Upgrade +';
   
   label.appendChild(input);
   label.appendChild(slider);
@@ -77,6 +100,24 @@ container.forEach((container, index) => {
       }
   })
 })
+const container1 = document.getElementById('tog-ct-1');
+
+const optContainer = document.createElement('div');
+optContainer.className = 'options-container';
+
+const opt1 = document.createElement('p');
+opt1.className = `option-1`;
+opt1.id = 'opt1';
+opt1.textContent = 'option1';
+  
+const opt2 = document.createElement('p');
+opt2.className = `option-1`;
+opt2.id = 'opt2';
+opt2.textContent = 'option2';
+
+optContainer.appendChild(opt1);
+optContainer.appendChild(opt2);
+container1.appendChild(optContainer);
 
 const detailsButton = document.querySelectorAll('.see-details_button').forEach((button)=>{
   button.addEventListener('click', () => {
@@ -208,6 +249,15 @@ starterTableToggle.addEventListener('change', ()=> {
   numberUserTable.textContent = starterTableToggle.checked ? 'users':'user';
   actTableSkus.textContent = starterTableToggle.checked ? '500 Active Skus' : '100 Active Skus';
   basicRegister.href = starterTableToggle.checked ? 'https://edge01f.shipedge.com/payment/request/A2' : 'https://edge01f.shipedge.com/payment/request/A1';
+  starterIntro.textContent = starterTableToggle.checked ? 'Starter + ': 'Starter ';
+  
+  starterIntro.style.color = '#0060a8';
+  starterIntro.style.fontWeight = 'bold';
+
+  if(!starterTableToggle.checked){
+    starterIntro.style.color = '#000';
+    starterIntro.style.fontWeight = 'normal';
+  }
 });
 
 
@@ -216,14 +266,24 @@ const standardUser = document.querySelector('.standard-table_user');
 const actTableStandardSkus = document.querySelector('.standard-skus_act');
 const standardTableToggle = document.getElementById('toggle-menu_1');
 const standardRegister = document.getElementById('starter2');
+const standardIntro = document.querySelector('.standard_intro');
 
-standardRegister.href = 'https://edge01f.shipedge.com/payment/request/B1'
+standardRegister.href = 'https://edge01f.shipedge.com/payment/request/B1';
 
 standardTableToggle.addEventListener('change', ()=> {
   standardTable.textContent = standardTableToggle.checked ? 'Standard +': 'Standard';
-  standardUser.textContent = standardToggle.checked ? '10' : '5';
-  standardTableToggle.textContent = standardTableToggle.checked ? '5000 Active SKUs' : '2500 Active SKUs';
+  standardUser.textContent = standardTableToggle.checked ? '10' : '5';
+  actTableStandardSkus.textContent = standardTableToggle.checked ? '5000 Active SKUs' : '2500 Active SKUs';
   standardRegister.href = standardTableToggle.checked ? 'https://edge01f.shipedge.com/payment/request/B2' : 'https://edge01f.shipedge.com/payment/request/B1';
+  standardIntro.textContent = standardTableToggle.checked ? 'Standard + ' : 'Standard ';
+  
+  standardIntro.style.color = '#0060a8';
+  standardIntro.style.fontWeight = 'bold';
+
+  if(!standardTableToggle.checked){
+    standardIntro.style.color = '#000';
+    standardIntro.style.fontWeight = 'normal';
+  }
  })
 
 const tableBasic = document.getElementById('starter0');

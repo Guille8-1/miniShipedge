@@ -235,6 +235,8 @@ style.textContent = `
     .toggle-table-std.active-table-std .option8 {
       color: #0060a8;
     }
+
+    
 `
 document.head.appendChild(style);
 
@@ -266,7 +268,8 @@ optionCt1.appendChild(circle);
 //variables changing style
 const starter1 = document.querySelector('.starter-user');
 const starter2 = document.querySelector('.starter-users-no');
-const starter3 = document.querySelector('.act-skus_starter');
+const starter3 = document.querySelector('.sku-number');
+const actSkus1 = document.querySelector('.ac_skus')
 const starterTitle = document.querySelector('.starter');
 const priceStarter = document.querySelector('.pirce_starter');
 
@@ -283,7 +286,8 @@ optionCt1.addEventListener('click',() => {
   starter1.textContent = input.checked ? '2 ':'1 ';
   starter2.style.color = input.checked ? '#0060a8':'#00032A';
   starter2.textContent = input.checked ? 'users' : 'user';
-  starter3.textContent = input.checked ? '500 Active SKUs':'100 Active SKUs';
+  starter3.textContent = input.checked ? '500 ':'100 ';
+  actSkus1.style.color = input.checked ? '#0060a8':'#00032A';
   starter3.style.color = input.checked ? '#0060a8':'#00032A';
 
   starterTitle.style.color = input.checked ? '#0060a8':'#00032A';
@@ -324,8 +328,9 @@ const standardTitle = document.querySelector('.standard');
 const stdPrices = document.querySelector('.std-prices');
 const stdUsers = document.querySelector('.standard-users');
 const stdUsersNo = document.querySelector('.standard-users-no')
-const actSkusStandard = document.querySelector('.act-skus-standard');
+const actSkusStandard = document.querySelector('.std-number');
 const buttonStandard = document.getElementById('standard');
+const stdSkusCard = document.querySelector('.std-skus')
 
 buttonStandard.href = 'https://edge01f.shipedge.com/payment/request/B1';
 buttonStandard.target = '_blank';
@@ -342,8 +347,9 @@ optionCt2.addEventListener('click',() => {
   stdUsers.textContent = inputStd.checked ? '10':'5';
 
   stdUsersNo.style.color = inputStd.checked ? '#0060a8':'#00032A';
-  actSkusStandard.textContent = inputStd.checked ? '5000 Active SKUs':'2500 Active SKUs';
+  actSkusStandard.textContent = inputStd.checked ? '5000 ':'2500 ';
   actSkusStandard.style.color = inputStd.checked ? '#0060a8':'#00032A';
+  stdSkusCard.style.color = inputStd.checked ? '#0060a8':'#00032A';
   buttonStandard.href = inputStd.checked ? 'https://edge01f.shipedge.com/payment/request/B2':'https://edge01f.shipedge.com/payment/request/B1';
 
 })
@@ -404,8 +410,12 @@ const starterTable = document.querySelector('.starter-table-user');
 const starterPriceTable = document.querySelector('.starterprice');
 const starterTableTitle = document.querySelector('.starter-table');
 const starteUsrs = document.querySelector('.starter-table-no');
-const starterActSkus = document.querySelector('.starter-table-act_skus');
+const starterActSkus = document.querySelector('.table-usr-head');
 const tableButtonStarter = document.getElementById('starter1');
+const skusTableHead = document.querySelector('.table-head-skus');
+const stickyStrtPrice = document.querySelector('.sticky-strt');
+const titleChStrt = document.querySelector('.st-sticky');
+
 
 tableButtonStarter.href = 'http://edge01f.shipedge.com/payment/request/A1';
 tableButtonStarter.target = '_blank';
@@ -418,16 +428,19 @@ optionCt3.addEventListener('click',() => {
   starterTable.textContent = inputTable.checked ? '2':'1';
   
   starterPriceTable.textContent = inputTable.checked ? '$199':'$55';
+  stickyStrtPrice.textContent = inputTable.checked ? '$199':'$55';
 
   starterTableTitle.textContent = inputTable.checked ? 'Starter +' : 'Starter';
   starterTableTitle.style.color = inputTable.checked ? '#0060a8':'#00032A';
+  titleChStrt.textContent = inputTable.checked ? 'Starter +' : 'Starter';
 
   starteUsrs.style.color = inputTable.checked ? '#0060a8':'#00032A';
   starteUsrs.textContent = inputTable.checked ? 'users' : 'user';
 
   starterActSkus.style.color = inputTable.checked ? '#0060a8':'#00032A';
-  starterActSkus.textContent = inputTable.checked ? '500 Active SKUs' : '100 Active SKUs';
+  starterActSkus.textContent = inputTable.checked ? '500 ' : '100 ';
 
+  skusTableHead.style.color = inputTable.checked ? '#0060a8':'#00032A';
 
   tableButtonStarter.href = inputTable.checked ? 'http://edge01f.shipedge.com/payment/request/A2':'http://edge01f.shipedge.com/payment/request/A1';
 
@@ -463,7 +476,10 @@ const standardTableTitle = document.querySelector('.standard-table');
 const stdTablePrice = document.querySelector('.standardprice');
 const stdUsr = document.querySelector('.standard-table_user');
 const stdUsrNo = document.querySelector('.standard_users-no');
-const actSkuStd = document.querySelector('.standard-skus_act');
+const actSkuStd = document.querySelector('.std-number-table');
+const stdSkus = document.querySelector('.std-skus-table');
+const stickyStdPrice = document.querySelector('.sticky-std-price');
+const titleChStd = document.querySelector('.std-sticky');
 
 const standardTableButton = document.getElementById('standard1');
 standardTableButton.href = 'http://edge01f.shipedge.com/payment/request/B1';
@@ -475,18 +491,42 @@ optionCt4.addEventListener('click',() => {
   
   standardTableTitle.textContent = inputTableStd.checked ? 'Standard +':'Standard';
   standardTableTitle.style.color = inputTableStd.checked ? '#0060a8':'#00032A';
+
+  titleChStd.textContent = inputTableStd.checked ? 'Standard +':'Standard';
   
   stdTablePrice.textContent = inputTableStd.checked ? '$579':'$329';
+  stickyStdPrice.textContent = inputTableStd.checked ? '$579':'$329';
 
   stdUsr.textContent = inputTableStd.checked ? '10':'5';
   stdUsr.style.color = inputTableStd.checked ? '#0060a8':'#00032A';
   stdUsrNo.textContent = inputTableStd.checked ? 'users':'user';
   stdUsrNo.style.color = inputTableStd.checked ? '#0060a8':'#00032A';
 
-  actSkuStd.textContent = inputTableStd.checked ? '5000 Active SKUs':'2500 Active SKUs';
+  actSkuStd.textContent = inputTableStd.checked ? '5000 ':'2500 ';
   actSkuStd.style.color = inputTableStd.checked ? '#0060a8':'#00032A';
 
-  standardTableButton.href = inputTableStd.checked ? 'http://edge01f.shipedge.com/payment/request/B2':'http://edge01f.shipedge.com/payment/request/B1'
+  stdSkus.style.color = inputTableStd.checked ? '#0060a8':'#00032A';
+
+  standardTableButton.href = inputTableStd.checked ? 'http://edge01f.shipedge.com/payment/request/B2':'http://edge01f.shipedge.com/payment/request/B1';
+
+
+})
+
+const tableHeaderSticky = document.getElementById('sticky-table');
+const stickyHeader = document.getElementById('id-header');
+
+
+window.addEventListener('scroll',() => {
+  const tableReact = tableHeaderSticky.getBoundingClientRect();
+  
+  if(tableReact.top < 0){
+    stickyHeader.style.display = 'flex';
+    stickyHeader.style.top = '75px';    
+
+  }else {
+    stickyHeader.style.display = 'none'
+  }
+
 })
 
 

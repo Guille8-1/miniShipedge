@@ -509,7 +509,6 @@ optionCt4.addEventListener('click',() => {
 
   standardTableButton.href = inputTableStd.checked ? 'http://edge01f.shipedge.com/payment/request/B2':'http://edge01f.shipedge.com/payment/request/B1';
 
-
 })
 
 const tableHeaderSticky = document.getElementById('sticky-table');
@@ -529,8 +528,14 @@ window.addEventListener('scroll',() => {
 
 })
 
+const freeTrial = document.getElementById('starter0');
+
+freeTrial.href = 'http://edge01f.shipedge.com';
+freeTrial.target = '_blank';
 
 
-
+const proButtonHeader = document.getElementById('pro01');
+proButtonHeader.href = 'http://edge01f.shipedge.com/payment/request/C1';
+proButtonHeader.target = '_blank';
 
 

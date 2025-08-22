@@ -53,6 +53,7 @@ export async function login(prevState: ActionState, formData: FormData) {
         value: json,
         httpOnly: true,
         path:'/'
-    })
+    });
+
     redirect('/dashboard')
 }

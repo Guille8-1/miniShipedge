@@ -1,10 +1,13 @@
 "use client"
+
 import { login } from "@/actions/login-account-action"
 import { useActionState, useEffect } from "react"
 import { toast } from "react-toastify"
+import Image from 'next/image';
+
 
 export default function LoginFrom() {
-    
+
     const [state, dispatch] = useActionState(login, {
         errors: [],
         success:''
@@ -19,7 +22,15 @@ export default function LoginFrom() {
     },[state])
 
   return (
-    <>
+    <>    
+        <div className='flex flex-col items-center gap-10 md:flex-row'>
+            <div className='flex flex-col text-center sm:justify-start'>
+                <h1 className="font-bold text-4xl text-cyan-600">Sistema de Información y</h1>
+                <p className="text-3xl font-bold text-cyan-600">{" "} Gestión de Infraestructura</p>
+            </div>
+            <Image src="/umsaoff.jfif" width={190} height={125} alt='off-umsa'></Image>
+        </div>
+
         <form 
             className="mt-14 space-y-5"
             noValidate

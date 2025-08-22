@@ -7,7 +7,6 @@ import 'dotenv/config'
 
 export const verifySession = cache(async () => {
     const token = (await cookies()).get('SERVICES_TOKEN')?.value
-
     
     if(!token) {
         redirect('/auth/login')
@@ -23,7 +22,7 @@ export const verifySession = cache(async () => {
     const session = await request.json()
     const result = UserSchema.safeParse(session)
     if(!result.success) {
-        redirect('/auth/login')
+        redirect('/auth/login');
     }
 
     return {

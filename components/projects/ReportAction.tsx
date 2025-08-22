@@ -39,7 +39,8 @@ export function ReportAction({user}: {user: UserTokenType}) {
         <>
             <button
                 onClick={isOpen}
-                className="flex flex-row align-items-center justify-items-center gap-2 bg-sky-800 p-3 text-gray-200 rounded"
+                className="flex flex-row align-items-center justify-items-center gap-2 bg-sky-800 
+                p-3 text-gray-200 rounded"
             >
                 <GrDocumentExcel size="1.1em" className="mt-0.5" />
                 <h2 className="font-semibold text-lg leading-tight">
@@ -59,10 +60,11 @@ export function ReportAction({user}: {user: UserTokenType}) {
                                 leaveFrom="opacity-100"
                                 leaveTo="opacity-0"
                             >
-                                <div className="fixed inset-0 bg-black/60" />
+                            <div className="fixed inset-0 bg-black/60" />
                             </TransitionChild>
                             <div className="fixed inset-0 overflow-y-auto">
-                                <div className="flex min-h-full items-center justify-center p-4 text-center">
+                                <div className="flex min-h-full items-center 
+                                justify-center p-4 text-center">
                                     <TransitionChild
                                         as={Fragment}
                                         enter="ease-out duration-300"
@@ -72,7 +74,9 @@ export function ReportAction({user}: {user: UserTokenType}) {
                                         leaveFrom="opacity-100 scale-100"
                                         leaveTo="opacity-0 scale-95"
                                     >
-                                        <DialogPanel className="w-full max-w-5xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
+                                        <DialogPanel className="w-full max-w-5xl transform 
+                                        overflow-hidden rounded-2xl bg-white text-left 
+                                        align-middle shadow-xl transition-all p-16">
                                             <h1 className="font-bold text-xl">
                                                 Seleccionar Fechas - Reporte Proyectos
                                             </h1>

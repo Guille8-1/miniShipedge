@@ -71,7 +71,7 @@ export default function ActivityForm() {
     <>
       <form className="mt-5 space-y-3 " noValidate action={dispatch}>
         <div className="flex flex-row gap-5 justify-center">
-          <div className="w-screen">
+          <div className="w-3/4">
             <div className="flex flex-col gap-2">
               <label className="font-bold text-lg mt-3" htmlFor="email">
                 Titulo Actividad
@@ -168,25 +168,24 @@ export default function ActivityForm() {
                 <option value="baja">Baja</option>
               </select>
             </div>
-          </div>
-          <div className="w-screen">
             <div className="flex flex-col gap-2">
               <label className="font-bold text-lg mt-3" htmlFor="email">
                 Oficina de Origen
               </label>
               <input
-                id="oficinaOrigenAct"
-                type="text"
-                placeholder="Oficina de Origen"
-                className="w-full border border-gray-300 p-3 rounded-lg appearance-none"
-                name="oficinaOrigenAct"
+                  id="oficinaOrigenAct"
+                  type="text"
+                  placeholder="Oficina de Origen"
+                  className="w-full border border-gray-300 p-3 rounded-lg appearance-none"
+                  name="oficinaOrigenAct"
               />
             </div>
           </div>
+
         </div>
         <input
           onClick={dispatchFn}
-          className="bg-cyan-800 hover:bg-cyan-700 w-full p-3 rounded-lg text-white text-xl font-bold cursor-pointer block mt-4"
+          className="bg-cyan-800 hover:bg-cyan-700 w-3/4 p-3 rounded-lg text-white text-xl font-bold cursor-pointer block mt-4 mx-auto"
           type="submit"
           value="Crear Actividad"
         />

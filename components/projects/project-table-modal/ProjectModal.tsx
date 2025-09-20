@@ -1,24 +1,33 @@
 import { motion } from 'framer-motion'
 import { ProjectTypes, Comments } from "@/src/schemas";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { createComment } from "@/actions/create-comment-action";
 import { toast } from "react-toastify";
 import { setValue } from "@/src/Store";
 import { useDispatch } from "react-redux";
 import sanitizeHtml from 'sanitize-html';
 import { IoClose } from 'react-icons/io5';
+import { HiOutlinePencilSquare } from "react-icons/hi2";
+import { FaSave } from "react-icons/fa";
+import { GetUserType } from "@/src/schemas";
+import { getDataUser } from "@/src/API/client-fetching-action";
+import Select, { MultiValue } from "react-select";
+import { type userOptions } from "@/components/projects/CreateProjectForm";
+import { updateProject } from '@/actions/update-project-action';
+
+
 
 interface UserProjectModalProps {
     data: ProjectTypes | null,
     comments: Comments | null,
     onClose: () => void,
-//     goPrevious: () => void,
-//     goNext: () => void,
-//     disablePrevious: boolean,
-//     disableNext: boolean
+    //     goPrevious: () => void,
+    //     goNext: () => void,
+    //     disablePrevious: boolean,
+    //     disableNext: boolean
 }
 
-export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
+export function ProjectModal({ data, comments, onClose }: UserProjectModalProps) {
     const createdDate: string | null | undefined = data?.createdDate
 
     const created = new Date(createdDate ?? new Date())
@@ -54,14 +63,14 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
     const linkfy = (comment: string): string => {
         const urlRegex = /((https?:\/\/)?(www\.)?[\w-]+\.[a-z]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?)/gi;
         return comment.replace(urlRegex, (url) => {
-        const href = url.startsWith('http') ? url : `https://${url}`;
-          return `<a href="${href}" target="_blank" class="text-blue-500 underline">${url}</a>`;
+            const href = url.startsWith('http') ? url : `https://${url}`;
+            return `<a href="${href}" target="_blank" class="text-blue-500 underline">${url}</a>`;
         });
     }
 
     const links = (textComment: string): string => {
-        const raw =  linkfy(textComment)
-        return sanitizeHtml(raw,{
+        const raw = linkfy(textComment)
+        return sanitizeHtml(raw, {
             allowedTags: ['a'],
             allowedAttributes: {
                 a: ['href', 'target', 'class']
@@ -69,20 +78,18 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
         });
     }
 
-    
-
     const sortedComments = [...newCommnets].sort((a, b) => b.id - a.id)
 
     const lastUpdated = [...newCommnets].reduce((maxId, objId) =>
         (objId.id > maxId.id ? objId : maxId), newCommnets[0])
 
     const [state, dispatch] = useActionState(createComment, {
-        errors:[],
-        success:""
+        errors: [],
+        success: ""
     })
     useEffect(() => {
-        if(state.errors) {
-            state.errors.forEach((error:string)=> {
+        if (state.errors) {
+            state.errors.forEach((error: string) => {
                 toast.error(error)
             })
         }
@@ -96,7 +103,102 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
     const fetchDispatch = useDispatch();
     const dispatchFunction = () => {
         fetchDispatch(setValue('changed'));
+    };
+
+    const [edit, setEdit] = useState<boolean>(false);
+    const [asignadosEdit, setAsignadosEdit] = useState<boolean>(false);
+
+    const editValue = () => {
+        setEdit(true)
+        if (edit) {
+            setEdit(false);
+        }
+    };
+    const asignedEditValue = () => {
+        setAsignadosEdit(true);
+        if (asignadosEdit) {
+            setAsignadosEdit(false);
+        }
+    };
+
+    const capFirstLetter = (name: string) => {
+        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    };
+
+    const userName = data?.gestor.split(" ") ?? 'novalue';
+    const usrFisrtName = userName[0];
+    const usrLastName = userName[1];
+
+    const firstName = capFirstLetter(usrFisrtName);
+    const lastName = capFirstLetter(usrLastName);
+
+    const fullName = firstName + " " + lastName;
+    const statusFormal = capFirstLetter(data?.estado ?? 'no value');
+
+    const userInit = data?.asignados ?? [];
+
+    const initEditUsr: userOptions[] = [];
+
+    for (const user of userInit) {
+        const initU = user.split(' ')
+        const initFn = initU[0]
+        const initLn = initU[1]
+        const initFName = `${initFn} ${initLn}`
+        const objInit = {
+            label: initFName,
+            value: initFName.toLowerCase(),
+        }
+        initEditUsr.push(objInit)
     }
+
+
+    const [users, setUsers] = useState<GetUserType>([]);
+    const [slctEditUser, setSlctEditUser] = useState<userOptions[] | null>([]);
+    const userEditOptions: userOptions[] = [];
+
+    const addingEditUser = (userEdit: MultiValue<userOptions>) => {
+        setSlctEditUser([...userEdit]);
+    }
+
+    useEffect(() => {
+        async function fetchEditUsers() {
+            const updateUser = await getDataUser();
+            setUsers(updateUser);
+        }
+        fetchEditUsers().then();
+    }, []);
+
+
+
+    for (const userEdit of users) {
+        const { nombre, apellido } = userEdit;
+        const label = `${nombre} ${apellido}`;
+        const value = `${nombre} ${apellido}`.toLowerCase();
+        userEditOptions.push({ label, value });
+    }
+
+    //funcion para la forma general de edicion proyecto
+
+    const [editState, editDispatch] =  useActionState(updateProject,{
+        errors: [],
+        success: ""
+    })
+
+    useEffect(()=>{
+        if(editState.errors){
+            editState.errors.forEach((error: string)=>{
+                toast(error)
+            })
+        }
+    },[])
+
+    useEffect(()=>{
+        if(editState.success){
+            toast(editState.success)
+        }
+    },[])
+
+
     return (
         <>
             {
@@ -108,75 +210,345 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
             }
             <section className="w-auto">
                 <motion.aside
-                    initial = {{x: "100%"}}
-                    animate = {{x: data ? "0%" : "100%"}}
-                    exit = {{x: "100%"}}
-                    transition = {{type: "spring", stiffness: 100, damping: 20}}
-                    className = "fixed right-0 top-0 h-full w-1/3 bg-gray-100 shadow-xl shadow-outline z-50 p-4 border-gray-500 border-solid border-accent-foreground overflow-auto"
+                    initial={{ x: "100%" }}
+                    animate={{ x: data ? "0%" : "100%" }}
+                    exit={{ x: "100%" }}
+                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                    className={
+                        "fixed right-0 top-0 h-full w-[650px] bg-gray-100 z-50 p-4 border-l-2 rounded-lg border-gray-400 shadow-[-8px_4px_30px_rgba(0,0,0,0.25)] overflow-auto"
+                    }
                 >
-                    {data ? (
-                        <section className="">
+                    { data ? (
+                        <section className="w-full">
+                            <div className="mx-auto w-full rounded-2xl px-5 mt-2 items-center p-1">
+                                <div className={'flex flex-row items-center w-full justify-center gap-4'}>
+                                    <div 
+                                    className={
+                                        'flex flex-col gap-2 items-center bg-gray-300 border-2 border-gray-300 shadow-lg py-1 px-3 rounded-xl justify-center'
+                                        }>
+                                        <h2 className={'font-bold'}>PROYECTO</h2>
+                                        <h1 className="text-center text-sky-800 rounded-2xl font-extrabold text-[15px]">
+                                          {data.titulo.toUpperCase()}
+                                        </h1>
+                                    </div>
+                                    <button
+                                        className="text-xl p-3 font-light flex align- rounded-2xl bg-gray-200 "
+                                        onClick={onClose}> <IoClose size='1.5em' color={'#B51300'} />
+                                    </button>
+                                </div>
+                            </div>
+                            <div className={'w-full h-[2px] bg-gray-400 mx-auto my-4'} />
+
                             
-                            <div className="mx-auto rounded-2xl flex align-middle p-5 w-fit">
-                                <div className="mx-auto felx align-middle w-fit flex flex-row gap-5">
-                                <h1 className="bg-sky-800 p-3 text-center text-xl text-white rounded-2xl">{data.titulo}</h1>
-                                <button
-                                    className="text-xl text-white p-3 font-light flex align-middle rounded-2xl bg-red-500"
-                                    onClick={onClose}> <IoClose size='1.5em' />
-                                </button>
-                            </div>
-                            </div>
-                            <div className="mt-5 flex flex-row gap-10 w-auto p-4 bg-gray-200 rounded-2xl">
-                                <section className="text-base">
-                                    <p className="mt-2"> <strong>Gestor: </strong></p>
-                                    <p className="mt-2"> <strong>Estado: </strong>  </p>
-                                    <p className="mt-2"> <strong>Avance: </strong></p>
-                                    <p className="mt-2"> <strong>Dias Activo: </strong></p>
-                                    <p className="mt-2"> <strong>Ruta CV: </strong></p>
-                                    <p className="mt-2"> <strong>Numero CITE: </strong></p>
-                                    <p className="mt-2"> <strong>Documento o Actividad: </strong></p>
-                                    <p className="mt-2"> <strong>Prioridad: </strong></p>
-                                    <p className="mt-2"> <strong>Oficina de Origen: </strong></p>
-                                    <p className="mt-2"> <strong>Ultima Actualizacion: </strong></p>
+                            <section className={'flex flex-col items-top bg-[#D8E1E8] rounded-2xl justify-between items-center shadow-xl border-2 border-[#D8E1E8] mb-4'}>
+                                    <section className={'pb-4 px-4 mt-2 w-full'}>
+                                        {/* Gestor */}
+                                        <section className={'flex flex-row mt-2 w-full gap-12'}>
+                                                    <div className={'text-center'}>
+                                                        <p className="mt-2"> <strong>Gestor : </strong></p>
+                                                    </div>
+                                                    <div className={'ml-10'}>
+                                                        <p className="mt-2">{fullName}</p>
+                                                    </div>
+                                        </section>
+                                        {/* Asignados */}
+                                        <section className={'flex flex-row mt-2 w-full gap-4 items-center'}>
+                                            <section className={'flex flex-row'}>
+                                                <div className={'text-center'}>
+                                                    <p className="mt-2"> <strong>Asignados: </strong></p>
+                                                </div>
+                                                {/* Asignados Form */}
+                                                <form 
+                                                    action=""
+                                                >
+                                                    <div className={'ml-16'}>
+                                                        {
+                                                            asignadosEdit ? (
+                                                                <Select
+                                                                    name={'asignadosEdit'}
+                                                                    options={userEditOptions}
+                                                                    value={slctEditUser}
+                                                                    onChange={addingEditUser}
+                                                                    isMulti={true}
+                                                                    isSearchable={true}
+                                                                    placeholder={'Seleccionar'}
+                                                                />
+                                                            ) : (
+                                                                <p 
+                                                                    className="mt-2 text-sky-800 font-bold">
+                                                                    {data.asignados.join(", ")}
+                                                                </p>
+                                                            )
+                                                        }
+                                                    </div>
+                                                </form>
+                                            </section>
+                                            <section className={''}>
+                                                {
+                                                    asignadosEdit ? (
+                                                        <section className={'flex flex-row items-center gap-2 text-lg'}>
+                                                            <button
+                                                                onClick={() => {
+                                                                    console.log('saving editing data');
+                                                                }}
+                                                                className={'flex flex-row items-center bg-sky-700 text-white p-1 rounded-md px-3'}
+                                                            >
+                                                                Reasignar
+                                                            </button>
+                                                            <button
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    asignedEditValue()
+                                                                }}
+                                                                className={'font-semibold text-red-800 rounded-2xl bg-gray-100 px-2'}
+                                                            >
+                                                                X
+                                                            </button>
+                                                        </section>
+                                                    ) : (
+                                                        <section className={'flex justify-start items-center'}>
+                                                                <HiOutlinePencilSquare 
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        asignedEditValue();
+                                                                    }}
+                                                                    color='#3570B8'
+                                                                    size={'1.5em'} 
+                                                                    className={"cursor-pointer"}
+                                                                />
+                                                        </section>   
+                                                    )
+                                                }
+                                            </section>
+                                        </section>
+                                    </section>
+                                
+                            </section>
+                            <section className='flex flex-col items-top bg-[#D8E1E8] rounded-2xl justify-between items-center shadow-xl border-2 border-[#D8E1E8]'>
+                                <section className="pb-4 px-4 mt-2 w-full">
+                                    <section className={'w-full mx-auto'}>
+                                            {/* Estado */}
+                                            {/* Body Form */}
+                                                <section className={'flex flex-row mt-2 gap-10 items-center'}>
+                                                    <div className={''}>
+                                                        <p className="mt-2"> <strong>Estado : </strong>  </p>
+                                                    </div>
+                                                    <input 
+                                                        type="text" 
+                                                        className={'hidden'}
+                                                        defaultValue={data.id}
+                                                        name='idProject'
+                                                    />
+                                                    <div className={'ml-12'}>
+                                                        {
+                                                            edit ? (
+                                                                <select
+                                                                    id={'estado'}
+                                                                    className={'mt-[10px] rounded-sm px-1 bg-white'}
+                                                                    name={'estadoEdit'}
+                                                                    >
+                                                                    <option value="" defaultChecked>
+                                                                        Seleccionar
+                                                                    </option>
+                                                                    <option value="activo">Activo</option>
+                                                                    <option value="cerrado">Cerrado</option>
+                                                                </select>
+                                                            ) : (
+                                                                <p className="mt-2">{statusFormal}</p>
+                                                            )
+                                                        }
+                                                    </div>
+                                                </section>
+                                                {/* Avance */}
+                                                <section className={'flex flex-row mt-2 gap-10 items-center'}>
+                                                    <div className={''}>
+                                                        <p className=""> <strong>Avance : </strong></p>
+                                                    </div>
+                                                    <div className={'ml-12'}>
+                                                        {
+                                                            edit ? (
+                                                                <select
+                                                                    id={'avance'}
+                                                                    className={'w-auto mt-[10px] rounded-sm px-1 bg-white'}
+                                                                    name='avanceEdit'
+                                                                    >
+                                                                    <option value="" defaultChecked>
+                                                                        Seleccionar
+                                                                    </option>
+                                                                    <option value="20">20</option>
+                                                                    <option value="40">40</option>
+                                                                    <option value="60">60</option>
+                                                                    <option value="80">80</option>
+                                                                    <option value="90">90</option>
+                                                                    <option value="completado">Completado</option>
+                                                                </select>
+                                                            ) : (
+                                                                <p className="">{data.avance} %</p>
+                                                            )
+                                                        }
+                                                    </div>
+                                                </section>
+                                                {/* Dias Activo */}
+                                                <section className={'flex flex-row gap-4'}>
+                                                    <div className={''}>
+                                                        <p className="mt-2"> <strong>Dias Activo : </strong></p>
+                                                    </div>
+                                                    <div className={'ml-10'}>
+                                                        <p className="mt-2">{data.diasActivo}</p>
+                                                    </div>
+                                                </section>
+                                                {/* Ruta Cv */}
+                                                <section className={'flex flex-row gap-10'}>
+                                                    <div className={'m-0'}>
+                                                        <p className="mt-2"> <strong>Ruta CV: </strong></p>
+                                                    </div>
+                                                    <div className={'w-auto ml-10'}>
+                                                        <p className="mt-2">{data.rutaCv}</p>
+                                                    </div>
+                                                </section>
+                                                {/* Numero Cite */}
+                                                <section className={'flex flex-row'}>
+                                                    <div>
+                                                        <p className="mt-2"> <strong>Numero CITE : </strong></p>
+                                                    </div>
+                                                    <div className={'ml-10'}>
+                                                        <p className="mt-2">{data.citeNumero}</p>
+                                                    </div>
+                                                </section>
+                                                {/* Tipo Documento */}
+                                                <section className={'flex flex-row'}>
+                                                    <div>
+                                                        <p className="mt-2"> <strong>Documento o<br /> Actividad : </strong></p>
+                                                    </div>
+                                                    <div className={'ml-12'}>
+                                                        {
+                                                            edit ? (
+                                                                <input
+                                                                    defaultValue={data.tipoDocumento}
+                                                                    type={'text'}
+                                                                    min={15}
+                                                                    max={100}
+                                                                    className={'rounded-sm px-1 bg-white w-auto h-auto mt-[10px]'}
+                                                                    name='documentoEdit'
+                                                                />
+                                                            ) : (
+                                                                <p className="mt-2">{data.tipoDocumento}</p>
+                                                            )
+                                                        }
+                                                    </div>
+                                                </section>
+                                                {/* Prioridad */}
+                                                <section className={'flex flex-row'}>
+                                                    <div>
+                                                        <p className="mt-2"> <strong>Prioridad : </strong></p>
+                                                    </div>
+                                                    <div className={'ml-[75px]'}>
+                                                        {
+                                                            edit ? (
+                                                                <select
+                                                                    id={'prioridad'}
+                                                                    className={'w-auto mt-[10px] rounded-sm px-1 bg-white'}
+                                                                    name='prioridadEdit'
+                                                                    >
+                                                                    <option value="" defaultChecked>
+                                                                        Seleccionar
+                                                                    </option>
+                                                                    <option value="urgente">Urgente</option>
+                                                                    <option value="media">Media</option>
+                                                                    <option value="baja">Baja</option>
+                                                                </select>
+                                                            ) : (
+                                                                <p className="mt-2">{data.prioridad}</p>
+                                                            )
+                                                        }
+                                                    </div>
+                                                </section>
+                                            
+                                                {/* Ofinica Origen */}
+                                                <section className={'flex flex-row'}>
+                                                    <div>
+                                                        <p className="mt-2"> <strong>Oficina de Origen : </strong></p>
+                                                    </div>
+                                                    <div className={'ml-6'}>
+                                                        <p className="mt-2">{data.oficinaOrigen}</p>
+                                                    </div>
+                                                </section>
+                                                {/* Ultima Act */}
+                                                <section className={'flex flex-row'}>
+                                                    <div>
+                                                        <p className="mt-2"> <strong>Ultima Actualizacion : </strong></p>
+                                                    </div>
+                                                    <div className={'ml-6'}>
+                                                        <p className="mt-2">{lastUpdated?.fechaCreacion ?? formattedDate}</p>
+                                                    </div>
+                                                </section>
+                                                {/*Aqui tendria que ir el form del resto del proyecto*/}
+                                                <section className={'my-4'}>
+                                                    {
+                                                        edit ? (
+                                                            <section 
+                                                            className={'flex flex-row items-center gap-8 text-lg'}>
+                                                                <button
+                                                                    type='submit'
+                                                                    onClick={dispatchFunction}
+                                                                    className={'flex flex-row items-center bg-sky-700 text-white p-1 rounded-md px-3'}
+                                                                >
+                                                                    Guardar
+                                                                    <FaSave color='#fff' size={'1.1em'} className={"ml-2"} />
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => {
+                                                                        editValue()
+                                                                    }}
+                                                                    className={'font-semibold text-red-800'}
+                                                                >
+                                                                    Cancelar
+                                                                </button>
+                                                            </section>
+                                                        ) : (
+                                                            <section className={'flex justify-start'}>
+                                                                <button
+                                                                    onClick={() => {
+                                                                        editValue();
+                                                                    }}
+                                                                    className={"flex bg-sky-700 rounded-xl p-2 font-semibold text-white"}
+                                                                >
+                                                                    Editar
+                                                                    <HiOutlinePencilSquare color='#fff' size={'1.2em'} className={"ml-2"} />
+                                                                </button>
+                                                            </section>
+                                                        )
+                                                    }
+                                                </section>
+                                    </section>
                                 </section>
-                                <section className="text-base">
-                                    <p className="mt-2">{data.gestor}</p>
-                                    <p className="mt-2">{data.estado}</p>
-                                    <p className="mt-2">{data.avance} %</p>
-                                    <p className="mt-2">{data.diasActivo}</p>
-                                    <p className="mt-2">{data.rutaCv}</p>
-                                    <p className="mt-2">{data.citeNumero}</p>
-                                    <p className="mt-2">{data.tipoDocumento}</p>
-                                    <p className="mt-2">{data.prioridad}</p>
-                                    <p className="mt-2">{data.oficinaOrigen}</p>
-                                    <p className="mt-2">{lastUpdated?.fechaCreacion ?? formattedDate}</p>
-                                </section>
-                            </div>
+                            </section>
+                            <div className={'w-full h-[2px] bg-gray-400 mx-auto mt-6'} />
                             <div
                                 key={state.success}
-                                className="mt-5 flex flex-col gap-3 p-4 bg-gray-100 rounded-2xl">
+                                className=" flex flex-col gap-3 mt-2 bg-gray-100 rounded-2xl">
                                 <div className="flex flex-col">
-                                    <h2><strong>Seguimiento: </strong></h2>
+                                    <h2><strong>Comentarios Proyecto : </strong></h2>
                                 </div>
                                 {
                                     newComment.length > 0 ?
                                         (
                                             sortedComments.map((comment, index) => (
-                                                
-                                                <div 
-                                                    key={comment.id ?? index} 
-                                                    className="w-full"
+
+                                                <div
+                                                    key={comment.id ?? index}
+                                                    className="w-full border-2 rounded-2xl border-gray-200 bg-gray-200 mt-2"
                                                 >
-                                                    <section 
-                                                        className="border-4 rounded-2xl shadow-lg bg-gray-100 p-3 break-all"
+                                                    <section
+                                                        className="rounded-2xl shadow-xl p-3 break-all"
                                                     >
-                                                        <section>
-                                                            <div dangerouslySetInnerHTML={{__html: links(comment.comments)}} />
+                                                        <p className="text-sm font-medium">
+                                                            <strong>{comment.autor}</strong>
+                                                        </p>
+                                                        <section className={'mt-2'}>
+                                                            <div dangerouslySetInnerHTML={{ __html: links(comment.comments) }} />
                                                         </section>
-                                                        <section className="flex place-content-between mt-3 font-thin">
-                                                            <p className="text-sm font-medium">
-                                                                <strong>{comment.autor}</strong>
-                                                            </p>
+                                                        <section className="flex place-content-end mt-3 font-thin">
                                                             <p className="text-sm font-medium"><strong>{comment.fechaCreacion}</strong></p>
                                                         </section>
                                                     </section>
@@ -216,7 +588,7 @@ export function ProjectModal({data, comments, onClose}: UserProjectModalProps) {
                                 </form>
                             </section>
                         </section>
-                    ) : null }
+                    ) : null}
                 </motion.aside>
             </section>
         </>

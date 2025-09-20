@@ -12,7 +12,9 @@ import ReportsProyectForm from "@/components/projects/ReportsProyectForm";
 import ToastNotification from "@/components/ui/ToastNotification";
 import { UserTokenType } from "@/src/schemas";
 
-export function ReportAction({user}: {user: UserTokenType}) {
+
+export function ReportAction({user, urlSafe}: {user: UserTokenType, urlSafe: string}) {
+    
     const [open, setOpen] = useState(false);
     const dialogRef = useRef(null);
 
@@ -76,12 +78,21 @@ export function ReportAction({user}: {user: UserTokenType}) {
                                     >
                                         <DialogPanel className="w-full max-w-5xl transform 
                                         overflow-hidden rounded-2xl bg-white text-left 
-                                        align-middle shadow-xl transition-all p-16">
-                                            <h1 className="font-bold text-xl">
-                                                Seleccionar Fechas - Reporte Proyectos
-                                            </h1>
+                                        align-middle shadow-xl transition-all px-4 py-6">
+                                            <section className={'flex flex-row justify-between'}>
+                                                <h1 className="font-bold text-xl">
+                                                    Seleccionar Fechas - Reporte Proyectos
+                                                </h1>
+                                                <button
+                                                    onClick={()=>{
+                                                        isClosed();
+                                                    }}
+                                                    className={'bg-red-500 font-semibold py-2 px-4 rounded-xl text-white'}>
+                                                    X
+                                                </button>
+                                            </section>
                                             <section>
-                                                <ReportsProyectForm user={user}/>
+                                                <ReportsProyectForm user={user} sfUrl={urlSafe}/>
                                             </section>
                                             <div className="mx-auto my-0 mt-5 flex justify-end">
                                                 <ToastNotification />

@@ -11,7 +11,7 @@ import Select, { MultiValue } from 'react-select'
 import { useDispatch } from 'react-redux'
 import { setValue } from "@/src/Store";
 
-type userOptions = {
+export type userOptions = {
   label: string,
   value: string
 }
@@ -31,7 +31,7 @@ export default function ProjectForm() {
   }
   const userOptions: userOptions[] = []
 
-  const addingUsers = ( userAdded:MultiValue<userOptions>) => {
+  const addingUsers = (userAdded:MultiValue<userOptions>) => {
     setSelectedUsers([...userAdded])
   }
 
@@ -76,7 +76,7 @@ export default function ProjectForm() {
             <div className="w-screen">
               <div className="flex flex-col gap-2">
                 <label className="font-bold text-lg mt-3" htmlFor="email">
-                  Titulo
+                  Titulo <span className={'font-bold text-sky-800'}>(Requerido)</span>
                 </label>
                 <input
                     id="titulo"
@@ -88,7 +88,7 @@ export default function ProjectForm() {
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-bold text-lg mt-3" htmlFor="facultad">
-                  Tipo de Documento
+                  Tipo de Documento <span className={'font-bold text-sky-800'}>(Requerido)</span>
                 </label>
                 <input
                     id='tipoDocumento'
@@ -100,12 +100,12 @@ export default function ProjectForm() {
               </div>
               <div className="font-bold text-lg mt-3">
                 <label className="font-bold text-lg mt-3" htmlFor="asigandos">
-                  Usuarios
+                  Usuarios <span className={'font-bold text-sky-800'}>(Máx. 4 Usuarios)</span>
                 </label>
                 <Select
                     name="asignados"
                     options = {userOptions}
-                    value={selectedUsers}
+                    value= {selectedUsers}
                     onChange={addingUsers}
                     className="w-full border border-gray-300 p-3 rounded-lg"
                     placeholder='Asignar Usuarios'
@@ -115,7 +115,7 @@ export default function ProjectForm() {
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-bold text-lg mt-3" htmlFor="estado">
-                  Estado
+                  Estado <span className={'font-bold text-sky-800'}>(Requerido)</span>
                 </label>
                 <select
                     name="estado"
@@ -132,7 +132,7 @@ export default function ProjectForm() {
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-bold text-lg mt-3" htmlFor="tipo">
-                  Tipo
+                  Tipo <span className={'font-bold text-sky-800'}>(Requerido)</span>
                 </label>
                 <select
                     name="tipo"
@@ -148,7 +148,7 @@ export default function ProjectForm() {
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-bold text-lg mt-3" htmlFor="prioridad">
-                  Prioridad
+                  Prioridad <span className={'font-bold text-sky-800'}>(Requerido)</span>
                 </label>
                 <select
                     name="prioridad"
@@ -167,7 +167,7 @@ export default function ProjectForm() {
             <div className="w-screen">
               <div className="flex flex-col gap-2">
                 <label className="font-bold text-lg mt-3" htmlFor="email">
-                  Cite Numero
+                  Cite Numero <span className={'font-bold text-red-800'}>(Obligatorio)</span>
                 </label>
                 <input
                     id="citeNumero"
@@ -180,14 +180,14 @@ export default function ProjectForm() {
               </div>
               <div className="flex flex-col gap-2">
                 <label className="font-bold text-lg mt-3" htmlFor="email">
-                  Ruta CV
+                  Ruta CV <span className={'font-bold text-red-800'}>(Obligatorio)</span>
                 </label>
                 <input
                     id="rutaCv"
                     type="number"
                     min={1}
                     placeholder="Ruta Cv"
-                    className="w-full border border-gray-300 p-3 rounded-lg appearance-none"
+                    className="w-full border border-gray-300 p-3 rounded-lg appearance-none no-arrows"
                     name="rutaCv"
                 />
               </div>

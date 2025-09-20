@@ -74,8 +74,17 @@ export function ProjectsActionsPage({user}: {user:User} ) {
                     leaveFrom="opacity-100 scale-100"
                     leaveTo="opacity-0 scale-95"
                   >
-                    <DialogPanel className="w-full max-w-5xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
-                      <h1 className="font-bold text-xl">Nuevo Proyecto</h1>
+                    <DialogPanel className="w-full max-w-5xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all px-8 py-5">
+                      <section className={'flex flex-row justify-between'}>
+                        <h1 className="font-bold text-xl">Nuevo Proyecto</h1>
+                        <button
+                            className={'bg-red-500 font-semibold py-2 px-4 rounded-xl text-white'}
+                            onClick={()=>{
+                              isClosed();
+                            }}
+                        >X</button>
+                      </section>
+
                       <section>
                           <ProjectForm />
                       </section>

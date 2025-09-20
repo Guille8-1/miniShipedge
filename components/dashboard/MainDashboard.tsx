@@ -2,20 +2,18 @@
 
 import { User } from "@/src/schemas";
 import { TiWarning } from "react-icons/ti";
+import { StatsDashboard } from './StatsDashboard'
 import { useRef } from "react";
 import Link from "next/link";
 
 export default function DashboardStart({ user }: { user: User }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const changedPw = !user.changedPw;
   setTimeout(() => {
-    if (changedPw) {
+    if (!user.changedPw) {
       dialogRef.current?.showModal();
     }
   }, 500);
-  const redirectToPw = () => {
-    console.log("redirecting to the pw change");
-  };
+
   return (
     <>
       <section>
@@ -32,7 +30,6 @@ export default function DashboardStart({ user }: { user: User }) {
               href={"/reset-password"}
               autoFocus={false}
               className="text-center p-2 w-1/2 mx-auto border-2 border-solid border-sky-700 bg-slate-100 rounded-md"
-              onClick={redirectToPw}
             >
               Restablecer Contraseña
             </Link>
@@ -50,6 +47,9 @@ export default function DashboardStart({ user }: { user: User }) {
           </p>
         </div>
       </div>
+      <section>
+        <StatsDashboard />
+      </section>    
     </>
   );
 }

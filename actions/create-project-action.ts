@@ -4,18 +4,19 @@ import { ErrorResponseSchema, SuccessSchema, CreateProjectSchema} from '@/src/sc
 import { verifySession } from '@/src/auth/dal'
 import { getUsersById } from "@/src/API/client-fetching-action";
 
-type ActionState = {
+export type ActionState = {
     errors: string[],
     success: string
 }
-type userIds = {
+export type userIds = {
     id:number
 }
+
 export async function createProject(prevState: ActionState, formData: FormData) {
     const { user, token } = await verifySession();
 
 
-    const userFullName: string = `${user.name} ${user.lastName}`
+    const userFullName: string = `${user.name} ${user.lastName}`;
 
     const newProject = {
         titulo: formData.get('titulo'),
@@ -28,14 +29,14 @@ export async function createProject(prevState: ActionState, formData: FormData) 
         rutaCv: formData.get('rutaCv'),
         oficinaOrigen: formData.get('oficinaOrigen')
     }
-    const projectValidation = CreateProjectSchema.safeParse(newProject)
+
+    const projectValidation = CreateProjectSchema.safeParse(newProject);
 
     const userIds:FormDataEntryValue[] = newProject.asignadosId;
     const callingForIds: userIds[] = await getUsersById(userIds);
-    console.log(callingForIds);
     const gettingUserIds =  callingForIds.map(forid => {
-        const {id} = forid
-        return id
+        const { id } = forid;
+        return id;
     })
 
 

@@ -8,7 +8,8 @@ import "dotenv";
 
 export default async function ProjectsPage() {
   const { user, token } = await verifySession();
-  const toGetReport = {...user, userToken: token}
+  const toGetReport = {...user, userToken: token};
+  const url: string = process.env.BACK_URL ?? '';
   
 
   return (
@@ -16,7 +17,7 @@ export default async function ProjectsPage() {
         <section className="h-auto">
             <section className='flex flex-row gap-5'>
                 <ProjectsActionsPage user={user} />
-                <ReportAction user={toGetReport} />
+                <ReportAction user={toGetReport}  urlSafe={url}/>
             </section>
             <TableProject user={user} />
         </section>

@@ -68,8 +68,17 @@ export function ActivityActionPage({ user }: { user: User }) {
                                         leaveFrom="opacity-100 scale-100"
                                         leaveTo="opacity-0 scale-95"
                                     >
-                                        <DialogPanel className="w-full max-w-5xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all p-16">
-                                            <h1 className="font-bold text-xl">Crear Nueva Actividad</h1>
+                                        <DialogPanel
+                                            className="w-1/2 max-w-5xl transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all py-6">
+                                            <section className={'flex flex-row justify-between w-3/4 mx-auto'}>
+                                                <h1 className="font-bold text-xl">Crear Nueva Actividad</h1>
+                                                <button
+                                                    onClick={()=>{
+                                                        isClosed();
+                                                    }}
+                                                    className={'text-white font-semibold bg-red-500 px-4 py-2 rounded-xl'}
+                                                >X</button>
+                                            </section>
                                             <section>
                                                 <ActivityForm />
                                             </section>

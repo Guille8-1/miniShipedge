@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { array, z } from "zod";
 
 export const SuccessSchema = z.string();
 export const ErrorResponseSchema = z.string();
@@ -55,9 +55,8 @@ export const CreateProjectSchema = z.object({
   tipoDocumento: z
     .string()
     .min(1, { message: "Tipo de Documento Obligatorio" }),
-  asignadosId: z.array(
-    z.string().min(1, { message: "Al menos 1 Asignado es Obligatorio" }),
-  ),
+  asignadosId: z.
+  array(z.string().min(1, { message: "Al menos 1 Asignado es Obligatorio" })).max(4,{message:'Numero de Asignados no Permitido'}),
   estado: z.string().min(1, { message: "Estado no Valido" }),
   tipo: z.string().min(1, { message: "Tipo no Valido" }),
   prioridad: z.string().min(1, { message: "Prioridad no Valida" }),
@@ -67,7 +66,14 @@ export const CreateProjectSchema = z.object({
     .string()
     .min(6, { message: "Oficina de Origen Obligatorio" }),
 });
-
+export const UpdateProjectsSchema = z.object({
+  // asignados: z.array(z.string().min(1,{message:"Al menos un Asignado es Obligatorio" })).max(4, {message:"Numero de Asingados no Permitido"}), 
+  id: z.string(),
+  estado: z.string().min(1, { message: "Estado no Valido" }),
+  avance: z.string().min(1, {message:'Estado requerido'}),
+  documento: z.string(),
+  prioridad: z.string().min(1, { message: "Prioridad no Valida" }),
+})
 export const ProjectSchemaResponse = z.object({
   id: z.number(),
   titulo: z.string(),
@@ -149,9 +155,9 @@ export const CommentsActivity = z.array(
 export const CreateActivitySchema = z.object({
   tituloActividad: z.string().min(5, { message: "titulo demsadio corto" }),
   categoriaActividad: z.string(),
-  asignadosActividadId: z.array(
-    z.string().min(1, { message: "Al menos 1 asignado es Obligatorio" }),
-  ),
+  asignadosActividadId: z.
+        array(z.string())
+        .max(4, {message:'Numero de Asignados no Permitido'}),
   estadoActividad: z.string().min(1, { message: "Estado No Valido" }),
   tipoActividad: z.string().min(1, { message: "Tipo de Actividad No Valida" }),
   oficinaOrigenActividad: z.string().min(1, { message: "Oficina No Valida" }),
@@ -209,14 +215,16 @@ export const ChangedPwSchema = z
     path: ["repeat_password"],
   });
 
+
+
 //exported types
-
 export type ActivityArrayType = z.infer<typeof ActivityArray>;
-
 export type ProjectArrayType = z.infer<typeof ProjectsFullArray>;
 
 //project type response
 export type ProjectTypes = z.infer<typeof ProjectSchemaResponse>;
+
+//activity type response
 export type ActivityTypes = z.infer<typeof ActivitySchemaResponse>;
 
 export type GetUserType = z.infer<typeof GetUsersSchema>;

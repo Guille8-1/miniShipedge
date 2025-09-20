@@ -5,7 +5,7 @@ import { UserTokenType } from '@/src/schemas';
 // import {useEffect, useState} from "react";
 import { format, subDays } from 'date-fns';
 
-export default function ReportsProyectForm({user}: {user: UserTokenType}) {
+export default function ReportsProyectForm({user, sfUrl}: {user: UserTokenType, sfUrl: string}) {
 
     const { id } = user
     const reportPetition = {
@@ -21,11 +21,9 @@ export default function ReportsProyectForm({user}: {user: UserTokenType}) {
     reportPetition.start = format(past30Days, 'yyyy-MM-dd');
     reportPetition.end = `${year}-${month}-${day}`;
 
-    console.log(reportPetition);
-
     const handleDownload = async () => {
         try {
-          const response = await fetch(`http://localhost:4000/reports/download`,{
+          const response = await fetch(`${sfUrl}/reports/download`,{
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -62,7 +60,7 @@ export default function ReportsProyectForm({user}: {user: UserTokenType}) {
                             className="bg-sky-700 text-white p-2 rounded-md hover:bg-sky-600 cursor-pointer"
                             onClick={(e)=>{
                                 e.preventDefault();
-                                handleDownload()
+                                handleDownload();
                             }}
                             type="submit"
                             value="30 Dias Anteriores"

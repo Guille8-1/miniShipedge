@@ -67,7 +67,7 @@ export const CreateProjectSchema = z.object({
     .min(6, { message: "Oficina de Origen Obligatorio" }),
 });
 export const UpdateProjectsSchema = z.object({
-  // asignados: z.array(z.string().min(1,{message:"Al menos un Asignado es Obligatorio" })).max(4, {message:"Numero de Asingados no Permitido"}), 
+  asignados: z.array(z.string().min(1,{message:"Al menos un Asignado es Obligatorio" })).max(4, {message:"Numero de Asingados no Permitido"}), 
   id: z.string(),
   estado: z.string().min(1, { message: "Estado no Valido" }),
   avance: z.string().min(1, {message:'Estado requerido'}),

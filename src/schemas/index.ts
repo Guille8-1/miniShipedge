@@ -1,4 +1,4 @@
-import { array, z } from "zod";
+import { z } from "zod";
 
 export const SuccessSchema = z.string();
 export const ErrorResponseSchema = z.string();
@@ -66,11 +66,16 @@ export const CreateProjectSchema = z.object({
     .string()
     .min(6, { message: "Oficina de Origen Obligatorio" }),
 });
+
+export const UpdateProjectAssigness = z.object({
+  id: z.string(),
+  editAssing: z.
+  array(z.string().min(1, { message: "Al menos 1 Asignado es Obligatorio" })).max(4,{message:'Numero de Asignados no Permitido'}),
+})
 export const UpdateProjectsSchema = z.object({
-  asignados: z.array(z.string().min(1,{message:"Al menos un Asignado es Obligatorio" })).max(4, {message:"Numero de Asingados no Permitido"}), 
   id: z.string(),
   estado: z.string().min(1, { message: "Estado no Valido" }),
-  avance: z.string().min(1, {message:'Estado requerido'}),
+  avance: z.string().min(1, {message:'Avance requerido'}),
   documento: z.string(),
   prioridad: z.string().min(1, { message: "Prioridad no Valida" }),
 })

@@ -13,7 +13,8 @@ import { GetUserType } from "@/src/schemas";
 import { getDataUser } from "@/src/API/client-fetching-action";
 import Select, { MultiValue } from "react-select";
 import { type userOptions } from "@/components/projects/CreateProjectForm";
-import { updateProject } from '@/actions/update-project-action';
+import { updateProject, updateAssigned } from '@/actions/update-project-action';
+import { error } from 'console';
 
 
 
@@ -168,8 +169,6 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
         fetchEditUsers().then();
     }, []);
 
-
-
     for (const userEdit of users) {
         const { nombre, apellido } = userEdit;
         const label = `${nombre} ${apellido}`;
@@ -187,16 +186,37 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
     useEffect(()=>{
         if(editState.errors){
             editState.errors.forEach((error: string)=>{
-                toast(error)
+                toast.error(error)
             })
         }
-    },[])
+    },[editState]);
 
     useEffect(()=>{
         if(editState.success){
-            toast(editState.success)
+            toast.success(editState.success)
+            editValue()
         }
-    },[])
+    },[editState]);
+
+    const [assignState, assigDispatch] = useActionState(updateAssigned,{
+        errors: [],
+        success: ""
+    })
+
+    useEffect(()=>{
+        if(assignState.errors){
+            assignState.errors.forEach((error: string)=>{
+                toast.error(error)
+            })
+        }
+    },[assignState])
+
+    useEffect(()=>{
+        if(assignState.success){
+            toast.success(assignState.success);
+            asignedEditValue()
+        }
+    },[assignState])
 
 
     return (
@@ -252,45 +272,48 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
                                                     </div>
                                         </section>
                                         {/* Asignados */}
-                                        <section className={'flex flex-row mt-2 w-full gap-4 items-center'}>
+                                        <form 
+                                            className={'flex flex-row mt-2 w-full gap-4 items-center'}
+                                            action={assigDispatch}
+                                            >
                                             <section className={'flex flex-row'}>
                                                 <div className={'text-center'}>
                                                     <p className="mt-2"> <strong>Asignados: </strong></p>
                                                 </div>
                                                 {/* Asignados Form */}
-                                                <form 
-                                                    action=""
-                                                >
-                                                    <div className={'ml-16'}>
-                                                        {
-                                                            asignadosEdit ? (
-                                                                <Select
-                                                                    name={'asignadosEdit'}
-                                                                    options={userEditOptions}
-                                                                    value={slctEditUser}
-                                                                    onChange={addingEditUser}
-                                                                    isMulti={true}
-                                                                    isSearchable={true}
-                                                                    placeholder={'Seleccionar'}
-                                                                />
-                                                            ) : (
-                                                                <p 
-                                                                    className="mt-2 text-sky-800 font-bold">
-                                                                    {data.asignados.join(", ")}
-                                                                </p>
-                                                            )
-                                                        }
-                                                    </div>
-                                                </form>
+                                                <input
+                                                    className={'hidden'}
+                                                    defaultValue={data.id}
+                                                    name='idProject'
+                                                />
+                                                <div className={'ml-16'}>
+                                                    {
+                                                        asignadosEdit ? (
+                                                            <Select
+                                                                name={'usersEdit'}
+                                                                options={userEditOptions}
+                                                                value={slctEditUser}
+                                                                onChange={addingEditUser}
+                                                                isMulti={true}
+                                                                isSearchable={true}
+                                                                placeholder={'Seleccionar'}
+                                                                className={'cursor-pointer'}
+                                                            />
+                                                        ) : (
+                                                            <p 
+                                                                className="mt-2 text-sky-800 font-bold">
+                                                                {data.asignados.join(", ")}
+                                                            </p>
+                                                        )
+                                                    }
+                                                </div>
                                             </section>
                                             <section className={''}>
                                                 {
                                                     asignadosEdit ? (
                                                         <section className={'flex flex-row items-center gap-2 text-lg'}>
                                                             <button
-                                                                onClick={() => {
-                                                                    console.log('saving editing data');
-                                                                }}
+                                                                onClick={dispatchFunction}
                                                                 className={'flex flex-row items-center bg-sky-700 text-white p-1 rounded-md px-3'}
                                                             >
                                                                 Reasignar
@@ -320,11 +343,14 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
                                                     )
                                                 }
                                             </section>
-                                        </section>
+                                        </form>
                                     </section>
                                 
                             </section>
-                            <section className='flex flex-col items-top bg-[#D8E1E8] rounded-2xl justify-between items-center shadow-xl border-2 border-[#D8E1E8]'>
+                            <form 
+                                className='flex flex-col items-top bg-[#D8E1E8] rounded-2xl justify-between items-center shadow-xl border-2 border-[#D8E1E8]'
+                                action={editDispatch}
+                            >
                                 <section className="pb-4 px-4 mt-2 w-full">
                                     <section className={'w-full mx-auto'}>
                                             {/* Estado */}
@@ -369,7 +395,7 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
                                                             edit ? (
                                                                 <select
                                                                     id={'avance'}
-                                                                    className={'w-auto mt-[10px] rounded-sm px-1 bg-white'}
+                                                                    className={'w-auto rounded-sm px-1 bg-white'}
                                                                     name='avanceEdit'
                                                                     >
                                                                     <option value="" defaultChecked>
@@ -497,7 +523,8 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
                                                                     <FaSave color='#fff' size={'1.1em'} className={"ml-2"} />
                                                                 </button>
                                                                 <button
-                                                                    onClick={() => {
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
                                                                         editValue()
                                                                     }}
                                                                     className={'font-semibold text-red-800'}
@@ -508,7 +535,8 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
                                                         ) : (
                                                             <section className={'flex justify-start'}>
                                                                 <button
-                                                                    onClick={() => {
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
                                                                         editValue();
                                                                     }}
                                                                     className={"flex bg-sky-700 rounded-xl p-2 font-semibold text-white"}
@@ -522,7 +550,7 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
                                                 </section>
                                     </section>
                                 </section>
-                            </section>
+                            </form>
                             <div className={'w-full h-[2px] bg-gray-400 mx-auto mt-6'} />
                             <div
                                 key={state.success}

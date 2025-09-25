@@ -1,17 +1,19 @@
 "use server"
 
-import {GetUsersSchema, UserArray ,ProjectsFullArray, ActivityArray} from "@/src/schemas"
-import 'dotenv/config'
+import {GetUsersSchema, UserArray ,ProjectsFullArray, ActivityArray} from "@/src/schemas";
+import 'dotenv/config';
 import {verifySession} from "@/src/auth/dal";
+import { resolverGetApi } from "./resolverGetMethod";
 
 
 export async function getDataUser () {
-    const {token} = await verifySession()
+    const {token} = await verifySession();
+    const key = await resolverGetApi();
 
     const url: string = `${process.env.BACK_URL}/users/assigned`
     const request = await fetch(url,{
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${key}`,
         }
     })
     const json = await request.json()

@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/table"
 
 
-import {useState} from "react";
+import { useState } from "react";
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
@@ -103,7 +103,7 @@ export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TDat
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {table.getRowModel().rows?? 0 ? (
                             table.getRowModel().rows.map((row) => {
                                 const isSelected = row.getIsSelected()
                                 return (
@@ -126,7 +126,8 @@ export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TDat
                             })
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                <TableCell
+                                    colSpan={columns.length} className="h-24 text-center">
                                     <h1 className="font-bold">Proyectos No Encontrados</h1>
                                 </TableCell>
                             </TableRow>

@@ -3,17 +3,17 @@
 import {GetUsersSchema, UserArray ,ProjectsFullArray, ActivityArray} from "@/src/schemas";
 import 'dotenv/config';
 import {verifySession} from "@/src/auth/dal";
-import { resolverGetApi } from "./resolverGetMethod";
+
 
 
 export async function getDataUser () {
     const {token} = await verifySession();
-    const key = await resolverGetApi();
+    
 
     const url: string = `${process.env.BACK_URL}/users/assigned`
     const request = await fetch(url,{
         headers: {
-            'Authorization': `Bearer ${key}`,
+            'Authorization': `Bearer ${token}`,
         }
     })
     const json = await request.json()

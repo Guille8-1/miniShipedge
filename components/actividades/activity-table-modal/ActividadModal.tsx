@@ -58,14 +58,14 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
     const linkfy = (comment: string): string => {
         const urlRegex = /((https?:\/\/)?(www\.)?[\w-]+\.[a-z]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)?)/gi;
         return comment.replace(urlRegex, (url) => {
-        const href = url.startsWith('http') ? url : `https://${url}`;
-          return `<a href="${href}" target="_blank" class="text-blue-500 underline">${url}</a>`;
+            const href = url.startsWith('http') ? url : `https://${url}`;
+            return `<a href="${href}" target="_blank" class="text-blue-500 underline">${url}</a>`;
         });
     }
 
     const links = (textComment: string): string => {
-        const raw =  linkfy(textComment)
-        return sanitizeHtml(raw,{
+        const raw = linkfy(textComment)
+        return sanitizeHtml(raw, {
             allowedTags: ['a'],
             allowedAttributes: {
                 a: ['href', 'target', 'class']
@@ -106,10 +106,10 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
     const [bodyEdit, setBodyEdit] = useState<boolean>(false);
 
     const switchEdit = () => {
-      setBodyEdit(true);
-      if(bodyEdit){
-        setBodyEdit(false);
-      }
+        setBodyEdit(true);
+        if (bodyEdit) {
+            setBodyEdit(false);
+        }
     }
 
     return (
@@ -132,80 +132,91 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
                     {data ? (
                         <section className="">
                             <div className="mx-auto py-2 align-middle p-5 mt-4 w-fit flex flex-row gap-5 itmes-center">
-                                  <div className='flex flex-col bg-gray-300 items-center rounded-2xl px-4 py-1 shadow-xl border-gray-300 border-2'>
-                                  <h1>Proyecto</h1>
+                                <div className='flex flex-col bg-gray-300 items-center rounded-2xl px-4 py-1 shadow-xl border-gray-300 border-2'>
+                                    <h1>Proyecto</h1>
 
                                     <h2
-                                    className="font-bold text-center text-xl text-sky-800 rounded-2xl">
-                                      {data.tituloActividad}
+                                        className="font-bold text-center text-xl text-sky-800 rounded-2xl">
+                                        {data.tituloActividad}
                                     </h2>
-                                  </div>
+                                </div>
                                 <button
                                     className="text-xl text-white px-2 py-3 font-light flex align-middle items-center rounded-2xl bg-red-400"
                                     onClick={onClose}> <IoClose size='25px' />
                                 </button>
                             </div>
-                            <div className='w-full h-[2px] bg-gray-400 mt-4'/>
+                            <div className='w-full h-[2px] bg-gray-400 mt-4' />
                             <div className="mt-2 flex flex-col w-auto p-4 rounded-2xl">
-                              <section className='bg-gray-200 rounded-2xl px-4 py-2 flex flex-row gap-10 shadow-lg'>
-                                  <div>
-                                    <p className="mt-2"> <strong>Gestor : </strong></p>
-                                    <p className="mt-2"> <strong>Asignados : </strong></p>
-                                  </div>
-                                  <div>
-                                    <p className="mt-2"> {data.gestorActividad}</p>
-                                    <p className="mt-2 text-sky-800 font-bold">{data.asignadosActividad.join(", ")}</p>
-                                  </div>
-                              </section>
-                              <section className=" bg-gray-200 px-4 py-2 rounded-2xl mt-6 shadow-lg">
-                                  <section className='flex flex-row gap-10'>
-                                    <section className="text-base">
-                                        <p className="mt-2"> <strong>Estado : </strong>  </p>
-                                        <p className="mt-2"> <strong>Avance : </strong></p>
-                                        <p className="mt-2"> <strong>Dias Activo : </strong></p>
-                                        <p className="mt-2"> <strong>Prioridad : </strong></p>
-                                        <p className="mt-2"> <strong>Oficina de Origen : </strong></p>
-                                        <p className="mt-2"> <strong>Categoria Actividad : </strong></p>
-                                        <p className="mt-2"> <strong>Ultima Actualizacion : </strong></p>
+                                <form action="">
+                                    <section className='bg-gray-200 rounded-2xl px-4 py-2 flex flex-row gap-10 shadow-lg'>
+                                        <div>
+                                            <p className="mt-2"> <strong>Gestor : </strong></p>
+                                            <p className="mt-2"> <strong>Asignados : </strong></p>
+                                        </div>
+                                        <div>
+                                            <p className="mt-2"> {data.gestorActividad}</p>
+                                            <p className="mt-2 text-sky-800 font-bold">{data.asignadosActividad.join(", ")}</p>
+                                        </div>
                                     </section>
-                                    <section className="text-base">
-                                        <p className="mt-2">{data.estadoActividad}</p>
-                                        <p className="mt-2">{data.avanceActividad} %</p>
-                                        <p className="mt-2">{data.diasActivoActividad}</p>
-                                        <p className="mt-2">{data.prioridadActividad}</p>
-                                        <p className="mt-2">{data.oficinaOrigenActividad}</p>
-                                        <p className="mt-2">{data.categoriaActividad ?? 'Sin Categoria'}</p>
-                                        <p className="mt-2">{lastUpdated?.fechaCreacion ?? formattedDate}</p>
+                                </form>
+                                <section className=" bg-gray-200 px-4 py-2 rounded-2xl mt-6 shadow-lg">
+                                    <section className='flex flex-row gap-10'>
+                                        <section className="text-base">
+                                            <p className="mt-2"> <strong>Estado : </strong>  </p>
+                                            <p className="mt-2"> <strong>Avance : </strong></p>
+                                            <p className="mt-2"> <strong>Dias Activo : </strong></p>
+                                            <p className="mt-2"> <strong>Prioridad : </strong></p>
+                                            <p className="mt-2"> <strong>Oficina de Origen : </strong></p>
+                                            <p className="mt-2"> <strong>Categoria Actividad : </strong></p>
+                                            <p className="mt-2"> <strong>Ultima Actualizacion : </strong></p>
+                                        </section>
+                                        <form action="">
+                                            <section className="text-base">
+                                                {
+                                                    bodyEdit ? (
+                                                            <input type="text" defaultValue={data.estadoActividad} className='w-[150px] px-2 rounded-lg mt-2' />
+                                                        ) : (
+                                                            <p className="mt-2">{data.estadoActividad}</p>
+                                                    )
+                                                }
+                                                
+                                                <p className="mt-2">{data.avanceActividad} %</p>
+                                                <p className="mt-2">{data.diasActivoActividad}</p>
+                                                <p className="mt-2">{data.prioridadActividad}</p>
+                                                <p className="mt-2">{data.oficinaOrigenActividad}</p>
+                                                <p className="mt-2">{data.categoriaActividad ?? 'Sin Categoria'}</p>
+                                                <p className="mt-2">{lastUpdated?.fechaCreacion ?? formattedDate}</p>
+                                            </section>
+                                        </form>
                                     </section>
-                                  </section>
-                                  {
-                                    bodyEdit ? (
-                                  <section className='flex flex-row mt-2 gap-5'>
-                                      <button 
-                                      onClick={()=>{
-                                        console.log('sending edit activity data');
-                                      }}
-                                      className='flex flex-row text-white bg-sky-800 p-2 rounded-lg'>
-                                        Guardar
-                                      </button>
-                                      <button 
-                                      onClick={switchEdit}
-                                      className='text-red-400 font-bold'>
-                                        cancelar
-                                      </button>
-                                  </section>
-                                    ) : (
-                                    <button 
-                                    onClick={switchEdit}
-                                    className='rounded-lg p-2 text-white bg-sky-800 mt-2'>
-                                    Editar
-                                    </button>
-                                    )
-                                  }
-                              </section>
+                                    {
+                                        bodyEdit ? (
+                                            <section className='flex flex-row mt-2 gap-5'>
+                                                <button
+                                                    onClick={() => {
+                                                        console.log('sending edit activity data');
+                                                    }}
+                                                    className='flex flex-row text-white bg-sky-800 p-2 rounded-lg'>
+                                                    Guardar
+                                                </button>
+                                                <button
+                                                    onClick={switchEdit}
+                                                    className='text-red-400 font-bold'>
+                                                    cancelar
+                                                </button>
+                                            </section>
+                                        ) : (
+                                            <button
+                                                onClick={switchEdit}
+                                                className='rounded-lg p-2 text-white bg-sky-800 mt-2'>
+                                                Editar
+                                            </button>
+                                        )
+                                    }
+                                </section>
                             </div>
 
-                            <div className='w-full h-[2px] bg-gray-400 mt-4'/>
+                            <div className='w-full h-[2px] bg-gray-400 mt-4' />
                             <div
                                 key={state.success}
                                 className="mt-5 flex flex-col gap-3 p-4 bg-gray-100 rounded-2xl">
@@ -216,22 +227,22 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
                                     newComment.length > 0 ?
                                         (
                                             sortedComments.map((comment, index) => (
-                                                <div 
-                                                    key={comment.id ?? index} 
+                                                <div
+                                                    key={comment.id ?? index}
                                                     className="w-full break-all"
                                                 >
-                                                    <section 
+                                                    <section
                                                         className="border-4 rounded-2xl shadow-lg bg-gray-100 p-3 break-all"
                                                     >
-                                                        <section 
+                                                        <section
                                                             className='break-all flex flex-col gap-2'
                                                         >
                                                             <p className="text-[18px] font-medium">
                                                                 <strong>{comment.autor}</strong>
                                                             </p>
-                                                            <div 
+                                                            <div
                                                                 className='text-[19px]'
-                                                                dangerouslySetInnerHTML={{__html: links(comment.comentario)}}
+                                                                dangerouslySetInnerHTML={{ __html: links(comment.comentario) }}
                                                             />
                                                         </section>
                                                         <section className="flex place-content-end mt-3">

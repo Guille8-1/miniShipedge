@@ -1,303 +1,307 @@
-const style = document.createElement("style");
+const playervid = document.getElementById('videop');
+console.log('testing')
+console.log('test', playervid)
 
-style.textContent = `
-  .toggle-container {
-    padding-left: 2em;
-    padding-right: 2em;
-  }
-
-  .switch {
-    position: relative;
-    display: flex;
-    cursor: pointer;
-    width:auto;
-    height:auto;
-    border: solid 0.8px;
-    border-radius: 20px;
-    border-color: #0060Aa;
-  }
-
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    position: absolute;
-  }
-
-  .slider {
-    display: inline-block;
-    padding: 0.4rem 1rem;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: bold;
-    background-color: #EAF0F6;
-    transition: background-color 0.3s ease;
-    user-select: none; 
-    font-size: 15px;
-  }
-
-  .slider::before {
-      position: absolute;
-      content: "";
-      height: 26px; width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: 0.4s;
-      border-radius: 50%;
-    }
-
-  .switch input:checked + .slider {
-      background-color: #0060a8;
-    }
-
-    .switch input:checked + .slider::before {
-      transform: translateX(26px);
-    }
-
-    .status {
-      margin-left: 15px;
-      font-family: sans-serif;
-      font-size: 1.2em;
-    }
-
-    .options-container {
-      display: flex;
-      flex-direction: row;
-      justify-items: space-between;
-    }
-`;
-
-document.head.appendChild(style);
-
-
-const container = document.querySelectorAll('.toggle-container');
-
-
-container.forEach((container, index) => {
-  const label = document.createElement("label");
-  label.className = "switch";
-
-  const input = document.createElement('input');
-  input.type = "checkbox";
-  input.id = `toggle-${index}`;
-
-  const slider = document.createElement('span');
-  slider.className = "slider";
-  
-  label.appendChild(input);
-  label.appendChild(slider);
-  container.appendChild(label);
-  
-  const prices = document.querySelector(`.price${index}`);
-
-  const setUpPrices = ['$199<span class="heading-style-h5-6">/mo</span>', '$579<span class="heading-style-h5-6">/mo</span>'];
-  const basedPrices = ['$59<span class="heading-style-h5-6">/mo</span>', '$329<span class="heading-style-h5-6">/mo</span>'];
-
-  input.addEventListener("change", () => {
-      if(prices){
-        prices.innerHTML = input.checked ? setUpPrices[index] : basedPrices[index];
-      }
-  })
-})
-const container1 = document.getElementById('tog-ct-1');
-
-const optContainer = document.createElement('div');
-optContainer.className = 'options-container';
-
-const opt1 = document.createElement('p');
-opt1.className = `option-1`;
-opt1.id = 'opt1';
-opt1.textContent = 'option1';
-  
-const opt2 = document.createElement('p');
-opt2.className = `option-1`;
-opt2.id = 'opt2';
-opt2.textContent = 'option2';
-
-optContainer.appendChild(opt1);
-optContainer.appendChild(opt2);
-container1.appendChild(optContainer);
-
-const detailsButton = document.querySelectorAll('.see-details_button').forEach((button)=>{
-  button.addEventListener('click', () => {
-
-      setTimeout(()=>{
-          const navHeight = document.querySelector('.w-nav').clientHeight + 35;
-          const target = document.querySelector('.pricing22_top-row');
-
-          if(target){
-            const targetPos = target.getBoundingClientRect().top + window.scrollY;
-                  const offset = targetPos - navHeight;
-                  window.scroll({
-                    top: offset,
-                    behavior: 'smooth'
-                  });
-          }
-        }, 200)
-      })
-})
-
-const containerTable = document.querySelectorAll('.toggle-container_menu');
-
-containerTable.forEach((container, index) => {
-  console.log(index);
-  const label = document.createElement("label");
-  label.className = "switch";
-
-  const input = document.createElement('input');
-  input.type = "checkbox";
-  input.id = `toggle-menu_${index}`;
-
-  const slider = document.createElement('span');
-  slider.className = "slider";
-  slider.textContent = 'Upgrade +';
-  
-  label.appendChild(input);
-  label.appendChild(slider);
-  container.appendChild(label);
-
-  const prices = document.querySelector(`.prices-menu${index}`);
-
-  const setUpPrices = ['$199<span class="heading-style-h5-6">/mo</span>', '$579<span class="heading-style-h5-6">/mo</span>'];
-  const basedPrices = ['$59<span class="heading-style-h5-6">/mo</span>', '$329<span class="heading-style-h5-6">/mo</span>'];
-
-  input.addEventListener("change", () => {
-      if(prices){
-        prices.innerHTML = input.checked ? setUpPrices[index] : basedPrices[index];
-      }
-  })
-})
-const starter = document.getElementById('starter');
-starter.href = 'http://edge01f.shipedge.com/payment/request/A1'
-starter.target = '_blank';
-
-const standard = document.getElementById('standard');
-
-standard.href = 'http://edge01f.shipedge.com/payment/request/B1';
-standard.target = '_blank';
-
-const professional = document.getElementById('profesional');
-
-profesional.href = 'http://edge01f.shipedge.com/payment/request/C1';
-profesional.target = '_blank';
-
-//Esta parte para los links de pago (Edwin)
-const startText = document.querySelector('.starter');
-const starterToggle = document.getElementById('toggle-0');
-const starterUsers = document.querySelector('.starter-user');
-const starterNo = document.querySelector('.starter-users-no');
-const starterSkus = document.querySelector('.act-skus_starter');
-const starterPlus = document.querySelector('.starter-plus');
-
-starterToggle.addEventListener('change', () => {
-
-  startText.textContent = starterToggle.checked ? 'Starter +' : 'Starter';
-  starter.href = starterToggle.checked ? 'https://edge01f.shipedge.com/payment/request/A2' : 'https://edge01f.shipedge.com/payment/request/A1';
-  starterUsers.textContent = starterToggle.checked ? '2' : '1';
-  starterNo.textContent = starterToggle.checked ? 'users' : 'user';
-  starterSkus.textContent = starterToggle.checked ? '500 Active Skus' : '100 Active Skus';
-  starterPlus.textContent = starterToggle.checked ? `Starter + `:`Starter `;
-
-  starterPlus.style.color = '#0060a8';
-  starterPlus.style.fontWeight = 'bold';
-
-  if(!starterToggle.checked){
-    starterPlus.style.color = '#000';
-    starterPlus.style.fontWeight = 'normal';
-  }
-});
-
-const standardText = document.querySelector('.standard');
-const standardToggle = document.getElementById('toggle-1');
-const standardUsers = document.querySelector('.standard-users');
-const standardNo = document.querySelector('.standard-users-no');
-const standardSkus = document.querySelector('.act-skus-standard');
-const standardPlus = document.querySelector('.standard-plus');
-
-standardToggle.addEventListener('change', ()=>{
-  standardText.textContent = standardToggle.checked ? 'Standard +' : 'Standard';
-  standard.href = standardToggle.checked ? 'https://edge01f.shipedge.com/payment/request/B2' : 'https://edge01f.shipedge.com/payment/request/B1';
-  standardUsers.textContent = standardToggle.checked ? '10' : '5';
-  standardNo.textContent = standardToggle.checked ? 'users' : 'user';
-  standardSkus.textContent = standardToggle.checked ? '5000 Active SKUs' : '2500 Active SKUs';
-  standardPlus.textContent = standardToggle.checked ? `Standard + `: `Standard `;
-
-  standardPlus.style.color = '#0060a8';
-  standardPlus.style.fontWeight = 'bold';
-
-  if(!standardToggle.checked){
-    standardPlus.style.color = '#000'
-    standardPlus.style.fontWeight = 'normal';
-  };
-});
-
-const starterTable = document.querySelector('.starter-table');
-const starterTableToggle = document.getElementById('toggle-menu_0');
-const starterIntro = document.querySelector('.starter_intro');
-const numberUser = document.querySelector('.starter-table-user');
-const numberUserTable = document.querySelector('.starter-table-no');
-const actTableSkus = document.querySelector('.starter-table-act_skus');
-const basicRegister = document.getElementById('starter1');
-
-basicRegister.href = 'https://edge01f.shipedge.com/payment/request/A1';
-basicRegister.target = '_blank';
-
-starterTableToggle.addEventListener('change', ()=> {
-  starterTable.textContent = starterTableToggle.checked ? 'Starter +': 'Starter';
-  numberUser.textContent = starterTableToggle.checked ? '2':'1';
-  numberUserTable.textContent = starterTableToggle.checked ? 'users':'user';
-  actTableSkus.textContent = starterTableToggle.checked ? '500 Active Skus' : '100 Active Skus';
-  basicRegister.href = starterTableToggle.checked ? 'https://edge01f.shipedge.com/payment/request/A2' : 'https://edge01f.shipedge.com/payment/request/A1';
-  starterIntro.textContent = starterTableToggle.checked ? 'Starter + ': 'Starter ';
-  
-  starterIntro.style.color = '#0060a8';
-  starterIntro.style.fontWeight = 'bold';
-
-  if(!starterTableToggle.checked){
-    starterIntro.style.color = '#000';
-    starterIntro.style.fontWeight = 'normal';
-  }
-});
-
-
-const standardTable = document.querySelector('.standard-table');
-const standardUser = document.querySelector('.standard-table_user');
-const actTableStandardSkus = document.querySelector('.standard-skus_act');
-const standardTableToggle = document.getElementById('toggle-menu_1');
-const standardRegister = document.getElementById('starter2');
-const standardIntro = document.querySelector('.standard_intro');
-
-standardRegister.href = 'https://edge01f.shipedge.com/payment/request/B1';
-
-standardTableToggle.addEventListener('change', ()=> {
-  standardTable.textContent = standardTableToggle.checked ? 'Standard +': 'Standard';
-  standardUser.textContent = standardTableToggle.checked ? '10' : '5';
-  actTableStandardSkus.textContent = standardTableToggle.checked ? '5000 Active SKUs' : '2500 Active SKUs';
-  standardRegister.href = standardTableToggle.checked ? 'https://edge01f.shipedge.com/payment/request/B2' : 'https://edge01f.shipedge.com/payment/request/B1';
-  standardIntro.textContent = standardTableToggle.checked ? 'Standard + ' : 'Standard ';
-  
-  standardIntro.style.color = '#0060a8';
-  standardIntro.style.fontWeight = 'bold';
-
-  if(!standardTableToggle.checked){
-    standardIntro.style.color = '#000';
-    standardIntro.style.fontWeight = 'normal';
-  }
- })
-
-const tableBasic = document.getElementById('starter0');
-tableBasic.href = 'https://edge01f.shipedge.com/';
-tableBasic.target = '_blank';
-
-const cardsBasic = document.getElementById('basic');
-cardsBasic.href = 'https://edge01f.shipedge.com/';
-cardsBasic.target = '_blank';
-
-const tableProLevel = document.getElementById('starter3');
-tableProLevel.href = 'http://edge01f.shipedge.com/payment/request/C1'
-tableProLevel.target = '_blank';
-
+// const style = document.createElement("style");
+//
+// style.textContent = `
+//   .toggle-container {
+//     padding-left: 2em;
+//     padding-right: 2em;
+//   }
+//
+//   .switch {
+//     position: relative;
+//     display: flex;
+//     cursor: pointer;
+//     width:auto;
+//     height:auto;
+//     border: solid 0.8px;
+//     border-radius: 20px;
+//     border-color: #0060Aa;
+//   }
+//
+//   .switch input {
+//     opacity: 0;
+//     width: 0;
+//     height: 0;
+//     position: absolute;
+//   }
+//
+//   .slider {
+//     display: inline-block;
+//     padding: 0.4rem 1rem;
+//     border-radius: 999px;
+//     font-size: 14px;
+//     font-weight: bold;
+//     background-color: #EAF0F6;
+//     transition: background-color 0.3s ease;
+//     user-select: none; 
+//     font-size: 15px;
+//   }
+//
+//   .slider::before {
+//       position: absolute;
+//       content: "";
+//       height: 26px; width: 26px;
+//       left: 4px;
+//       bottom: 4px;
+//       background-color: white;
+//       transition: 0.4s;
+//       border-radius: 50%;
+//     }
+//
+//   .switch input:checked + .slider {
+//       background-color: #0060a8;
+//     }
+//
+//     .switch input:checked + .slider::before {
+//       transform: translateX(26px);
+//     }
+//
+//     .status {
+//       margin-left: 15px;
+//       font-family: sans-serif;
+//       font-size: 1.2em;
+//     }
+//
+//     .options-container {
+//       display: flex;
+//       flex-direction: row;
+//       justify-items: space-between;
+//     }
+// `;
+//
+// document.head.appendChild(style);
+//
+//
+// const container = document.querySelectorAll('.toggle-container');
+//
+//
+// container.forEach((container, index) => {
+//   const label = document.createElement("label");
+//   label.className = "switch";
+//
+//   const input = document.createElement('input');
+//   input.type = "checkbox";
+//   input.id = `toggle-${index}`;
+//
+//   const slider = document.createElement('span');
+//   slider.className = "slider";
+//
+//   label.appendChild(input);
+//   label.appendChild(slider);
+//   container.appendChild(label);
+//
+//   const prices = document.querySelector(`.price${index}`);
+//
+//   const setUpPrices = ['$199<span class="heading-style-h5-6">/mo</span>', '$579<span class="heading-style-h5-6">/mo</span>'];
+//   const basedPrices = ['$59<span class="heading-style-h5-6">/mo</span>', '$329<span class="heading-style-h5-6">/mo</span>'];
+//
+//   input.addEventListener("change", () => {
+//       if(prices){
+//         prices.innerHTML = input.checked ? setUpPrices[index] : basedPrices[index];
+//       }
+//   })
+// })
+// const container1 = document.getElementById('tog-ct-1');
+//
+// const optContainer = document.createElement('div');
+// optContainer.className = 'options-container';
+//
+// const opt1 = document.createElement('p');
+// opt1.className = `option-1`;
+// opt1.id = 'opt1';
+// opt1.textContent = 'option1';
+//
+// const opt2 = document.createElement('p');
+// opt2.className = `option-1`;
+// opt2.id = 'opt2';
+// opt2.textContent = 'option2';
+//
+// optContainer.appendChild(opt1);
+// optContainer.appendChild(opt2);
+// container1.appendChild(optContainer);
+//
+// const detailsButton = document.querySelectorAll('.see-details_button').forEach((button)=>{
+//   button.addEventListener('click', () => {
+//
+//       setTimeout(()=>{
+//           const navHeight = document.querySelector('.w-nav').clientHeight + 35;
+//           const target = document.querySelector('.pricing22_top-row');
+//
+//           if(target){
+//             const targetPos = target.getBoundingClientRect().top + window.scrollY;
+//                   const offset = targetPos - navHeight;
+//                   window.scroll({
+//                     top: offset,
+//                     behavior: 'smooth'
+//                   });
+//           }
+//         }, 200)
+//       })
+// })
+//
+// const containerTable = document.querySelectorAll('.toggle-container_menu');
+//
+// containerTable.forEach((container, index) => {
+//   console.log(index);
+//   const label = document.createElement("label");
+//   label.className = "switch";
+//
+//   const input = document.createElement('input');
+//   input.type = "checkbox";
+//   input.id = `toggle-menu_${index}`;
+//
+//   const slider = document.createElement('span');
+//   slider.className = "slider";
+//   slider.textContent = 'Upgrade +';
+//
+//   label.appendChild(input);
+//   label.appendChild(slider);
+//   container.appendChild(label);
+//
+//   const prices = document.querySelector(`.prices-menu${index}`);
+//
+//   const setUpPrices = ['$199<span class="heading-style-h5-6">/mo</span>', '$579<span class="heading-style-h5-6">/mo</span>'];
+//   const basedPrices = ['$59<span class="heading-style-h5-6">/mo</span>', '$329<span class="heading-style-h5-6">/mo</span>'];
+//
+//   input.addEventListener("change", () => {
+//       if(prices){
+//         prices.innerHTML = input.checked ? setUpPrices[index] : basedPrices[index];
+//       }
+//   })
+// })
+// const starter = document.getElementById('starter');
+// starter.href = 'http://edge01f.shipedge.com/payment/request/A1'
+// starter.target = '_blank';
+//
+// const standard = document.getElementById('standard');
+//
+// standard.href = 'http://edge01f.shipedge.com/payment/request/B1';
+// standard.target = '_blank';
+//
+// const professional = document.getElementById('profesional');
+//
+// profesional.href = 'http://edge01f.shipedge.com/payment/request/C1';
+// profesional.target = '_blank';
+//
+// //Esta parte para los links de pago (Edwin)
+// const startText = document.querySelector('.starter');
+// const starterToggle = document.getElementById('toggle-0');
+// const starterUsers = document.querySelector('.starter-user');
+// const starterNo = document.querySelector('.starter-users-no');
+// const starterSkus = document.querySelector('.act-skus_starter');
+// const starterPlus = document.querySelector('.starter-plus');
+//
+// starterToggle.addEventListener('change', () => {
+//
+//   startText.textContent = starterToggle.checked ? 'Starter +' : 'Starter';
+//   starter.href = starterToggle.checked ? 'https://edge01f.shipedge.com/payment/request/A2' : 'https://edge01f.shipedge.com/payment/request/A1';
+//   starterUsers.textContent = starterToggle.checked ? '2' : '1';
+//   starterNo.textContent = starterToggle.checked ? 'users' : 'user';
+//   starterSkus.textContent = starterToggle.checked ? '500 Active Skus' : '100 Active Skus';
+//   starterPlus.textContent = starterToggle.checked ? `Starter + `:`Starter `;
+//
+//   starterPlus.style.color = '#0060a8';
+//   starterPlus.style.fontWeight = 'bold';
+//
+//   if(!starterToggle.checked){
+//     starterPlus.style.color = '#000';
+//     starterPlus.style.fontWeight = 'normal';
+//   }
+// });
+//
+// const standardText = document.querySelector('.standard');
+// const standardToggle = document.getElementById('toggle-1');
+// const standardUsers = document.querySelector('.standard-users');
+// const standardNo = document.querySelector('.standard-users-no');
+// const standardSkus = document.querySelector('.act-skus-standard');
+// const standardPlus = document.querySelector('.standard-plus');
+//
+// standardToggle.addEventListener('change', ()=>{
+//   standardText.textContent = standardToggle.checked ? 'Standard +' : 'Standard';
+//   standard.href = standardToggle.checked ? 'https://edge01f.shipedge.com/payment/request/B2' : 'https://edge01f.shipedge.com/payment/request/B1';
+//   standardUsers.textContent = standardToggle.checked ? '10' : '5';
+//   standardNo.textContent = standardToggle.checked ? 'users' : 'user';
+//   standardSkus.textContent = standardToggle.checked ? '5000 Active SKUs' : '2500 Active SKUs';
+//   standardPlus.textContent = standardToggle.checked ? `Standard + `: `Standard `;
+//
+//   standardPlus.style.color = '#0060a8';
+//   standardPlus.style.fontWeight = 'bold';
+//
+//   if(!standardToggle.checked){
+//     standardPlus.style.color = '#000'
+//     standardPlus.style.fontWeight = 'normal';
+//   };
+// });
+//
+// const starterTable = document.querySelector('.starter-table');
+// const starterTableToggle = document.getElementById('toggle-menu_0');
+// const starterIntro = document.querySelector('.starter_intro');
+// const numberUser = document.querySelector('.starter-table-user');
+// const numberUserTable = document.querySelector('.starter-table-no');
+// const actTableSkus = document.querySelector('.starter-table-act_skus');
+// const basicRegister = document.getElementById('starter1');
+//
+// basicRegister.href = 'https://edge01f.shipedge.com/payment/request/A1';
+// basicRegister.target = '_blank';
+//
+// starterTableToggle.addEventListener('change', ()=> {
+//   starterTable.textContent = starterTableToggle.checked ? 'Starter +': 'Starter';
+//   numberUser.textContent = starterTableToggle.checked ? '2':'1';
+//   numberUserTable.textContent = starterTableToggle.checked ? 'users':'user';
+//   actTableSkus.textContent = starterTableToggle.checked ? '500 Active Skus' : '100 Active Skus';
+//   basicRegister.href = starterTableToggle.checked ? 'https://edge01f.shipedge.com/payment/request/A2' : 'https://edge01f.shipedge.com/payment/request/A1';
+//   starterIntro.textContent = starterTableToggle.checked ? 'Starter + ': 'Starter ';
+//
+//   starterIntro.style.color = '#0060a8';
+//   starterIntro.style.fontWeight = 'bold';
+//
+//   if(!starterTableToggle.checked){
+//     starterIntro.style.color = '#000';
+//     starterIntro.style.fontWeight = 'normal';
+//   }
+// });
+//
+//
+// const standardTable = document.querySelector('.standard-table');
+// const standardUser = document.querySelector('.standard-table_user');
+// const actTableStandardSkus = document.querySelector('.standard-skus_act');
+// const standardTableToggle = document.getElementById('toggle-menu_1');
+// const standardRegister = document.getElementById('starter2');
+// const standardIntro = document.querySelector('.standard_intro');
+//
+// standardRegister.href = 'https://edge01f.shipedge.com/payment/request/B1';
+//
+// standardTableToggle.addEventListener('change', ()=> {
+//   standardTable.textContent = standardTableToggle.checked ? 'Standard +': 'Standard';
+//   standardUser.textContent = standardTableToggle.checked ? '10' : '5';
+//   actTableStandardSkus.textContent = standardTableToggle.checked ? '5000 Active SKUs' : '2500 Active SKUs';
+//   standardRegister.href = standardTableToggle.checked ? 'https://edge01f.shipedge.com/payment/request/B2' : 'https://edge01f.shipedge.com/payment/request/B1';
+//   standardIntro.textContent = standardTableToggle.checked ? 'Standard + ' : 'Standard ';
+//
+//   standardIntro.style.color = '#0060a8';
+//   standardIntro.style.fontWeight = 'bold';
+//
+//   if(!standardTableToggle.checked){
+//     standardIntro.style.color = '#000';
+//     standardIntro.style.fontWeight = 'normal';
+//   }
+//  })
+//
+// const tableBasic = document.getElementById('starter0');
+// tableBasic.href = 'https://edge01f.shipedge.com/';
+// tableBasic.target = '_blank';
+//
+// const cardsBasic = document.getElementById('basic');
+// cardsBasic.href = 'https://edge01f.shipedge.com/';
+// cardsBasic.target = '_blank';
+//
+// const tableProLevel = document.getElementById('starter3');
+// tableProLevel.href = 'http://edge01f.shipedge.com/payment/request/C1'
+// tableProLevel.target = '_blank';
+//
 // const detailsButton = document.querySelectorAll('.see-details_button').forEach(element => {
 //   element.addEventListener('click', () => {
 //     console.log('testing this fet')

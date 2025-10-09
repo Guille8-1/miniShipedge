@@ -69,7 +69,7 @@ export default async function DashboardLayout({
             </ul>
           </div>
         </nav>
-        <section className="w-full py-2 ml-5 bg-white mt-4 mb-4 rounded-2xl shadow-lg">
+        <section className="w-full py-2 ml-5 my-4 rounded-2xl shadow-lg bg-slate-100">
           <section className="flex flex-row gap-5 px-10 py-4 justify-between items-center border-b  border-opacity-15 border-neutral-800">
             <div>breadcrumb</div>
             <div className="flex flex-row gap-5">

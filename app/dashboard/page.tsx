@@ -6,7 +6,7 @@ export default async function DashboardMain() {
 
   return (
     <>
-      <DashboardStart user={user} />
+        <DashboardStart user={user} />
     </>
   );
 }

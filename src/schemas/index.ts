@@ -71,14 +71,24 @@ export const UpdateProjectAssigness = z.object({
   id: z.string(),
   editAssing: z.
   array(z.string().min(1, { message: "Al menos 1 Asignado es Obligatorio" })).max(4,{message:'Numero de Asignados no Permitido'}),
+  userId: z.string(),
 })
 export const UpdateProjectsSchema = z.object({
   id: z.string(),
   estado: z.string().min(1, { message: "Estado no Valido" }),
   avance: z.string().min(1, {message:'Avance requerido'}),
   documento: z.string(),
-  prioridad: z.string().min(1, { message: "Prioridad no Valida" }),
+  prioridad: z.string().min(3, { message: "Prioridad no Valida" }),
 })
+
+export const UpdateActivitySchema = z.object({
+  id: z.string(),
+  estado: z.string().min(1, { message: "Estado no Valido" }),
+  avance: z.string().min(1, {message:'Avance requerido'}),
+  prioridad: z.string().min(3, {message: "Prioridad no Valida"})
+})
+
+
 export const ProjectSchemaResponse = z.object({
   id: z.number(),
   titulo: z.string(),

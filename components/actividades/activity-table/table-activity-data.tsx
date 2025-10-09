@@ -45,7 +45,8 @@ export default function TableActivity({ user }: {user: User}) {
             }
             activityResources(user.id).then()
         }
-        dispatch(resetStatus())
+        dispatch(resetStatus());
+        console.log('testing this call from modals and projects')
     }, [user.id, activityIds, selectedIndex, dispatch, reFetch])
 
     const columns = getColumns(setSelectedIndex)
@@ -61,6 +62,7 @@ export default function TableActivity({ user }: {user: User}) {
                     comments={activityComment}
                     data={selectedIndex}
                     onClose={()=> setSelectedIndex(null)}
+                    user={user}
                 />
             </div>
         </>

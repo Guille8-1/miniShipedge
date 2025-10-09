@@ -1,6 +1,7 @@
+import { useActionState, useEffect, useState } from "react";
+import Select, { MultiValue } from "react-select";
 import { motion } from 'framer-motion'
 import { ProjectTypes, Comments } from "@/src/schemas";
-import { useActionState, useEffect, useState } from "react";
 import { createComment } from "@/actions/create-comment-action";
 import { toast } from "react-toastify";
 import { setValue } from "@/src/Store";
@@ -8,13 +9,13 @@ import { useDispatch } from "react-redux";
 import sanitizeHtml from 'sanitize-html';
 import { IoClose } from 'react-icons/io5';
 import { HiOutlinePencilSquare } from "react-icons/hi2";
-import { FaSave } from "react-icons/fa";
-import { GetUserType } from "@/src/schemas";
+import { FaEdit, FaSave } from "react-icons/fa";
+import { GetUserType, User } from "@/src/schemas";
 import { getDataUser } from "@/src/API/client-fetching-action";
-import Select, { MultiValue } from "react-select";
 import { type userOptions } from "@/components/projects/CreateProjectForm";
 import { updateProject, updateAssigned } from '@/actions/update-project-action';
-import { error } from 'console';
+import { LuRefreshCw } from "react-icons/lu";
+import { set } from "date-fns";
 
 
 
@@ -22,13 +23,14 @@ interface UserProjectModalProps {
     data: ProjectTypes | null,
     comments: Comments | null,
     onClose: () => void,
+    user: User
     //     goPrevious: () => void,
     //     goNext: () => void,
     //     disablePrevious: boolean,
     //     disableNext: boolean
 }
 
-export function ProjectModal({ data, comments, onClose }: UserProjectModalProps) {
+export function ProjectModal({ data, comments, user, onClose }: UserProjectModalProps) {
     const createdDate: string | null | undefined = data?.createdDate
 
     const created = new Date(createdDate ?? new Date())
@@ -101,6 +103,7 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
             toast.success(state.success)
         }
     }, [state])
+
     const fetchDispatch = useDispatch();
     const dispatchFunction = () => {
         fetchDispatch(setValue('changed'));
@@ -136,21 +139,21 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
     const fullName = firstName + " " + lastName;
     const statusFormal = capFirstLetter(data?.estado ?? 'no value');
 
-    const userInit = data?.asignados ?? [];
+    //const userInit = data?.asignados ?? [];
 
-    const initEditUsr: userOptions[] = [];
-
-    for (const user of userInit) {
-        const initU = user.split(' ')
-        const initFn = initU[0]
-        const initLn = initU[1]
-        const initFName = `${initFn} ${initLn}`
-        const objInit = {
-            label: initFName,
-            value: initFName.toLowerCase(),
-        }
-        initEditUsr.push(objInit)
-    }
+    // const initEditUsr: userOptions[] = [];
+    //
+    // for (const user of userInit) {
+    //     const initU = user.split(' ')
+    //     const initFn = initU[0]
+    //     const initLn = initU[1]
+    //     const initFName = `${initFn} ${initLn}`
+    //     const objInit = {
+    //         label: initFName,
+    //         value: initFName.toLowerCase(),
+    //     }
+    //     initEditUsr.push(objInit)
+    // }
 
 
     const [users, setUsers] = useState<GetUserType>([]);
@@ -194,9 +197,8 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
     useEffect(()=>{
         if(editState.success){
             toast.success(editState.success)
-            editValue()
         }
-    },[editState]);
+    },[editState, edit]);
 
     const [assignState, assigDispatch] = useActionState(updateAssigned,{
         errors: [],
@@ -214,9 +216,20 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
     useEffect(()=>{
         if(assignState.success){
             toast.success(assignState.success);
-            asignedEditValue()
+            setAsignadosEdit(false);
+            setRefresh(false)
         }
-    },[assignState])
+    },[assignState]);
+
+    const [refresh, setRefresh] = useState<boolean>(false);
+
+    const alets = () => {
+        alert('Tabla Actualizada!')
+        setRefresh(true);
+        if(refresh){
+            setRefresh(false);
+        }
+    }
 
 
     return (
@@ -230,7 +243,7 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
             }
             <section className="w-auto">
                 <motion.aside
-                    initial={{ x: "100%" }}
+                    initial={{ x: "250%" }}
                     animate={{ x: data ? "0%" : "100%" }}
                     exit={{ x: "100%" }}
                     transition={{ type: "spring", stiffness: 100, damping: 20 }}
@@ -248,104 +261,20 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
                                         }>
                                         <h2 className={'font-bold'}>PROYECTO</h2>
                                         <h1 className="text-center text-sky-800 rounded-2xl font-extrabold text-[15px]">
-                                          {data.titulo.toUpperCase()}
+                                        {data.titulo.toUpperCase()}
                                         </h1>
                                     </div>
                                     <button
-                                        className="text-xl p-3 font-light flex align- rounded-2xl bg-gray-200 "
+                                        className="text-xl p-3 font-light flex align- rounded-2xl bg-gray-300"
                                         onClick={onClose}> <IoClose size='1.5em' color={'#B51300'} />
                                     </button>
                                 </div>
                             </div>
                             <div className={'w-full h-[2px] bg-gray-400 mx-auto my-4'} />
-
                             
-                            <section className={'flex flex-col items-top bg-[#D8E1E8] rounded-2xl justify-between items-center shadow-xl border-2 border-[#D8E1E8] mb-4'}>
-                                    <section className={'pb-4 px-4 mt-2 w-full'}>
-                                        {/* Gestor */}
-                                        <section className={'flex flex-row mt-2 w-full gap-12'}>
-                                                    <div className={'text-center'}>
-                                                        <p className="mt-2"> <strong>Gestor : </strong></p>
-                                                    </div>
-                                                    <div className={'ml-10'}>
-                                                        <p className="mt-2">{fullName}</p>
-                                                    </div>
-                                        </section>
-                                        {/* Asignados */}
-                                        <form 
-                                            className={'flex flex-row mt-2 w-full gap-4 items-center'}
-                                            action={assigDispatch}
-                                            >
-                                            <section className={'flex flex-row'}>
-                                                <div className={'text-center'}>
-                                                    <p className="mt-2"> <strong>Asignados: </strong></p>
-                                                </div>
-                                                {/* Asignados Form */}
-                                                <input
-                                                    className={'hidden'}
-                                                    defaultValue={data.id}
-                                                    name='idProject'
-                                                />
-                                                <div className={'ml-16'}>
-                                                    {
-                                                        asignadosEdit ? (
-                                                            <Select
-                                                                name={'usersEdit'}
-                                                                options={userEditOptions}
-                                                                value={slctEditUser}
-                                                                onChange={addingEditUser}
-                                                                isMulti={true}
-                                                                isSearchable={true}
-                                                                placeholder={'Seleccionar'}
-                                                                className={'cursor-pointer'}
-                                                            />
-                                                        ) : (
-                                                            <p 
-                                                                className="mt-2 text-sky-800 font-bold">
-                                                                {data.asignados.join(", ")}
-                                                            </p>
-                                                        )
-                                                    }
-                                                </div>
-                                            </section>
-                                            <section className={''}>
-                                                {
-                                                    asignadosEdit ? (
-                                                        <section className={'flex flex-row items-center gap-2 text-lg'}>
-                                                            <button
-                                                                onClick={dispatchFunction}
-                                                                className={'flex flex-row items-center bg-sky-700 text-white p-1 rounded-md px-3'}
-                                                            >
-                                                                Reasignar
-                                                            </button>
-                                                            <button
-                                                                onClick={(e) => {
-                                                                    e.preventDefault();
-                                                                    asignedEditValue()
-                                                                }}
-                                                                className={'font-semibold text-red-800 rounded-2xl bg-gray-100 px-2'}
-                                                            >
-                                                                X
-                                                            </button>
-                                                        </section>
-                                                    ) : (
-                                                        <section className={'flex justify-start items-center'}>
-                                                                <HiOutlinePencilSquare 
-                                                                    onClick={(e) => {
-                                                                        e.preventDefault();
-                                                                        asignedEditValue();
-                                                                    }}
-                                                                    color='#3570B8'
-                                                                    size={'1.5em'} 
-                                                                    className={"cursor-pointer"}
-                                                                />
-                                                        </section>   
-                                                    )
-                                                }
-                                            </section>
-                                        </form>
-                                    </section>
-                                
+                            <section className="flex flex-row">
+                                <section></section>
+                                <section></section>
                             </section>
                             <form 
                                 className='flex flex-col items-top bg-[#D8E1E8] rounded-2xl justify-between items-center shadow-xl border-2 border-[#D8E1E8]'
@@ -509,48 +438,49 @@ export function ProjectModal({ data, comments, onClose }: UserProjectModalProps)
                                                     </div>
                                                 </section>
                                                 {/*Aqui tendria que ir el form del resto del proyecto*/}
-                                                <section className={'my-4'}>
-                                                    {
-                                                        edit ? (
-                                                            <section 
-                                                            className={'flex flex-row items-center gap-8 text-lg'}>
-                                                                <button
-                                                                    type='submit'
-                                                                    onClick={dispatchFunction}
-                                                                    className={'flex flex-row items-center bg-sky-700 text-white p-1 rounded-md px-3'}
-                                                                >
-                                                                    Guardar
-                                                                    <FaSave color='#fff' size={'1.1em'} className={"ml-2"} />
-                                                                </button>
-                                                                <button
-                                                                    onClick={(e) => {
-                                                                        e.preventDefault();
-                                                                        editValue()
-                                                                    }}
-                                                                    className={'font-semibold text-red-800'}
-                                                                >
-                                                                    Cancelar
-                                                                </button>
-                                                            </section>
-                                                        ) : (
-                                                            <section className={'flex justify-start'}>
-                                                                <button
-                                                                    onClick={(e) => {
-                                                                        e.preventDefault();
-                                                                        editValue();
-                                                                    }}
-                                                                    className={"flex bg-sky-700 rounded-xl p-2 font-semibold text-white"}
-                                                                >
-                                                                    Editar
-                                                                    <HiOutlinePencilSquare color='#fff' size={'1.2em'} className={"ml-2"} />
-                                                                </button>
-                                                            </section>
-                                                        )
-                                                    }
-                                                </section>
+                                                {
+                                                    user.nivel != 4 ? (
+                                                        <section className={'my-4'}>
+                                                            {
+                                                                edit ? (
+                                                                    <section 
+                                                                    className={'flex flex-row items-center gap-8 text-lg'}>
+                                                                        <button
+                                                                            type='submit'
+                                                                            onClick={dispatchFunction}
+                                                                            className={'flex flex-row items-center bg-sky-700 text-white p-1 rounded-md px-3'}
+                                                                        >
+                                                                            Guardar
+                                                                            <FaSave color='#fff' size={'1.1em'} className={"ml-2"} />
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={editValue}
+                                                                            className={'font-semibold text-red-800'}
+                                                                        >
+                                                                            Cancelar
+                                                                        </button>
+                                                                    </section>
+                                                                ) : (
+                                                                    <section className={'flex justify-start'}>
+                                                                        <button
+                                                                            onClick={editValue}
+                                                                            className={"flex bg-sky-700 rounded-xl p-2 font-semibold text-white"}
+                                                                        >
+                                                                            Editar
+                                                                            <HiOutlinePencilSquare color='#fff' size={'1.2em'} className={"ml-2"} />
+                                                                        </button>
+                                                                    </section>
+                                                                )
+                                                            }
+                                                        </section>
+                                                    ) : (
+                                                        <></>
+                                                    )
+                                                }
                                     </section>
                                 </section>
                             </form>
+                            {/* Comentarios*/}
                             <div className={'w-full h-[2px] bg-gray-400 mx-auto mt-6'} />
                             <div
                                 key={state.success}

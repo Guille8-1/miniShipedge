@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion'
-import { CommentsActivity, ActivityTypes } from "@/src/schemas";
+import { CommentsActivity, ActivityTypes, GetUserType } from "@/src/schemas";
 import { useActionState, useEffect } from "react";
 import { createCommentActivity } from '@/actions/create-comment-activity-action';
 import { toast } from "react-toastify";
@@ -8,19 +8,26 @@ import { setValue } from "@/src/Store";
 import { useDispatch } from "react-redux";
 import { IoClose } from "react-icons/io5";
 import sanitizeHtml from 'sanitize-html'
+import { getDataUser } from '@/src/API/client-fetching-action';
+import { type userOptions } from '@/components/projects/CreateProjectForm';
+import Select, { MultiValue } from "react-select";
+import { FaEdit } from "react-icons/fa";
+import { FaSave } from "react-icons/fa";
+import { User } from '@/src/schemas/index'
 
 
 interface UserProjectModalProps {
     data: ActivityTypes | null,
     comments: CommentsActivity | null,
     onClose: () => void,
+    user: User
     //     goPrevious: () => void,
     //     goNext: () => void,
     //     disablePrevious: boolean,
     //     disableNext: boolean
 }
 
-export function ActividadModal({ data, comments, onClose }: UserProjectModalProps) {
+export function ActividadModal({ data, comments, user, onClose }: UserProjectModalProps) {
 
     const createdDate: string | null | undefined = data?.createdDate;
     const created = new Date(createdDate ?? new Date());
@@ -73,8 +80,6 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
         });
     }
 
-
-
     const sortedComments = [...newCommnets].sort((a, b) => b.id - a.id);
 
     const lastUpdated = [...newCommnets].reduce((maxId, objId) =>
@@ -112,6 +117,35 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
         }
     }
 
+    const [actAssign, setActAssign] = useState<boolean>(false);
+    const changeAssinged = () => {
+        setActAssign(true)
+        actAssign ? setActAssign(false) : ''
+    }
+
+    const [users, setUsers] = useState<GetUserType>([]);
+    const [selectEditUser, setSelectEditUser] = useState<userOptions[] | null>([]);
+    const userEditOptions: userOptions[] = [];
+
+    const addingEditUser = (userEdit: MultiValue<userOptions>) => {
+        setSelectEditUser([...userEdit])
+    }
+
+    useEffect(() => {
+        async function getEditUsers() {
+            const updateUser = await getDataUser();
+            setUsers(updateUser);
+        }
+        getEditUsers().then()
+    }, [])
+
+    for (const userEdit of users) {
+        const { nombre, apellido } = userEdit;
+        const label = `${nombre} ${apellido}`;
+        const value = `${nombre} ${apellido}`.toLowerCase();
+        userEditOptions.push({ label, value })
+    }
+
     return (
         <>
             {
@@ -123,15 +157,15 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
             }
             <section className="w-auto">
                 <motion.aside
-                    initial={{ x: "100%" }}
+                    initial={{ x: "1000%" }}
                     animate={{ x: data ? "0%" : "100%" }}
                     exit={{ x: "100%" }}
                     transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                    className="fixed right-0 top-0 h-full w-1/3  shadow-outline shadow-2xl z-50 p-4 border-gray-500 bg-gray-100 border-solid border-accent-foreground overflow-auto"
+                    className="fixed right-0 top-0 h-full w-[650px] bg-gray-100 z-50 p-4 border-l-2 rounded-lg border-gray-400 shadow-[-8px_4px_30px_rgba(0,0,0,0.25)] overflow-auto"
                 >
                     {data ? (
-                        <section className="">
-                            <div className="mx-auto py-2 align-middle p-5 mt-4 w-fit flex flex-row gap-5 itmes-center">
+                        <section className="w-full">
+                            <div className="flex flex-row items-center w-full justify-center gap-4">
                                 <div className='flex flex-col bg-gray-300 items-center rounded-2xl px-4 py-1 shadow-xl border-gray-300 border-2'>
                                     <h1>Proyecto</h1>
 
@@ -141,22 +175,88 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
                                     </h2>
                                 </div>
                                 <button
-                                    className="text-xl text-white px-2 py-3 font-light flex align-middle items-center rounded-2xl bg-red-400"
-                                    onClick={onClose}> <IoClose size='25px' />
+                                    className="text-xl text-white px-2 py-3 font-light flex align-middle items-center rounded-2xl bg-gray-300 w-12 h-14"
+                                    onClick={onClose}> <IoClose color='#A62121' size='1.5em' />
                                 </button>
                             </div>
                             <div className='w-full h-[2px] bg-gray-400 mt-4' />
-                            <div className="mt-2 flex flex-col w-auto p-4 rounded-2xl">
+                            <div className="mt-2 flex flex-col w-auto p-4 rounded-2xl bg-slate-400">
                                 <form action="">
                                     <section className='bg-gray-200 rounded-2xl px-4 py-2 flex flex-row gap-10 shadow-lg'>
                                         <div>
-                                            <p className="mt-2"> <strong>Gestor : </strong></p>
-                                            <p className="mt-2"> <strong>Asignados : </strong></p>
+                                            <p className="mt-2"> <strong>Gestor </strong></p>
+                                            <p className="mt-2"> <strong>Asignados </strong></p>
                                         </div>
-                                        <div>
+                                        <div className='flex flex-col'>
                                             <p className="mt-2"> {data.gestorActividad}</p>
-                                            <p className="mt-2 text-sky-800 font-bold">{data.asignadosActividad.join(", ")}</p>
+                                            {
+                                                actAssign ? (
+                                                    <>
+                                                        <Select
+                                                            name='actUsers'
+                                                            options={userEditOptions}
+                                                            value={selectEditUser}
+                                                            onChange={addingEditUser}
+                                                            isMulti={true}
+                                                            isSearchable={true}
+                                                            placeholder={'Seleccionar'}
+                                                            className='cursor-pointer mt-1'
+                                                        />
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <p
+                                                            className="mt-2 text-sky-800 font-bold">
+                                                            {data.asignadosActividad.join(", ")}
+                                                        </p>
+                                                    </>
+                                                )
+                                            }
                                         </div>
+                                        {
+                                            user.nivel != 4 ? (
+                                                <div className='mt-1'>
+                                                    {
+                                                        actAssign ? (
+                                                            <>
+                                                                <div className='flex flex-row gap-2 items-center'>
+                                                                    <button
+                                                                        onClick={(e) => {
+                                                                            e.preventDefault();
+                                                                            console.log('sending info to change the act with user data recording');
+                                                                        }}
+                                                                        className='flex flex-row gap-2 bg-sky-800 rounded-2xl px-2 py-1 text-white items-center'>
+                                                                        Reasignar
+                                                                        <FaSave size={'1em'} />
+                                                                    </button>
+                                                                    <p
+                                                                        className='text-red-500 font-bold cursor-pointer'
+                                                                        onClick={changeAssinged}
+                                                                    >
+                                                                        Cancelar
+                                                                    </p>
+                                                                </div>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <button
+                                                                    onClick={(e) => {
+                                                                        e.preventDefault();
+                                                                        changeAssinged();
+                                                                    }}
+                                                                    className='flex flex-row gap-2 bg-sky-800 rounded-2xl px-2 py-1 text-white'
+                                                                >
+                                                                    <p>Editar Asingados</p>
+                                                                    <FaEdit size={'1.2em'} />
+                                                                </button>
+                                                            </>
+                                                        )
+                                                    }
+                                                </div>
+                                            ) : (
+                                                <></>
+                                            )
+                                        }
                                     </section>
                                 </form>
                                 <section className=" bg-gray-200 px-4 py-2 rounded-2xl mt-6 shadow-lg">
@@ -170,19 +270,65 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
                                             <p className="mt-2"> <strong>Categoria Actividad : </strong></p>
                                             <p className="mt-2"> <strong>Ultima Actualizacion : </strong></p>
                                         </section>
-                                        <form action="">
-                                            <section className="text-base">
+                                        <form
+                                            action="">
+                                            <section
+                                                className="text-base flex flex-col">
                                                 {
                                                     bodyEdit ? (
-                                                            <input type="text" defaultValue={data.estadoActividad} className='w-[150px] px-2 rounded-lg mt-2' />
-                                                        ) : (
-                                                            <p className="mt-2">{data.estadoActividad}</p>
+                                                        <select
+                                                            id={'estado'}
+                                                            className={'mt-[12px] rounded-sm px-1 bg-white'}
+                                                            name={'estadoEdit'}
+                                                        >
+                                                            <option value="" defaultChecked>
+                                                                Seleccionar
+                                                            </option>
+                                                            <option value="activo">Activo</option>
+                                                            <option value="cerrado">Cerrado</option>
+                                                        </select>
+                                                    ) : (
+                                                        <p className="mt-2">{data.estadoActividad}</p>
                                                     )
                                                 }
-                                                
-                                                <p className="mt-2">{data.avanceActividad} %</p>
+                                                {
+                                                    bodyEdit ? (
+                                                        <select
+                                                            id={'avance'}
+                                                            className={'w-auto rounded-sm px-1 bg-white mt-2'}
+                                                            name='avanceEdit'
+                                                        >
+                                                            <option value="" defaultChecked>
+                                                                Seleccionar
+                                                            </option>
+                                                            <option value="20">20</option>
+                                                            <option value="40">40</option>
+                                                            <option value="60">60</option>
+                                                            <option value="80">80</option>
+                                                            <option value="90">90</option>
+                                                            <option value="completado">Completado</option>
+                                                        </select>
+                                                    ) : (
+
+                                                        <p className="mt-2">{data.avanceActividad} %</p>
+                                                    )
+                                                }
                                                 <p className="mt-2">{data.diasActivoActividad}</p>
-                                                <p className="mt-2">{data.prioridadActividad}</p>
+                                                {
+                                                    bodyEdit ? (
+                                                        <select
+                                                            id={'avance'}
+                                                            className={'w-auto rounded-sm px-1 bg-white mt-2'}
+                                                            name='avanceEdit'
+                                                        >
+                                                            <option value="urgente">Urgente</option>
+                                                            <option value="media">Media</option>
+                                                            <option value="baja">Baja</option>
+                                                        </select>
+                                                    ) : (
+                                                        <p className="mt-2">{data.prioridadActividad}</p>
+                                                    )
+                                                }
                                                 <p className="mt-2">{data.oficinaOrigenActividad}</p>
                                                 <p className="mt-2">{data.categoriaActividad ?? 'Sin Categoria'}</p>
                                                 <p className="mt-2">{lastUpdated?.fechaCreacion ?? formattedDate}</p>
@@ -190,27 +336,36 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
                                         </form>
                                     </section>
                                     {
-                                        bodyEdit ? (
-                                            <section className='flex flex-row mt-2 gap-5'>
-                                                <button
-                                                    onClick={() => {
-                                                        console.log('sending edit activity data');
-                                                    }}
-                                                    className='flex flex-row text-white bg-sky-800 p-2 rounded-lg'>
-                                                    Guardar
-                                                </button>
-                                                <button
-                                                    onClick={switchEdit}
-                                                    className='text-red-400 font-bold'>
-                                                    cancelar
-                                                </button>
+                                        user.nivel != 4 ? (
+                                            <section>
+                                                {
+                                                    bodyEdit ? (
+                                                        <section className='flex flex-row mt-2 gap-5'>
+                                                            <button
+                                                                onClick={() => {
+                                                                    console.log('sending edit activity data');
+                                                                }}
+                                                                className='flex flex-row text-white bg-sky-800 p-2 rounded-lg'>
+                                                                Guardar
+                                                            </button>
+                                                            <button
+                                                                onClick={switchEdit}
+                                                                className='text-red-400 font-bold'>
+                                                                cancelar
+                                                            </button>
+                                                        </section>
+                                                    ) : (
+                                                        <button
+                                                            onClick={switchEdit}
+                                                            className='rounded-lg p-2 text-white bg-sky-800 mt-2'>
+                                                            Editar
+                                                        </button>
+                                                    )
+                                                }
                                             </section>
+
                                         ) : (
-                                            <button
-                                                onClick={switchEdit}
-                                                className='rounded-lg p-2 text-white bg-sky-800 mt-2'>
-                                                Editar
-                                            </button>
+                                            <></>
                                         )
                                     }
                                 </section>
@@ -219,7 +374,7 @@ export function ActividadModal({ data, comments, onClose }: UserProjectModalProp
                             <div className='w-full h-[2px] bg-gray-400 mt-4' />
                             <div
                                 key={state.success}
-                                className="mt-5 flex flex-col gap-3 p-4 bg-gray-100 rounded-2xl">
+                                className="mt-5 flex flex-col gap-3 p-4 rounded-2xl bg-slate-300">
                                 <div className="flex flex-col">
                                     <h2 className='text-[18px]'><strong>Seguimiento: </strong></h2>
                                 </div>

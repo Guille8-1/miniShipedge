@@ -30,12 +30,15 @@ interface ProjectTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TData, TValue>)  {
-    const [sorting, setSorting] = useState<SortingState>([])
+    const [sorting, setSorting] = useState<SortingState>([
+        {id: 'id', desc:true}
+    ])
     const [globalFilter, setGlobalFilter] = useState<string>('')
     const [pageIndex, setPageIndex] = useState(0)
-    const [pageSize, setPageSize] = useState(10)
+    const [pageSize, setPageSize] = useState(15)
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
+    
 
     const table = useReactTable({
         data,
@@ -78,25 +81,23 @@ export function DataTable<TData, TValue>({columns, data}: ProjectTableProps<TDat
             </section>
             <section className="rounded-2xl border">
                 <Table>
-                    <TableHeader className="">
+                    <TableHeader className="rounded-lg">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow
-                                className="hover:bg-sky-800 bg-sky-800"
+                                className="hover:bg-sky-800 bg-sky-800 rounded-lg"
                                 key={headerGroup.id}
                             >
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <>
-                                            <TableHead key={header.id}>
-                                                {header.isPlaceholder
-                                                    ? null
-                                                    : flexRender(
-                                                        header.column.columnDef.header,
-                                                        header.getContext()
-                                                    )
-                                                }
-                                            </TableHead>
-                                        </>
+                                        <TableHead key={header.id}>
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                    header.column.columnDef.header,
+                                                    header.getContext()
+                                                )
+                                            }
+                                        </TableHead>
                                     )
                                 })}
                             </TableRow>

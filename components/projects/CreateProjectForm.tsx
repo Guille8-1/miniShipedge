@@ -127,7 +127,7 @@ export default function ProjectForm() {
                   </option>
                   <option value="activo">Activo</option>
                   <option value="pendiente">Pendiente</option>
-                  <option value="en_mora">En Mora</option>
+                  <option value="mora">En Mora</option>
                 </select>
               </div>
               <div className="flex flex-col gap-2">

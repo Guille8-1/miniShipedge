@@ -79,20 +79,20 @@ export function DataTable<TData, TValue>({columns, data}: ActivityTableProps<TDa
                             <TableRow
                                 className="hover:bg-sky-800 bg-sky-800"
                                 key={headerGroup.id}
-                            >
+                                >
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <>
-                                            <TableHead key={header.id}>
-                                                {header.isPlaceholder
-                                                    ? null
-                                                    : flexRender(
-                                                        header.column.columnDef.header,
-                                                        header.getContext()
-                                                    )
-                                                }
-                                            </TableHead>
-                                        </>
+                                        <TableHead 
+                                        onClick={()=>{console.log('hello headers or haters...')}}
+                                        key={header.id}>
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                    header.column.columnDef.header,
+                                                    header.getContext()
+                                                )
+                                            }
+                                        </TableHead>
                                     )
                                 })}
                             </TableRow>

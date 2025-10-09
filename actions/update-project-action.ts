@@ -69,7 +69,8 @@ export async function updateAssigned (prevState: ActionState, formData: FormData
 
     const editAssignees = {
       id: formData.get('idProject'),
-      editAssing: formData.getAll('usersEdit')
+      editAssing: formData.getAll('usersEdit'),
+      userId: formData.get('userId')
     }
 
     const usersEditValid = UpdateProjectAssigness.safeParse(editAssignees)
@@ -91,10 +92,12 @@ export async function updateAssigned (prevState: ActionState, formData: FormData
     }
 
     const assigneeRequest = {
-      asignadosId: gettingUserIds
+      asignadosId: gettingUserIds,
+      userId: editAssignees.userId
     }
 
     const url = `${process.env.BACK_URL}/projects/updateusers/${editAssignees.id}`
+    
 
     const request = await fetch(url, {
       method:'PATCH',
@@ -106,7 +109,6 @@ export async function updateAssigned (prevState: ActionState, formData: FormData
     })
 
     const json = await request.json()
-    console.log(json)
 
     if(!request.ok){
       const error = ErrorResponseSchema.parse(json)

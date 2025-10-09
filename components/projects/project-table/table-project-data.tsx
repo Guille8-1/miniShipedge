@@ -34,15 +34,16 @@ export default function TableProject({ user }: { user: User }) {
                         return true;
                     })
                 }
-                const uniqueProjects = noRepeatId(jointProjects)
+                const uniqueProjects = noRepeatId(jointProjects);
                 setProjects(uniqueProjects);
-                const projectId = selectedIndex?.id ?? 0
+                const projectId = selectedIndex?.id ?? 0;
                 const prjComents = await getCommentById(projectId);
                 setProjectComment(prjComents);
             }
             projectResources(user.id).then();
-        }
-        dispatch(resetStatus())
+        };
+        dispatch(resetStatus());
+        console.log('testing this from the modal and from the table');
     }, [user.id, reFetch, selectedIndex, dispatch, projectid]);
 
     const columns = getColumns(setSelectedIndex)
@@ -53,8 +54,9 @@ export default function TableProject({ user }: { user: User }) {
                 <DataTable columns={columns} data={projects}></DataTable>
                 <ProjectModal
                     comments={projectComment}
-                    data = {selectedIndex}
-                    onClose = {()=> setSelectedIndex(null)}
+                    data={selectedIndex}
+                    onClose={()=> setSelectedIndex(null)}
+                    user={user}
                 />
             </div>
         </>

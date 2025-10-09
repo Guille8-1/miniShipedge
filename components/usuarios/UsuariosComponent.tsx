@@ -30,8 +30,10 @@ export default function UsersComponent() {
 
     return (
         <>
-            <h1 className="text-xl font-semibold mt-6">Usuarios Activos</h1>
-            <DataUsersTable columns={columns} data={users} />
+            <section className={"bg-slate-100"}>
+                <h1 className="text-xl font-semibold mt-6">Usuarios Activos</h1>
+                <DataUsersTable columns={columns} data={users} />
+            </section>
         </>
     )
 }

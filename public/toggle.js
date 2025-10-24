@@ -1,10 +1,110 @@
-const actButton = document.getElementById('ac-button');
-const visibleAction = document.querySelector('.action-call');
-const firstChild = actButton.children[0]
+const options = document.querySelectorAll(".option");
+const track = document.querySelector(".carousel-track");
+const slides = document.querySelectorAll(".carousel-item");
+let currentIndex = 1; // Start centered on the 2nd panel
 
-visibleAction.addEventListener('click', () => {
-   firstChild.children[0].click();
-})
+function goToSlide(index) {
+  if (index < 0) index = 0;
+  if (index > slides.length - 1) index = slides.length - 1;
+  if (index === 2) {
+    options.forEach((o) => o.classList.remove("active"));
+    slides.forEach((s) => s.classList.remove("active"));
+    options[index].classList.add("active");
+    slides[index].classList.add("active");
+
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+    const slideWidth = slides[0].getBoundingClientRect().width + gap;
+
+    const offset =
+      slideWidth * index - (window.innerWidth / 2 - slides[0].offsetWidth / 2);
+
+    const trackStyle = getComputedStyle(track);
+    const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
+    const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
+
+    const maxOffset =
+      track.scrollWidth - window.innerWidth + paddingRight - paddingLeft;
+
+    const finalOffset = Math.max(0, Math.min(offset, maxOffset)) + 400;
+
+    track.style.transform = `translateX(-${finalOffset}px)`;
+
+    currentIndex = index;
+
+    return;
+  }
+
+  if (index === 0) {
+    options.forEach((o) => o.classList.remove("active"));
+    slides.forEach((s) => s.classList.remove("active"));
+    options[index].classList.add("active");
+    slides[index].classList.add("active");
+
+    const gap = parseFloat(getComputedStyle(track).gap) || 0;
+    const slideWidth = slides[0].getBoundingClientRect().width + gap;
+
+    const offset =
+      slideWidth * index - (window.innerWidth / 2 - slides[0].offsetWidth / 2);
+
+    const trackStyle = getComputedStyle(track);
+    const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
+    const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
+
+    const maxOffset =
+      track.scrollWidth - window.innerWidth + paddingRight - paddingLeft;
+
+    const finalOffset = Math.max(0, Math.min(offset, maxOffset));
+
+    track.style.transform = `translateX(-${finalOffset + 1}px)`;
+
+    currentIndex = index;
+
+    return;
+  }
+
+  options.forEach((o) => o.classList.remove("active"));
+  slides.forEach((s) => s.classList.remove("active"));
+  options[index].classList.add("active");
+  slides[index].classList.add("active");
+
+  const gap = parseFloat(getComputedStyle(track).gap) || 0;
+  const slideWidth = slides[0].getBoundingClientRect().width + gap;
+
+  const offset =
+    slideWidth * index - (window.innerWidth / 2 - slides[0].offsetWidth / 2);
+
+  const trackStyle = getComputedStyle(track);
+  const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
+  const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
+
+  const maxOffset =
+    track.scrollWidth - window.innerWidth + paddingRight - paddingLeft;
+
+  const finalOffset = Math.max(0, Math.min(offset, maxOffset));
+
+  track.style.transform = `translateX(-${finalOffset}px)`;
+
+  currentIndex = index;
+}
+
+window.addEventListener("load", () => {
+  goToSlide(currentIndex);
+});
+window.addEventListener("resize", () => goToSlide(currentIndex));
+
+options.forEach((btn, i) => {
+  btn.addEventListener("click", () => {
+    goToSlide(i);
+  });
+});
+
+// const actButton = document.getElementById('ac-button');
+// const visibleAction = document.querySelector('.action-call');
+// const firstChild = actButton.children[0]
+
+// visibleAction.addEventListener('click', () => {
+//    firstChild.children[0].click();
+// })
 
 // const crmButtons = document.querySelectorAll('.card-button');
 // const crmForm = document.querySelector('.embed');
@@ -91,7 +191,6 @@ visibleAction.addEventListener('click', () => {
 //   overIframe.src = '';
 //   overlay.style.display = 'none'
 // })
-
 
 // const style = document.createElement("style");
 // style.textContent = `
@@ -615,7 +714,7 @@ visibleAction.addEventListener('click', () => {
 //
 //   if(tableReact.top < 0){
 //     stickyHeader.style.display = 'flex';
-//     stickyHeader.style.top = '75px';    
+//     stickyHeader.style.top = '75px';
 //
 //   }else {
 //     stickyHeader.style.display = 'none'
@@ -633,4 +732,3 @@ visibleAction.addEventListener('click', () => {
 // proButtonHeader.href = 'http://edge01f.shipedge.com/payment/request/C1';
 // proButtonHeader.target = '_blank';
 //
-

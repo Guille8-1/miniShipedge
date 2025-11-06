@@ -1,102 +1,533 @@
-const options = document.querySelectorAll(".option");
-const track = document.querySelector(".carousel-track");
-const slides = document.querySelectorAll(".carousel-item");
-let currentIndex = 1; // Start centered on the 2nd panel
+const actionHldr = document.getElementById("assets");
+const pdfHldr = document.createElement("div");
+const mp3Hldr = document.createElement("div");
+pdfHldr.classList = "pdf-holder";
+pdfHldr.textContent = "Download PDF Version";
+mp3Hldr.classList = "mp3-holder";
+mp3Hldr.textContent = "Get The Audio Blog";
 
-function goToSlide(index) {
-  if (index < 0) index = 0;
-  if (index > slides.length - 1) index = slides.length - 1;
-  if (index === 2) {
-    options.forEach((o) => o.classList.remove("active"));
-    slides.forEach((s) => s.classList.remove("active"));
-    options[index].classList.add("active");
-    slides[index].classList.add("active");
+actionHldr.appendChild(pdfHldr);
+actionHldr.appendChild(mp3Hldr);
 
-    const gap = parseFloat(getComputedStyle(track).gap) || 0;
-    const slideWidth = slides[0].getBoundingClientRect().width + gap;
+const style = document.createElement("style");
+const pdfContent = document.getElementById("id-pdf");
 
-    const offset =
-      slideWidth * index - (window.innerWidth / 2 - slides[0].offsetWidth / 2);
-
-    const trackStyle = getComputedStyle(track);
-    const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
-    const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
-
-    const maxOffset =
-      track.scrollWidth - window.innerWidth + paddingRight - paddingLeft;
-
-    const finalOffset = Math.max(0, Math.min(offset, maxOffset)) + 400;
-
-    track.style.transform = `translateX(-${finalOffset}px)`;
-
-    currentIndex = index;
-
-    return;
+style.textContent = `
+  .pdf-holder {
+    background-color: #0c7ac9;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 auto;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
   }
 
-  if (index === 0) {
-    options.forEach((o) => o.classList.remove("active"));
-    slides.forEach((s) => s.classList.remove("active"));
-    options[index].classList.add("active");
-    slides[index].classList.add("active");
-
-    const gap = parseFloat(getComputedStyle(track).gap) || 0;
-    const slideWidth = slides[0].getBoundingClientRect().width + gap;
-
-    const offset =
-      slideWidth * index - (window.innerWidth / 2 - slides[0].offsetWidth / 2);
-
-    const trackStyle = getComputedStyle(track);
-    const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
-    const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
-
-    const maxOffset =
-      track.scrollWidth - window.innerWidth + paddingRight - paddingLeft;
-
-    const finalOffset = Math.max(0, Math.min(offset, maxOffset));
-
-    track.style.transform = `translateX(-${finalOffset + 1}px)`;
-
-    currentIndex = index;
-
-    return;
+  .mp3-holder {
+    background-color: #0c7ac9;
+    /*  */color: white;
+    text-align: center;
+    cursor: pointer;
+    margin: 0 auto;
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    display: none;
   }
+  p, h4, li {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+`;
+document.head.appendChild(style);
 
-  options.forEach((o) => o.classList.remove("active"));
-  slides.forEach((s) => s.classList.remove("active"));
-  options[index].classList.add("active");
-  slides[index].classList.add("active");
+//script to get the mp3 file in this matter
+const mp3Button = document.querySelector(".mp3-holder");
+mp3Button.addEventListener("click", () => {
+  async function getMp3File() {
+    const response = await fetch("https://example.com/audio.mp3");
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "audio.mp3";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+});
 
-  const gap = parseFloat(getComputedStyle(track).gap) || 0;
-  const slideWidth = slides[0].getBoundingClientRect().width + gap;
-
-  const offset =
-    slideWidth * index - (window.innerWidth / 2 - slides[0].offsetWidth / 2);
-
-  const trackStyle = getComputedStyle(track);
-  const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
-  const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
-
-  const maxOffset =
-    track.scrollWidth - window.innerWidth + paddingRight - paddingLeft;
-
-  const finalOffset = Math.max(0, Math.min(offset, maxOffset));
-
-  track.style.transform = `translateX(-${finalOffset}px)`;
-
-  currentIndex = index;
+function dowloadFile() {
+  const options = {
+    margin: [30, 10, 10, 10],
+    filename: `${document.title} blog.pdf`,
+    image: {
+      type: [
+        "jpeg",
+        "png",
+        "webp",
+        "svg",
+        "bmp",
+        "gif",
+        "tiff",
+        "ico",
+        "jpg",
+        "jpeg",
+      ],
+      quality: 0.98,
+    },
+    html2canvas: { scale: 2, useCORS: true, scrollY: 0, allowTaint: true },
+    jsPDF: { unit: "mm", format: [210, 297], orientation: "portrait" },
+    pageBreak: { mode: ["avoid-all", "css", "legacy"] },
+  };
+  html2pdf()
+    .set(options)
+    .from(pdfContent)
+    .toPdf()
+    .get("pdf")
+    .then((pdf) => {
+      const totalPages = pdf.internal.getNumberOfPages();
+      for (let i = 1; i <= totalPages; i++) {
+        pdf.setPage(i);
+        pdf.setFontSize(10);
+        pdf.text(`Page ${i} of ${totalPages}`, 105, 290, {
+          align: "center",
+        });
+      }
+      pdf.setPage(1);
+      pdf.setFontSize(15);
+      pdf.text(
+        `${document.querySelector(".ecomtitile").textContent}`,
+        106.5,
+        10,
+        {
+          align: "center",
+        },
+      );
+    })
+    .save(`${document.title} blog.pdf`);
 }
 
-window.addEventListener("load", () => {
-  goToSlide(currentIndex);
-});
-window.addEventListener("resize", () => goToSlide(currentIndex));
+const dialog = document.createElement("dialog");
+dialog.id = "lead";
+dialog.style.overflow = "hidden";
+dialog.style.padding = "50px 55px";
+dialog.style.width = "50rem"
 
-options.forEach((btn, i) => {
-  btn.addEventListener("click", () => {
-    goToSlide(i);
-  });
+const generalContent = document.getElementsByTagName("body");
+generalContent.forEach((nth) => {
+  nth.appendChild(dialog);
 });
+
+const openDialog = document.querySelector(".pdf-holder");
+openDialog.addEventListener("click", () => {
+  dialog.showModal();
+});
+
+dialog.addEventListener("click", () => {
+  const rect = dialog.getBoundingClientRect();
+  const isInDialog =
+    rect.top <= event.clientY &&
+    event.clientY <= rect.bottom &&
+    rect.left <= event.clientX &&
+    event.clientX <= rect.right;
+  if (!isInDialog) {
+    dialog.close();
+  }
+});
+
+const leadTitle = document.createElement("h2");
+leadTitle.className = "dialog__title";
+leadTitle.textContent = `👋 We hope you enjoy this content!`;
+leadTitle.style.marginBottom = "40px";
+const mainLead = document.createElement("section");
+const leadForm = document.createElement("form");
+leadForm.method = "dialog";
+const frstRow = document.createElement("div");
+frstRow.className = "client__data";
+const nameHolder = document.createElement("input");
+nameHolder.type = "text";
+nameHolder.name = "lead__name";
+nameHolder.style.padding = "10px";
+nameHolder.style.width = "50%";
+nameHolder.style.borderRadius = "10px";
+nameHolder.placeholder = "Name";
+
+const lastNameHolder = document.createElement("input");
+lastNameHolder.type = "text";
+lastNameHolder.name = "lead__lastname";
+lastNameHolder.style.padding = "10px";
+lastNameHolder.style.width = "50%";
+lastNameHolder.style.borderRadius = "10px";
+lastNameHolder.placeholder = "Last Name";
+
+const lastDiv = document.createElement("div");
+
+const emailHolder = document.createElement("input");
+emailHolder.type = "email";
+emailHolder.name = "lead__email";
+emailHolder.style.padding = "10px";
+emailHolder.style.width = "100%";
+emailHolder.style.borderRadius = "10px";
+emailHolder.style.marginTop = "1.5rem";
+emailHolder.placeholder = "🖂 email";
+
+const submitBtn = document.createElement("button");
+submitBtn.type = "submit";
+submitBtn.id = "submit__lead";
+submitBtn.textContent = "Download PDF";
+submitBtn.style.backgroundColor = "#3FA9E9";
+submitBtn.style.borderRadius = "10px";
+submitBtn.style.marginTop = "1.5rem";
+submitBtn.style.color = "#FFF";
+submitBtn.style.padding = "10px";
+submitBtn.style.fontWeight = "500";
+
+submitBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  const nameLead = nameHolder.value;
+  const lastNameLead = lastNameHolder.value;
+  const emailLead = emailHolder.value;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const nameRegex = /^[A-Za-z]+$/
+
+  if (
+    nameLead.length >= 3 &&
+    nameRegex.test(nameLead) &&
+    emailLead.length >= 7 &&
+    lastNameLead.length > 3 &&
+    nameRegex.test(lastNameLead) &&
+    emailRegex.test(emailLead) 
+  ) {
+    //closing the dialog
+    setTimeout(() => {
+      clsBtn.click();
+      dowloadFile();
+    }, 2500);
+    Toastify({
+      text: "Downloading PDF, please wait...",
+      duration: 2500,
+      close: true,
+      gravity: "bottom",
+      position: "right",
+      stopOnFocus: true,
+      selector: dialog,
+      style: {
+        background: "#41C04A",
+        zIndex: 10,
+      },
+    }).showToast();
+    const newLead = {
+      name: nameLead.toLowerCase(),
+      lastName: lastNameLead.toLocaleLowerCase(),
+      email: emailLead.toLocaleLowerCase(),
+    };
+    const urlLead =
+      "https://script.google.com/macros/s/AKfycbx5bjixzJdwn3z_KS1uOthYDS9AfNAikibrUZze6dpQo25NezdEXQ7fl_73CyrA9b_MwQ/exec";
+    fetch(urlLead, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      redirect: "follow",
+      body: JSON.stringify(newLead),
+    })
+      .then((res) => res.json())
+      .then(console.log)
+      .then(console.error);
+  } else {
+    Toastify({
+      text: "Name or Email Not Valid",
+      duration: 1500,
+      close: true,
+      gravity: "bottom",
+      position: "right",
+      stopOnFocus: true,
+      selector: dialog,
+      style: {
+        background: "#DC143C",
+        zIndex: 10,
+      },
+    }).showToast();
+  }
+});
+
+const clsBtn = document.createElement("button");
+clsBtn.className = "close__dialog";
+clsBtn.style.paddingTop = "7px";
+clsBtn.style.paddingBottom = "7px";
+clsBtn.style.paddingRight = "10px";
+clsBtn.style.paddingLeft = "10px";
+clsBtn.textContent = "X";
+clsBtn.style.color = "white";
+clsBtn.style.backgroundColor = "#DC143C";
+clsBtn.style.position = "absolute";
+clsBtn.style.right = "0";
+clsBtn.style.top = "0px";
+clsBtn.style.fontWeight = "500";
+clsBtn.style.borderRadius = "10px";
+clsBtn.style.zIndex = "99";
+
+clsBtn.addEventListener("click", () => {
+  dialog.close();
+});
+
+lastDiv.appendChild(emailHolder);
+
+leadForm.appendChild(frstRow);
+leadForm.appendChild(lastDiv);
+leadForm.appendChild(submitBtn);
+
+frstRow.appendChild(nameHolder);
+frstRow.appendChild(lastNameHolder);
+
+dialog.appendChild(leadTitle);
+dialog.appendChild(mainLead);
+dialog.appendChild(clsBtn);
+mainLead.appendChild(leadForm);
+
+// const dialogHeader = document.querySelector(".dialog__header");
+// const btnClose = document.createElement("button");
+// btnClose.classList = "dialog__close";
+
+// dialogHeader.appendChild(btnClose);
+
+// class Dialog {
+//   constructor(dialogElement) {
+//     this.dialog = dialogElement;
+//     this.overlay = this.dialog.querySelector(".dialog__overlay");
+//     this.closeButton = this.dialog.querySelector(".dialog__close");
+//     this.open = false;
+
+//     this.init();
+//   }
+
+//   init() {
+//     this.overlay.addEventListener("click", () => {
+//       this.close();
+//     });
+
+//     this.closeButton.addEventListener("click", () => {
+//       this.close();
+//     });
+
+//     document.addEventListener("keydown", (e) => {
+//       if (e.key === "Escape" && this.isOpen) {
+//         this.close();
+//       }
+//     });
+
+//     this.dialog
+//       .querySelector(".dialog__content")
+//       .addEventListener("click", (e) => {
+//         e.stopPropagation();
+//       });
+//   }
+
+//   open() {
+//     this.dialog.setAttribute("aria-hidden", false);
+//     this.isOpen = true;
+
+//     this.trapFocus();
+
+//     document.body.style.overflow = "hidden";
+//   }
+
+//   close() {
+//     this.dialog.setAttribute("aria-hidden", true);
+//     this.open = false;
+
+//     document.body.style.overflow = "";
+//   }
+
+//   trapFocus() {
+//     const focusElement = this.dialog.querySelectorAll(
+//       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+//     );
+
+//     const firstElement = focusElement[0];
+//     const lastElement = focusElement[focusElement.length - 1];
+
+//     if (firstElement) {
+//       firstElement.focus();
+//     }
+
+//     this.dialog.addEventListener("keydown", (e) => {
+//       if (e.key !== "Tab") return;
+
+//       if (e.shiftKey) {
+//         if (document.activeElement === firstElement) {
+//           lastElement.focus();
+//           e.preventDefault();
+//         }
+//       } else {
+//         if (document.activeElement === lastElement) {
+//           firstElement.focus();
+//           e.preventDefault();
+//         }
+//       }
+//     });
+//   }
+// }
+// document.addEventListener("DOMContentLoaded", () => {
+//   const dialogHeader = document.querySelector(".dialog__header");
+
+//   const testContet = document.createElement("p");
+//   testContet.textContent = "this is a testing string";
+
+//   dialogHeader.appendChild(testContet);
+
+//   const dialogFooter = document.querySelector(".dialog__footer");
+//   const submitBtn = document.createElement("button");
+//   submitBtn.textContent = "Send Information";
+//   submitBtn.type = "submit";
+
+//   dialogFooter.appendChild(submitBtn);
+
+//   const dialogElement = document.getElementById("myDialog");
+//   const dialog = new Dialog(dialogElement);
+
+//   const openDialogBtn = document.querySelector(".pdf-holder");
+
+//   const closeBtn = document.querySelector(".cancelBtn");
+//   const confirmBtn = document.querySelector(".confirmBtn");
+
+//   openDialogBtn.addEventListener("click", () => {
+//     console.log("testing");
+//     dialog.open();
+//   });
+// });
+
+// const pdfButton = document.querySelector(".pdf-holder");
+
+// pdfButton.addEventListener("click", () => {
+//     console.log('testing a new testing');
+// });
+
+// function startWidgetDom() {
+//   const formAction = document.querySelector(".ant-space-item");
+//   const downloadPdf = formAction.children[0];
+
+//   downloadPdf.addEventListener("click", () => {
+//     console.log("testing fn to download pdf");
+//     console.log(downloadPdf);
+//   });
+// }
+
+// const allContact = document.querySelectorAll(".contact-button");
+// const actualForm = document.querySelector(".code-embed-2");
+// const firstElement = actualForm.children[0];
+
+// allContact.forEach((button) => {
+//   button.addEventListener("click", () => {
+//     firstElement.children[0].click();
+//   });
+//   button.addEventListener("click", () => {
+//     const iframe = document.querySelector(".fillout-embed-iframe-container");
+//     iframe.style.width = "30vw";
+//   });
+// });
+
+// const options = document.querySelectorAll(".option");
+// const track = document.querySelector(".carousel-track");
+// const slides = document.querySelectorAll(".carousel-item");
+// let currentIndex = 1; // Start centered on the 2nd panel
+//
+// function goToSlide(index) {
+//   if (index < 0) index = 0;
+//   if (index > slides.length - 1) index = slides.length - 1;
+//   if (index === 2) {
+//     options.forEach((o) => o.classList.remove("active"));
+//     slides.forEach((s) => s.classList.remove("active"));
+//     options[index].classList.add("active");
+//     slides[index].classList.add("active");
+//
+//     const gap = parseFloat(getComputedStyle(track).gap) || 0;
+//     const slideWidth = slides[0].getBoundingClientRect().width + gap;
+//
+//     const offset =
+//       slideWidth * index - (window.innerWidth / 2 - slides[0].offsetWidth / 2);
+//
+//     const trackStyle = getComputedStyle(track);
+//     const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
+//     const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
+//
+//     const maxOffset =
+//       track.scrollWidth - window.innerWidth + paddingRight - paddingLeft;
+//
+//     const finalOffset = Math.max(0, Math.min(offset, maxOffset)) + 400;
+//
+//     track.style.transform = `translateX(-${finalOffset}px)`;
+//
+//     currentIndex = index;
+//
+//     return;
+//   }
+//
+//   if (index === 0) {
+//     options.forEach((o) => o.classList.remove("active"));
+//     slides.forEach((s) => s.classList.remove("active"));
+//     options[index].classList.add("active");
+//     slides[index].classList.add("active");
+//
+//     const gap = parseFloat(getComputedStyle(track).gap) || 0;
+//     const slideWidth = slides[0].getBoundingClientRect().width + gap;
+//
+//     const offset =
+//       slideWidth * index - (window.innerWidth / 2 - slides[0].offsetWidth / 2);
+//
+//     const trackStyle = getComputedStyle(track);
+//     const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
+//     const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
+//
+//     const maxOffset =
+//       track.scrollWidth - window.innerWidth + paddingRight - paddingLeft;
+//
+//     const finalOffset = Math.max(0, Math.min(offset, maxOffset));
+//
+//     track.style.transform = `translateX(-${finalOffset + 1}px)`;
+//
+//     currentIndex = index;
+//
+//     return;
+//   }
+//
+//   options.forEach((o) => o.classList.remove("active"));
+//   slides.forEach((s) => s.classList.remove("active"));
+//   options[index].classList.add("active");
+//   slides[index].classList.add("active");
+//
+//   const gap = parseFloat(getComputedStyle(track).gap) || 0;
+//   const slideWidth = slides[0].getBoundingClientRect().width + gap;
+//
+//   const offset =
+//     slideWidth * index - (window.innerWidth / 2 - slides[0].offsetWidth / 2);
+//
+//   const trackStyle = getComputedStyle(track);
+//   const paddingLeft = parseFloat(trackStyle.paddingLeft) || 0;
+//   const paddingRight = parseFloat(trackStyle.paddingRight) || 0;
+//
+//   const maxOffset =
+//     track.scrollWidth - window.innerWidth + paddingRight - paddingLeft;
+//
+//   const finalOffset = Math.max(0, Math.min(offset, maxOffset));
+//
+//   track.style.transform = `translateX(-${finalOffset}px)`;
+//
+//   currentIndex = index;
+// }
+//
+// window.addEventListener("load", () => {
+//   goToSlide(currentIndex);
+// });
+// window.addEventListener("resize", () => goToSlide(currentIndex));
+//
+// options.forEach((btn, i) => {
+//   btn.addEventListener("click", () => {
+//     goToSlide(i);
+//   });
+// });
 
 // const actButton = document.getElementById('ac-button');
 // const visibleAction = document.querySelector('.action-call');

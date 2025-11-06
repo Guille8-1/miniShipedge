@@ -1,6 +1,18 @@
 const playervid = document.getElementById('videop');
-console.log('testing')
+const actualForm = document.querySelector('.code-embed-2');
+console.log(actualForm);
+
 console.log('test', playervid)
+.forEach((button)=>{
+   button.addEventListener('click', () => {
+     firstElement.children[0].click()
+   })
+   button.addEventListener('click',()=>{
+     const iframe = document.querySelector('.fillout-embed-iframe-container');
+     iframe.style.width = '30vw';
+   })
+ })
+
 
 // const style = document.createElement("style");
 //
